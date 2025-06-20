@@ -1,24 +1,24 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import ShopPage from './pages/shop/ShopPage';
+import { Navigate } from 'react-router-dom';
+
+// 👉 thêm dòng này:
+import FloatingContact from './components/FloatingContact';
+
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Navigate to="/shop" replace />} />
+        <Route path="/shop" element={<ShopPage />} />
+      </Routes>
+
+      {/* 👉 nút chat nổi xuất hiện trên mọi trang */}
+      <FloatingContact />
+    </>
   );
 }
 
