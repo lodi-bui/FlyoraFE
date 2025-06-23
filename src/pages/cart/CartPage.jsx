@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import HeroFirst from "../../components/HeroFirst";
-import HeroLast from "../../components/HeroLast";
+import Header from "../navfoot/Header";
+import Footer from "../navfoot/Footer";
 import CartItem from "./CartItem";
 import { MdRadioButtonUnchecked, MdRadioButtonChecked } from "react-icons/md";
 
@@ -104,7 +104,7 @@ const CartPage = () => {
 
   return (
     <>
-      <HeroFirst />
+      <Header />
 
       <div className="max-w-4xl mx-auto p-8 bg-white shadow my-12">
         <h1 className="text-2xl font-bold text-center mb-4">Giỏ Hàng</h1>
@@ -162,7 +162,7 @@ const CartPage = () => {
           </button>
         </div>
       </div>
-      <HeroLast />
+      <Footer />
     </>
   );
 };
