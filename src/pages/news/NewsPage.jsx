@@ -1,12 +1,12 @@
 import Footer from "../navfoot/Footer";
 import Header from "../navfoot/Header";
-import FiltersProducts from "./FiltersProducts";
+import News from "./News";
 
 const ShopPage = () => {
   return (
     <>
       <Header />
-      <FiltersProducts />
+      <News />
       <Footer />
     </>
   );

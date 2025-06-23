@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from "../icons/logo_white.png";
+import logo from "../../icons/logo_white.png";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 
-const HeroLast = () => {
+const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -15,24 +15,19 @@ const HeroLast = () => {
     navigation: [
       {
         title: "Shop",
-        links: [{ name: "About Us" }, { name: "Blog" }],
+        links: [{ name: "About Us" }, { name: "News" }, { name: "Blog" }],
       },
       {
-        title: "Useful Links",
+        title: "Policy",
         links: [
-          { name: "New products" },
-          { name: "Best sellers" },
-          { name: "Discount" },
-          { name: "F.A.Q" },
+          { name: "Inspection Policy" },
+          { name: "Privacy Policy" },
+          { name: "Delivery Policy" },
         ],
       },
       {
         title: "Customer Service",
-        links: [
-          { name: "Contact Us" },
-          { name: "Shipping" },
-          { name: "Order tracking" },
-        ],
+        links: [{ name: "Contact Us" }, { name: "F.A.Q" }],
       },
     ],
     store: {
@@ -46,13 +41,19 @@ const HeroLast = () => {
   const hrefMap = {
     "About Us": { path: "/about-us", sectionId: "about-us" },
     Blog: { path: "/blog", sectionId: "blog" },
-    "New products": { path: "/new-products", sectionId: "new-products" },
-    "Best sellers": { path: "/best-sellers", sectionId: "best-sellers" },
-    Discount: { path: "/discount", sectionId: "discount" },
+    News: { path: "/news", sectionId: "news" },
+    "Inspection Policy": {
+      path: "/inspectionPolicy",
+      sectionId: "inspectionPolicy",
+    },
+    "Privacy Policy": { path: "/privacyPolicy", sectionId: "privacyPolicy" },
+    "Delivery Policy": {
+      path: "/deliveryPolicy",
+      sectionId: "deliveryPolicy",
+    },
+
     "F.A.Q": { path: "/faq", sectionId: "faq" },
     "Contact Us": { path: "/contact-us", sectionId: "contact-us" },
-    Shipping: { path: "/shipping", sectionId: "shipping" },
-    "Order tracking": { path: "/order-tracking", sectionId: "order-tracking" },
   };
 
   const handleLinkClick = (hrefObj) => {
@@ -196,4 +197,4 @@ const HeroLast = () => {
   );
 };
 
-export default HeroLast;
+export default Footer;
