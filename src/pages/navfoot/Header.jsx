@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import phoneIcon from "../../icons/phone.png";
 import mailIcon from "../../icons/mail.png";
@@ -216,6 +216,20 @@ function Header() {
                 className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-50"
                 role="menu"
               >
+
+
+                {/*✅ Link luôn hiển thị */ }
+                <Link
+                  to="/order-history"
+                  onClick={() => setShowMenu(false)}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
+                  role="menuitem"
+                >
+                  Lịch sử đơn hàng
+                </Link>
+                
+
+
                 {!isLoggedIn ? (
                   <>
                     <NavLink
