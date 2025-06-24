@@ -5,6 +5,7 @@ import BestSellingProducts from "../../components/product/BestSellingProducts";
 import NewsBlogSalesSection from "./NewsBlogSalesSection";
 import Footer from "../navfoot/Footer";
 
+// Homepage
 const HomePage = () => {
   return (
     <>
