@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import cartIcon from "../../icons/cart-shop.png";
-import { useAuthCart } from "../../context/AuthCartContext";
 import loveProduct from "../../icons/heart-shop.png";
+import { useAuthCart } from "../../context/AuthCartContext";
 
-// 🔸 Mock dữ liệu - sau này bạn chỉ cần replace bằng data từ API
 const Categories = [
   { name: "Furniture", count: 21 },
   { name: "Food", count: 80 },
@@ -19,24 +19,24 @@ const PopularProducts = [
   { name: "Dog Leash", price: 220 },
 ];
 
-// 🔸 Component chính
 const ProductFilterPage = () => {
-  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3); // sau này set từ API
+  const [totalPages] = useState(3); // sau này set từ API
   const [productsPerPage] = useState(9);
   const [totalResults] = useState(14); // sau này set từ API
   const startResult = (currentPage - 1) * productsPerPage + 1;
   const endResult = Math.min(currentPage * productsPerPage, totalResults);
 
-  // 🔸 Tạo mock data dựa vào trang hiện tại (thay bằng axios sau)
   useEffect(() => {
+    // Dữ liệu mock, sau này thay bằng fetch từ API
     const mockData = Array.from({ length: 9 }, (_, index) => ({
+      id: (currentPage - 1) * 9 + index + 1,
       name: `Product ${(currentPage - 1) * 9 + index + 1}`,
       price: (10 + index * 5).toFixed(2),
       imageUrl: "https://via.placeholder.com/270x270?text=Product",
     }));
-    setProducts(mockData);
+    setProduct(mockData);
   }, [currentPage]);
 
   const handlePageChange = (page) => {
@@ -67,20 +67,20 @@ const ProductFilterPage = () => {
 
   const { isLoggedIn, addToCart, addToWishlist } = useAuthCart();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (id) => {
     if (!isLoggedIn) {
       alert("Bạn phải đăng nhập để thêm vào giỏ hàng!");
       return;
     }
-    addToCart();
+    addToCart(id);
   };
 
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = (id) => {
     if (!isLoggedIn) {
       alert("Bạn phải đăng nhập để thêm vào danh sách yêu thích!");
       return;
     }
-    addToWishlist();
+    addToWishlist(id);
   };
 
   return (
@@ -95,7 +95,7 @@ const ProductFilterPage = () => {
               {Categories.map((bird) => (
                 <li
                   key={bird.name}
-                  className="flex items-center justify-between"
+className="flex items-center justify-between"
                 >
                   <div className="flex items-center">
                     <input type="checkbox" className="mr-2" />
@@ -108,7 +108,6 @@ const ProductFilterPage = () => {
               ))}
             </ul>
           </div>
-
           {/* Price Filter */}
           <div>
             <h2 className="text-xl font-bold mb-2">Filter by Price</h2>
@@ -125,7 +124,6 @@ const ProductFilterPage = () => {
               </button>
             </div>
           </div>
-
           {/* Tags */}
           <div>
             <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
@@ -140,7 +138,6 @@ const ProductFilterPage = () => {
               ))}
             </div>
           </div>
-
           {/* Popular products */}
           <div>
             <h2 className="text-xl font-bold mb-2">Popular products</h2>
@@ -168,51 +165,63 @@ const ProductFilterPage = () => {
             <span className="text-gray-500">
               Showing {startResult}–{endResult} of {totalResults} results
             </span>
-
             <select className="bg-white border border-gray-400 text-gray-800 px-4 py-2 rounded">
               <option>Sort by latest</option>
               <option>Sort by price</option>
             </select>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {products.map((p) => (
-              <div
-                key={p.id}
-                className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm"
+            {product.map((p) => (
+              <NavLink
+                to={`/product/${p.id}`}
+key={p.id}
+                className="block h-full"
               >
-                <img
-                  src={p.imageUrl}
-                  alt={p.name}
-                  className="w-full h-[200px] object-cover rounded-xl"
-                />
-
-                {/* --- info row (name + icons) --- */}
-                <div className="mt-4 flex items-center justify-between">
-                  <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
-                    {p.name}
-                  </h3>
-                  <div className="flex gap-3 shrink-0">
-                    <button
-                      onClick={handleAddToWishlist}
-                      className="hover:scale-110 transition-transform"
-                    >
-                      <img src={loveProduct} alt="heart" className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={handleAddToCart}
-                      className="hover:scale-110 transition-transform"
-                    >
-                      <img src={cartIcon} alt="cart" className="w-5 h-5" />
-                    </button>
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
+                  <img
+                    src={p.imageUrl}
+                    alt={p.name}
+                    className="w-full h-[200px] object-cover rounded-xl"
+                  />
+                  {/* info row (name + icons) */}
+                  <div className="mt-4 flex items-center justify-between">
+                    <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
+                      {p.name}
+                    </h3>
+                    <div className="flex gap-3 shrink-0">
+                      <button
+                        type="button"
+                        tabIndex={-1}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleAddToWishlist(p.id);
+                        }}
+                        className="hover:scale-110 transition-transform"
+                      >
+                        <img
+                          src={loveProduct}
+                          alt="heart"
+                          className="w-5 h-5"
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        tabIndex={-1}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleAddToCart(p.id);
+                        }}
+                        className="hover:scale-110 transition-transform"
+                      >
+                        <img src={cartIcon} alt="cart" className="w-5 h-5" />
+                      </button>
+                    </div>
                   </div>
+                  <p className="text-gray-600 text-[15px] mt-1">${p.price}</p>
                 </div>
-
-                <p className="text-gray-600 text-[15px] mt-1">${p.price}</p>
-              </div>
+              </NavLink>
             ))}
           </div>
-
           {/* Pagination */}
           <div className="flex justify-center items-center gap-4 mt-10">
             {renderPageNumbers()}
