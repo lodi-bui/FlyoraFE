@@ -7,6 +7,7 @@ import { Separator } from "../../components/ui/Separator";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
+import { useAuthCart } from "context/AuthCartContext";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false); // Thêm state cho popup
+  const { login } = useAuthCart();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,27 +28,33 @@ const Login = () => {
     try {
       // Gọi API đăng nhập
       const res = await LoginAPI(form.username, form.password);
-      console.log("Login form:", form);
-      console.log("Response:", res);
 
       // Kiểm tra xem response có token hoặc thành công không
-      if (res && res.token) {
-        // Lưu token nếu cần:
-        localStorage.setItem("token", res.token);
+      // if (res && res.token) {
+      //   // Lưu token nếu cần:
+      //   localStorage.setItem("token", res.token);
+      //   setShowSuccess(true);
+      //   setTimeout(() => {
+      //     setShowSuccess(false);
+      //     navigate("/");
+      //   }, 1500);
+      // } else {
+      //   // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
+      //   setError("Tài khoản hoặc mật khẩu không đúng.");
+      // }
+
+      if(res.status === 200){
         setShowSuccess(true);
+        login(); // Gọi hàm login từ context để cập nhật trạng thái đăng nhập
         setTimeout(() => {
           setShowSuccess(false);
           navigate("/");
-        }, 1500);
+        }, 500);
       } else {
-        // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
         setError("Tài khoản hoặc mật khẩu không đúng.");
       }
     } catch (err) {
-      console.error("Login error:", err?.response || err);
       setError(
-        err?.response?.data?.message ||
-          err?.message ||
           "Đăng nhập thất bại. Vui lòng thử lại."
       );
     } finally {
