@@ -12,11 +12,13 @@ import cartIcon from "../../icons/cart.png";
 import loginIcon from "../../icons/login.png";
 import heartIcon from "../../icons/heart.png";
 import { useAuthCart } from "../../context/AuthCartContext";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const { cartCount, wishlistCount, isLoggedIn, logout } = useAuthCart();
   const [showMenu, setShowMenu] = useState(false);
   const [showNav, setNav] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
     { name: "Home", href: "/home" },
@@ -247,6 +249,19 @@ function Header() {
                   </>
                 ) : (
                   <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout();
+                        setShowMenu(false);
+                        toast.success("Đăng xuất thành công!");
+                        navigate("/");
+                      }}
+                      className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 bg-white"
+                      role="menuitem"
+                    >
+                      Đăng xuất
+                    </button>
                     <NavLink
                       to="/orders"
                       onClick={() => setShowMenu(false)}
@@ -261,21 +276,12 @@ function Header() {
                     >
                       Thông tin cá nhân
                     </NavLink>
-                    <button
-                      onClick={() => {
-                        logout();
-                        setShowMenu(false);
-                        toast.success("Đăng xuất thành công!");
-                      }}
-                      className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                      role="menuitem"
-                    >
-                      Đăng xuất
-                    </button>
+                    
                   </>
                 )}
               </div>
             )}
+
           </div>
         </div>
       </div>
