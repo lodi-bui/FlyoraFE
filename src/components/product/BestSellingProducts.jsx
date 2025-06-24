@@ -33,11 +33,11 @@ const mockProducts = [
 ];
 
 const BestSellingProducts = () => {
-  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState([]);
   const { isLoggedIn, addToCart, addToWishlist } = useAuthCart();
 
   useEffect(() => {
-    setProducts(mockProducts);
+    setProduct(mockProducts);
   }, []);
 
   const handleAddToCart = (id) => {
@@ -62,8 +62,8 @@ const BestSellingProducts = () => {
         Best selling products
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-        {products.map((p) => (
-          <NavLink to={`/products/${p.id}`} key={p.id} className="block h-full">
+        {product.map((p) => (
+          <NavLink to={`/product/${p.id}`} key={p.id} className="block h-full">
             <div
               className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-200 flex flex-col min-h-[350px] aspect-[4/5] p-6"
               style={{ willChange: "transform" }}
