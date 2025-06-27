@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiEdit, FiX } from "react-icons/fi";
-import { CgProfile } from "react-icons/cg";
-import { toast } from "react-hot-toast";
 
 const EditProfile = () => {
+  const navigate = useNavigate(); // Thêm dòng này
   const fileInputRef = useRef(null);
   const [avatar, setAvatar] = useState(null);
   const [name, setName] = useState("User1");
@@ -33,25 +32,33 @@ const EditProfile = () => {
   const closePasswordModal = () => setPasswordModalOpen(false);
 
   const handlePasswordChange = () => {
+    // TODO: hook up API
     console.log({ currentPass, newPass, confirmPass });
     closePasswordModal();
   };
 
   const handleSaveProfile = () => {
+    // TODO: hook up API
     console.log({ avatar, name, email, phone, address });
-    toast.success("Bạn đã cập nhật thành công");
   };
 
   return (
-    <div className="bg-gray-100 py-10 px-4 min-h-screen flex justify-center">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
+      {/* Main Modal */}
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-xl font-semibold ">Cập Nhật Hồ Sơ</h2>
+          <h2 className="text-xl font-semibold">Cập Nhật Hồ Sơ</h2>
+          <button
+            onClick={() => {
+              /* close modal logic */
+            }}
+          >
+            <FiX size={24} />
+          </button>
         </div>
-
         <div className="bg-gradient-to-r from-green-500 to-green-800 p-6 flex justify-center">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden">
               {avatar ? (
                 <img
                   src={avatar}
@@ -59,7 +66,7 @@ const EditProfile = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <CgProfile size={72} className="text-gray-500" />
+                <div className="w-full h-full" />
               )}
             </div>
             <button
@@ -80,6 +87,7 @@ const EditProfile = () => {
         </div>
 
         <div className="p-6 space-y-4">
+          {/* Name */}
           <div className="flex items-center">
             <label className="w-24 font-medium">Name</label>
             <input
@@ -89,6 +97,7 @@ const EditProfile = () => {
               className="flex-1 border rounded-md px-4 py-2 shadow-sm"
             />
           </div>
+          {/* Email */}
           <div className="flex items-center">
             <label className="w-24 font-medium">Email</label>
             <input
@@ -99,6 +108,7 @@ const EditProfile = () => {
               className="flex-1 border rounded-md px-4 py-2 shadow-sm"
             />
           </div>
+          {/* Phone */}
           <div className="flex items-center">
             <label className="w-24 font-medium">Phone</label>
             <input
@@ -109,6 +119,7 @@ const EditProfile = () => {
               className="flex-1 border rounded-md px-4 py-2 shadow-sm"
             />
           </div>
+          {/* Address */}
           <div className="flex items-center">
             <label className="w-24 font-medium">Địa chỉ</label>
             <input
@@ -119,6 +130,7 @@ const EditProfile = () => {
               className="flex-1 border rounded-md px-4 py-2 shadow-sm"
             />
           </div>
+          {/* Password */}
           <div className="flex items-center">
             <label className="w-24 font-medium">Password</label>
             <div className="flex-1 relative">
@@ -137,7 +149,6 @@ const EditProfile = () => {
             </div>
           </div>
         </div>
-
         <div className="p-4 flex justify-end border-t">
           <button
             onClick={handleSaveProfile}
@@ -147,8 +158,9 @@ const EditProfile = () => {
           </button>
         </div>
 
+        {/* Change Password Modal */}
         {passwordModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
               <div className="flex justify-between items-center p-4 border-b">
                 <h3 className="text-lg font-semibold">Đổi Mật Khẩu</h3>
