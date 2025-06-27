@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import ShopPage from './pages/shop/ShopPage';
 import HomePage from './pages/home/HomePage';
 import Login from './pages/login/Login';
@@ -11,31 +11,33 @@ import InspectionPolicy from './pages/policy/InspectionPolicy';
 import PrivacyPolicy from './pages/policy/PrivacyPolicy';
 import DeliveryPolicy from './pages/policy/DeliveryPolicy';
 import NewsPage from './pages/news/NewsPage';
-
+import CartPage from './pages/cart/CartPage';
 import { ProductDetails } from './pages/ProductDetails/ProductDetails';
 
 import OrderHistoryPage from './pages/order/OrderHistoryPage';
 import OrderDetailsPage from './pages/order/OrderDetailsPage';
-
+import ProfilePage from './pages/profile/ProfilePage';
 
 
 function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/" element={<Navigate to="/shop" replace />} /> */}
-        {/* <Route path="/cart" element={<CartPage />} /> */}
 
-
-
-        {/* <Route path="/" element={<Navigate to="/checkout" replace />} /> */}
-        {/* <Route path="/checkout" element={<CheckoutPage />} />  */}
-        {/* <Route path="/checkout/confirm" element={<CheckoutConfirm />} /> */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
+        
         <Route path="/shop" element={<ShopPage />} />
+
+        <Route path="/cart" element={<CartPage />} />
+ 
+        <Route path="/checkout" element={<CheckoutPage />} /> 
+        <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
+        <Route path="/profile" element={<ProfilePage />} />        
+        
+
+
         {/* <Route path="/about" element={<AboutPage />} /> */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}
         <Route path="/inspectionPolicy" element={<InspectionPolicy />} />
@@ -44,12 +46,10 @@ function App() {
         <Route path="/news" element={<NewsPage />} />
 
         <Route path="/product/1" element={<ProductDetails />} />
-
-        <Route path="/order-history" element={<OrderHistoryPage />} />
-        <Route path="/order-details" element={<OrderDetailsPage />} />
+        <Route path="/orders" element={<OrderHistoryPage />} />
+        <Route path="/order-details/" element={<OrderDetailsPage />} />
 
       </Routes>
-
 
       <Chatbotbox />
     </>

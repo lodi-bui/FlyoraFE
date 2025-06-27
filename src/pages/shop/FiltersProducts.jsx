@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import cartIcon from "../../icons/cart-shop.png";
-import loveProduct from "../../icons/heart-shop.png";
+// import loveProduct from "../../icons/heart-shop.png";
+import toast from "react-hot-toast";
 import { useAuthCart } from "../../context/AuthCartContext";
 
 const Categories = [
@@ -65,23 +66,24 @@ const ProductFilterPage = () => {
     return pages;
   };
 
-  const { isLoggedIn, addToCart, addToWishlist } = useAuthCart();
+  const { isLoggedIn, addToCart } = useAuthCart(); // addToWishlist nếu cần heart icon
 
   const handleAddToCart = (id) => {
     if (!isLoggedIn) {
-      alert("Bạn phải đăng nhập để thêm vào giỏ hàng!");
+      toast.error("Bạn phải đăng nhập để thêm vào giỏ hàng!");
       return;
     }
     addToCart(id);
+    toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
-  const handleAddToWishlist = (id) => {
-    if (!isLoggedIn) {
-      alert("Bạn phải đăng nhập để thêm vào danh sách yêu thích!");
-      return;
-    }
-    addToWishlist(id);
-  };
+  // const handleAddToWishlist = (id) => {
+  //   if (!isLoggedIn) {
+  //     alert("Bạn phải đăng nhập để thêm vào danh sách yêu thích!");
+  //     return;
+  //   }
+  //   addToWishlist(id);
+  // };
 
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
@@ -95,7 +97,7 @@ const ProductFilterPage = () => {
               {Categories.map((bird) => (
                 <li
                   key={bird.name}
-className="flex items-center justify-between"
+                  className="flex items-center justify-between"
                 >
                   <div className="flex items-center">
                     <input type="checkbox" className="mr-2" />
@@ -174,7 +176,7 @@ className="flex items-center justify-between"
             {product.map((p) => (
               <NavLink
                 to={`/product/${p.id}`}
-key={p.id}
+                key={p.id}
                 className="block h-full"
               >
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
@@ -189,7 +191,7 @@ key={p.id}
                       {p.name}
                     </h3>
                     <div className="flex gap-3 shrink-0">
-                      <button
+                      {/* <button
                         type="button"
                         tabIndex={-1}
                         onClick={(e) => {
@@ -203,7 +205,7 @@ key={p.id}
                           alt="heart"
                           className="w-5 h-5"
                         />
-                      </button>
+                      </button> */}
                       <button
                         type="button"
                         tabIndex={-1}

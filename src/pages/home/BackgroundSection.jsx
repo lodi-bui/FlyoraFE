@@ -81,23 +81,23 @@ const BackgroundSection = () => {
   // Data for bird categories
   const birdCategories = [
     {
-      name: "PARAKEETS",
-      image: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/link.png",
+      name: "Chào Mào",
+      image: "https://i.postimg.cc/pVQ7qM1k/Link.png",
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
     },
     {
-      name: "BEE-EATERS",
-      image: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/link-1.png",
+      name: "Vẹt Xích",
+      image: "https://i.postimg.cc/j506J6C8/vetxich.png",
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
     },
     {
-      name: "SUN PARAKEETS",
-      image: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/link-2.png",
+      name: " Yến Phụng",
+      image: "https://i.postimg.cc/xTRsDZq9/yenphung.png",
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
     },
     {
-      name: "AMAZON PARROTS",
-      image: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/link-3.png",
+      name: "Chích Chòe",
+      image: "https://i.postimg.cc/sXNn8G27/chichchoe.png",
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
     },
   ];

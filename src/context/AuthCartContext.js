@@ -1,39 +1,76 @@
-import { createContext, useContext, useState } from "react";
+// src/context/AuthCartContext.js
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);      // 👤
-  const [cartCount, setCartCount] = useState(0);            // 🛒
-  const [wishlistCount, setWishlistCount] = useState(0);    // 💓
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => localStorage.getItem("isLoggedIn") === "true"
+  );
 
-  // auth
-  const login  = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem("cartItems");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // cart & wishlist
-  const addToCart      = () => setCartCount((n) => n + 1);
-  const addToWishlist  = () => setWishlistCount((n) => n + 1);
-  const resetCart      = () => setCartCount(0);
-  const resetWishlist  = () => setWishlistCount(0);
+  // tính lại cartCount dựa vào cartItems
+  const cartCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+
+  // Đồng bộ isLoggedIn
+  useEffect(() => {
+    if (isLoggedIn) localStorage.setItem("isLoggedIn", "true");
+    else localStorage.removeItem("isLoggedIn");
+  }, [isLoggedIn]);
+
+  // Đồng bộ cartItems mỗi khi thay đổi
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  // Các method thêm/xóa/cập nhật vẫn như cũ
+  const addToCart = (item) => {
+    setCartItems((prev) => {
+      const exists = prev.find((p) => p.id === item.id);
+      if (exists) {
+        return prev.map((p) =>
+          p.id === item.id ? { ...p, qty: p.qty + 1 } : p
+        );
+      }
+      return [...prev, { ...item, qty: 1 }];
+    });
+  };
+  const updateQty = (id, qty) => {
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, qty } : item))
+    );
+  };
+  const removeFromCart = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+  const resetCart = () => {
+    setCartItems([]);
+    setIsLoggedIn(false);
+    localStorage.removeItem("cartItems");
+  };
 
   return (
     <AuthCartContext.Provider
       value={{
         isLoggedIn,
-        login,
-        logout,
+        login: () => setIsLoggedIn(true),
+        logout: () => resetCart(),
+        cartItems,
         cartCount,
-        wishlistCount,
         addToCart,
-        addToWishlist,
+        updateQty,
+        removeFromCart,
         resetCart,
-        resetWishlist,
       }}
     >
       {children}
     </AuthCartContext.Provider>
   );
 };
+
 
 export const useAuthCart = () => useContext(AuthCartContext);

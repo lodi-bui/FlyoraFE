@@ -20,7 +20,7 @@ const CheckoutConfirm = () => {
         <p className="mb-6">Mã Đơn Hàng</p>
         <p className="text-lg font-semibold mb-6">{orderId}</p>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/shop")}
           className="px-6 py-3 bg-green-500 text-white rounded-lg"
         >
           Tiếp Tục Mua Hàng

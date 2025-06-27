@@ -1,20 +1,19 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import cartIcon from "../../icons/cart-shop.png";
 import { useAuthCart } from "../../context/AuthCartContext";
 import toast from "react-hot-toast";
 
 const ProductCard = ({ id, image, title, price }) => {
-  const navigate = useNavigate();
   const { isLoggedIn, addToCart } = useAuthCart();
 
   const handleAddCart = (e) => {
-    e.preventDefault(); // Không chuyển trang khi bấm icon
+    e.preventDefault();
     if (!isLoggedIn) {
       toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
       return;
     }
-    addToCart(id); // Hoặc chỉ addToCart nếu bạn không truyền id
+    addToCart({ id, name: title, price, imageUrl: image });
     toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 

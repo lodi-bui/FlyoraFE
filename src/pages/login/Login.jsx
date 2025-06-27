@@ -3,7 +3,6 @@ import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { Card, CardContent } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
-import { Separator } from "../../components/ui/Separator";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
@@ -43,7 +42,7 @@ const Login = () => {
       //   setError("Tài khoản hoặc mật khẩu không đúng.");
       // }
 
-      if(res.status === 200){
+      if (res.status === 200) {
         setShowSuccess(true);
         login(); // Gọi hàm login từ context để cập nhật trạng thái đăng nhập
         setTimeout(() => {
@@ -54,9 +53,7 @@ const Login = () => {
         setError("Tài khoản hoặc mật khẩu không đúng.");
       }
     } catch (err) {
-      setError(
-          "Đăng nhập thất bại. Vui lòng thử lại."
-      );
+      setError("Đăng nhập thất bại. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
@@ -210,16 +207,6 @@ const Login = () => {
                 </div>
               )}
 
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Forgot Password?</span>
-                <a
-                  href="/forgot-password"
-                  className="text-blue-600 font-medium"
-                >
-                  Get Password
-                </a>
-              </div>
-
               <Button
                 type="submit"
                 disabled={loading}
@@ -235,14 +222,14 @@ const Login = () => {
                 </Link>
               </div>
 
-              <div className="relative">
+              {/* <div className="relative">
                 <Separator className="my-6" />
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-gray-600 text-sm">
                   Or
                 </div>
-              </div>
+              </div> */}
 
-              <Button
+              {/* <Button
                 type="button"
                 variant="outline"
                 className="w-full border rounded-xl py-3 text-gray-700 flex items-center justify-center gap-4 shadow"
@@ -253,7 +240,7 @@ const Login = () => {
                   className="w-5 h-5"
                 />
                 Sign in with Google
-              </Button>
+              </Button> */}
             </form>
           </CardContent>
         </Card>
