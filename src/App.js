@@ -13,7 +13,7 @@ import DeliveryPolicy from './pages/policy/DeliveryPolicy';
 import NewsPage from './pages/news/NewsPage';
 
 import CartPage from './pages/cart/CartPage';
-import { ProductDetails } from './pages/ProductDetails/ProductDetails';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
 
 
 import OrderHistoryPage from './pages/order/OrderHistoryPage';

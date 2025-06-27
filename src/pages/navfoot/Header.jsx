@@ -183,21 +183,8 @@ function Header() {
             />
           </div>
 
-// <<<<<<< Channnn
-//           {/* Wishlist icon
-// =======
-//           {/* Wishlist */}
-// >>>>>>> main_FE
-          <button
-            type="button"
-            onClick={() => handleProtectedClick("wishlist")}
-            className="relative"
-          >
-            <img src={heartIcon} alt="Wishlist" className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
-              {wishlistCount}
-            </span>
-          </button> */}
+
+          {/* Wishlist button removed due to undefined variables and unterminated comment */}
 
           {/* Cart */}
           <button
@@ -210,34 +197,16 @@ function Header() {
               {cartCount}
             </span>
           </button>
+{/*  */}
 
-// <<<<<<< Channnn
-//           {/* Login menu */}
-//           <div className="relative z-[100]">
-//             <button
-//               onClick={() => setShowMenu(!showMenu)}
-//               className="focus:outline-none"
-//               aria-haspopup="true"
-//               aria-expanded={showMenu}
-//               aria-label="User menu"
-//             >
-//               <img src={loginIcon} alt="User menu icon" className="w-6 h-6" />
-// =======
           {/* Login Menu */}
           <div className="relative">
             <button onClick={() => setShowMenu(!showMenu)}>
               <img src={loginIcon} alt="Login" className="w-6 h-6" />
-// >>>>>>> main_FE
             </button>
             {showMenu && (
-// <<<<<<< Channnn
-//               <div
-//                 className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-[9999]"
-//                 role="menu"
-//               >
-// =======
+
               <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-50">
-// >>>>>>> main_FE
                 {!isLoggedIn ? (
                   <>
                     <NavLink
@@ -268,19 +237,14 @@ function Header() {
                     >
                       Đăng xuất
                     </button>
-// <<<<<<< Channnn
 
-//                     <NavLink
-//                       to="/orders"
-// =======
-                    <Link
+
+                     <Link
                       to={`/order-history?customerId=${customerId}`}
-
                       onClick={() => setShowMenu(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
                       Lịch sử đơn hàng
-
                     </Link>
 
                     <NavLink
