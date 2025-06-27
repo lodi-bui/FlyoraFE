@@ -29,23 +29,17 @@ const Login = () => {
       // Gọi API đăng nhập
       const res = await LoginAPI(form.username, form.password);
 
-      // Kiểm tra xem response có token hoặc thành công không
-      // if (res && res.token) {
-      //   // Lưu token nếu cần:
-      //   localStorage.setItem("token", res.token);
-      //   setShowSuccess(true);
-      //   setTimeout(() => {
-      //     setShowSuccess(false);
-      //     navigate("/");
-      //   }, 1500);
-      // } else {
-      //   // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
-      //   setError("Tài khoản hoặc mật khẩu không đúng.");
-      // }
-
-      if(res.status === 200){
+      if (res.status === 200) {
         setShowSuccess(true);
-        login(); // Gọi hàm login từ context để cập nhật trạng thái đăng nhập
+        
+        // Lưu thông tin người dùng vào context
+        login({
+          userId: res.data.userId,
+          name: res.data.name,
+          linkedId: res.data.linkedId,
+          role: res.data.role,
+        });
+
         setTimeout(() => {
           setShowSuccess(false);
           navigate("/");
@@ -54,9 +48,7 @@ const Login = () => {
         setError("Tài khoản hoặc mật khẩu không đúng.");
       }
     } catch (err) {
-      setError(
-          "Đăng nhập thất bại. Vui lòng thử lại."
-      );
+      setError("Đăng nhập thất bại. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }

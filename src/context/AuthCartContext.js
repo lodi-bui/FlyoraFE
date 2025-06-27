@@ -3,19 +3,29 @@ import { createContext, useContext, useState } from "react";
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);      // 👤
-  const [cartCount, setCartCount] = useState(0);            // 🛒
-  const [wishlistCount, setWishlistCount] = useState(0);    // 💓
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [user, setUser] = useState(null);  // 👉 Thêm user
 
-  // auth
-  const login  = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  // ==== Auth ====
+  const login = (userData) => {
+    setIsLoggedIn(true);
+    setUser(userData); // Lưu thông tin user bao gồm linkedId
+  };
 
-  // cart & wishlist
-  const addToCart      = () => setCartCount((n) => n + 1);
-  const addToWishlist  = () => setWishlistCount((n) => n + 1);
-  const resetCart      = () => setCartCount(0);
-  const resetWishlist  = () => setWishlistCount(0);
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUser(null);
+    resetCart();
+    resetWishlist();
+  };
+
+  // ==== Cart & Wishlist ====
+  const addToCart = () => setCartCount((n) => n + 1);
+  const addToWishlist = () => setWishlistCount((n) => n + 1);
+  const resetCart = () => setCartCount(0);
+  const resetWishlist = () => setWishlistCount(0);
 
   return (
     <AuthCartContext.Provider
@@ -23,6 +33,7 @@ export const AuthCartProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout,
+        user,             // 👉 Truyền user ra ngoài context
         cartCount,
         wishlistCount,
         addToCart,
