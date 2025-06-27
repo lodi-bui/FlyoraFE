@@ -13,7 +13,7 @@ function FloatingContact() {
     <div className="fixed bottom-6 right-6 z-50">
       {open && (
         <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-4 w-[260px] relative">
-          <button
+                                  <button
             onClick={() => setOpen(false)}
             className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
           >

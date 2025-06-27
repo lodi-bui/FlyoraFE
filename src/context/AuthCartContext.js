@@ -1,8 +1,11 @@
-import { createContext, useContext, useState } from "react";
+// src/context/AuthCartContext.js
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
+
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
@@ -27,24 +30,28 @@ export const AuthCartProvider = ({ children }) => {
   const resetCart = () => setCartCount(0);
   const resetWishlist = () => setWishlistCount(0);
 
+
   return (
     <AuthCartContext.Provider
       value={{
         isLoggedIn,
+
+
         login,
         logout,
         user,             // 👉 Truyền user ra ngoài context
+
         cartCount,
-        wishlistCount,
         addToCart,
-        addToWishlist,
+        updateQty,
+        removeFromCart,
         resetCart,
-        resetWishlist,
       }}
     >
       {children}
     </AuthCartContext.Provider>
   );
 };
+
 
 export const useAuthCart = () => useContext(AuthCartContext);

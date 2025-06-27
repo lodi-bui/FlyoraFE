@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import cartIcon from "../../icons/cart-shop.png";
-import loveProduct from "../../icons/heart-shop.png";
+// import loveProduct from "../../icons/heart-shop.png";
+import toast from "react-hot-toast";
 import { useAuthCart } from "../../context/AuthCartContext";
 import { getProductsByCategory } from "../../api/Product";
 import { getCategories } from "../../api/Categories";
@@ -71,24 +72,26 @@ const ProductFilterPage = () => {
       newParams.set("categoryId", id);
     }
 
+
     navigate(`/shop?${newParams.toString()}`);
   };
 
   const handleAddToCart = (id) => {
     if (!isLoggedIn) {
-      alert("Bạn phải đăng nhập để thêm vào giỏ hàng!");
+      toast.error("Bạn phải đăng nhập để thêm vào giỏ hàng!");
       return;
     }
     addToCart(id);
+    toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
-  const handleAddToWishlist = (id) => {
-    if (!isLoggedIn) {
-      alert("Bạn phải đăng nhập để thêm vào danh sách yêu thích!");
-      return;
-    }
-    addToWishlist(id);
-  };
+  // const handleAddToWishlist = (id) => {
+  //   if (!isLoggedIn) {
+  //     alert("Bạn phải đăng nhập để thêm vào danh sách yêu thích!");
+  //     return;
+  //   }
+  //   addToWishlist(id);
+  // };
 
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
@@ -98,6 +101,7 @@ const ProductFilterPage = () => {
           <div>
             <h2 className="text-xl font-bold mb-2">Filter by categories</h2>
             <ul className="space-y-2 text-gray-800">
+
               {categories.map((cat) => {
                 const isSelected = categoryId === String(cat.id);
                 return (
@@ -113,12 +117,14 @@ const ProductFilterPage = () => {
                   </li>
                 );
               })}
+
             </ul>
           </div>
         </div>
 
         {/* Product Grid */}
         <div className="md:col-span-3">
+
           {loading && (
             <div className="text-center text-gray-500 py-10">Loading...</div>
           )}
@@ -147,11 +153,13 @@ const ProductFilterPage = () => {
                       className="block h-full"
                     >
                       <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
+
                         <img
                           src={p.imageUrl}
                           alt={p.name}
                           className="w-full h-[200px] object-cover rounded-xl"
                         />
+
                         <div className="mt-4 flex items-center justify-between">
                           <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
                             {p.name}
@@ -195,6 +203,7 @@ const ProductFilterPage = () => {
                       </div>
                     </NavLink>
                   ))}
+
                 </div>
               )}
             </>

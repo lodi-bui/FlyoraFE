@@ -2,9 +2,11 @@ import React, { useState, useEffect, useMemo } from "react";
 import Header from "../navfoot/Header";
 import Footer from "../navfoot/Footer";
 import CartItem from "./CartItem";
+import { useNavigate } from "react-router-dom";
 import { MdRadioButtonUnchecked, MdRadioButtonChecked } from "react-icons/md";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -154,9 +156,8 @@ const CartPage = () => {
                 ? "bg-red-400 hover:bg-red-500"
                 : "bg-gray-300 cursor-not-allowed"
             }`}
-            onClick={() => {
-              /* TODO: gọi API checkout với selectedItems */
-            }}
+            onClick={() => navigate("/checkout")}
+            /* TODO: gọi API checkout với selectedItems */
           >
             Mua Hàng ({selectedItems.length})
           </button>
