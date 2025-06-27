@@ -4,62 +4,43 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    () => localStorage.getItem("isLoggedIn") === "true"
-  );
 
-  const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem("cartItems");
-    return saved ? JSON.parse(saved) : [];
-  });
 
-  // tính lại cartCount dựa vào cartItems
-  const cartCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [user, setUser] = useState(null);  // 👉 Thêm user
 
-  // Đồng bộ isLoggedIn
-  useEffect(() => {
-    if (isLoggedIn) localStorage.setItem("isLoggedIn", "true");
-    else localStorage.removeItem("isLoggedIn");
-  }, [isLoggedIn]);
-
-  // Đồng bộ cartItems mỗi khi thay đổi
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  // Các method thêm/xóa/cập nhật vẫn như cũ
-  const addToCart = (item) => {
-    setCartItems((prev) => {
-      const exists = prev.find((p) => p.id === item.id);
-      if (exists) {
-        return prev.map((p) =>
-          p.id === item.id ? { ...p, qty: p.qty + 1 } : p
-        );
-      }
-      return [...prev, { ...item, qty: 1 }];
-    });
+  // ==== Auth ====
+  const login = (userData) => {
+    setIsLoggedIn(true);
+    setUser(userData); // Lưu thông tin user bao gồm linkedId
   };
-  const updateQty = (id, qty) => {
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, qty } : item))
-    );
-  };
-  const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-  const resetCart = () => {
-    setCartItems([]);
+
+  const logout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("cartItems");
+    setUser(null);
+    resetCart();
+    resetWishlist();
   };
+
+  // ==== Cart & Wishlist ====
+  const addToCart = () => setCartCount((n) => n + 1);
+  const addToWishlist = () => setWishlistCount((n) => n + 1);
+  const resetCart = () => setCartCount(0);
+  const resetWishlist = () => setWishlistCount(0);
+
 
   return (
     <AuthCartContext.Provider
       value={{
         isLoggedIn,
-        login: () => setIsLoggedIn(true),
-        logout: () => resetCart(),
-        cartItems,
+
+
+        login,
+        logout,
+        user,             // 👉 Truyền user ra ngoài context
+
         cartCount,
         addToCart,
         updateQty,

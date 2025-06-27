@@ -1,0 +1,25 @@
+# POST https://flyora-backend.onrender.com/api/v1/products/filter
+# Content-Type: application/json
+
+# {
+#   "name": ""
+# }
+
+
+# POST https://flyora-backend.onrender.com/api/auth/login
+# Content-Type: application/json
+
+# {
+#   "username": "customer2",
+#   "password": "pass2"
+# }
+
+
+curl -X 'GET' \
+  'http://flyora-backend.onrender.com/api/v1/my-orders?customerId=5' \
+  -H 'accept: */*'
+
+
+# curl -X 'GET' \
+#   'http://flyora-backend.onrender.com/api/v1/products/6' \
+#   -H 'accept: */*'

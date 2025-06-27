@@ -11,8 +11,10 @@ import InspectionPolicy from './pages/policy/InspectionPolicy';
 import PrivacyPolicy from './pages/policy/PrivacyPolicy';
 import DeliveryPolicy from './pages/policy/DeliveryPolicy';
 import NewsPage from './pages/news/NewsPage';
+
 import CartPage from './pages/cart/CartPage';
 import { ProductDetails } from './pages/ProductDetails/ProductDetails';
+
 
 import OrderHistoryPage from './pages/order/OrderHistoryPage';
 import OrderDetailsPage from './pages/order/OrderDetailsPage';
@@ -45,9 +47,13 @@ function App() {
         <Route path="/deliveryPolicy" element={<DeliveryPolicy />} />
         <Route path="/news" element={<NewsPage />} />
 
-        <Route path="/product/1" element={<ProductDetails />} />
-        <Route path="/orders" element={<OrderHistoryPage />} />
-        <Route path="/order-details/" element={<OrderDetailsPage />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+
+        <Route path="/order-history" element={<OrderHistoryPage />} />
+        <Route path="/order-details/:customerId" element={<OrderDetailsPage />} />
+
+        <Route path="/filter" element={<ShopPage />} />
+
 
       </Routes>
 

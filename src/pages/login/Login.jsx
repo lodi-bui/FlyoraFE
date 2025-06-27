@@ -44,7 +44,15 @@ const Login = () => {
 
       if (res.status === 200) {
         setShowSuccess(true);
-        login(); // Gọi hàm login từ context để cập nhật trạng thái đăng nhập
+        
+        // Lưu thông tin người dùng vào context
+        login({
+          userId: res.data.userId,
+          name: res.data.name,
+          linkedId: res.data.linkedId,
+          role: res.data.role,
+        });
+
         setTimeout(() => {
           setShowSuccess(false);
           navigate("/");
