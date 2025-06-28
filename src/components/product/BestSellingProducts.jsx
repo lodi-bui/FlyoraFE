@@ -131,4 +131,4 @@ const BestSellingProducts = () => {
   );
 };
 
-export default BestSellingProducts;
+export default ProductFilterPage;
