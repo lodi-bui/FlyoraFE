@@ -5,10 +5,8 @@ const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
 
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [wishlistCount, setWishlistCount] = useState(0);
   const [user, setUser] = useState(null);  // 👉 Thêm user
 
   // ==== Auth ====
@@ -21,14 +19,11 @@ export const AuthCartProvider = ({ children }) => {
     setIsLoggedIn(false);
     setUser(null);
     resetCart();
-    resetWishlist();
   };
 
   // ==== Cart & Wishlist ====
   const addToCart = () => setCartCount((n) => n + 1);
-  const addToWishlist = () => setWishlistCount((n) => n + 1);
   const resetCart = () => setCartCount(0);
-  const resetWishlist = () => setWishlistCount(0);
 
 
   return (
@@ -43,8 +38,8 @@ export const AuthCartProvider = ({ children }) => {
 
         cartCount,
         addToCart,
-        updateQty,
-        removeFromCart,
+        // updateQty,
+        // removeFromCart,
         resetCart,
       }}
     >

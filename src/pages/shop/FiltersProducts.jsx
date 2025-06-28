@@ -8,7 +8,7 @@ import { getProductsByCategory } from "../../api/Product";
 import { getCategories } from "../../api/Categories";
 
 const ProductFilterPage = () => {
-  const { isLoggedIn, addToCart, addToWishlist } = useAuthCart();
+  const { isLoggedIn, addToCart } = useAuthCart();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -168,17 +168,17 @@ const ProductFilterPage = () => {
                             <button
                               type="button"
                               tabIndex={-1}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleAddToWishlist(p.id);
-                              }}
+                              // onClick={(e) => {
+                              //   e.preventDefault();
+                              //   handleAddToWishlist(p.id);
+                              // }}
                               className="hover:scale-110 transition-transform"
                             >
-                              <img
+                              {/* <img
                                 src={loveProduct}
                                 alt="heart"
                                 className="w-5 h-5"
-                              />
+                              /> */}
                             </button>
                             <button
                               type="button"
