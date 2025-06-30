@@ -20,6 +20,8 @@ import OrderHistoryPage from './pages/order/OrderHistoryPage';
 import OrderDetailsPage from './pages/order/OrderDetailsPage';
 import ProfilePage from './pages/profile/ProfilePage';
 
+import AboutUsPage from 'pages/aboutUs/AboutUsPage';
+import ContactUsPage from 'pages/contactUs/ContactUsPage';
 
 function App() {
   return (
@@ -53,6 +55,11 @@ function App() {
         <Route path="/order-details/:customerId" element={<OrderDetailsPage />} />
 
         <Route path="/filter" element={<ShopPage />} />
+
+        <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="/contact-us" element={<ContactUsPage />} />
+
+    
 
 
       </Routes>
