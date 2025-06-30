@@ -21,7 +21,6 @@ import { StarIcon } from "lucide-react";
 
 const ProductDetails = () => {
   const { id } = useParams();
-
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,14 +33,16 @@ const ProductDetails = () => {
     { stars: 2, percentage: "0%" },
     { stars: 1, percentage: "0%" },
   ];
+
   const reviews = [
     { name: "User A", rating: 4, comment: "Good Product" },
     {
       name: "User B",
       rating: 4,
-      comment: "The Product Is Great. Only Issue Is The Price.",
+      comment: "The product is great. Only issue is the price.",
     },
   ];
+
   const filterOptions = ["All", "5", "4", "3", "2", "1"];
 
   useEffect(() => {
@@ -125,21 +126,19 @@ const ProductDetails = () => {
         {/* ================= Product Info ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Product Image and Info */}
-          <Card className="col-span-2 shadow-md overflow-hidden">
+          <Card className="col-span-2 shadow-md rounded-[12px]">
             <CardContent className="p-5">
               <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex flex-col gap-4">
-                  <div className="flex justify-center">
-                    <img
-                      className="w-full max-w-[267px] h-auto object-cover"
-                      alt={product.name}
-                      src={product.imageUrl}
-                    />
-                  </div>
+                <div className="flex justify-center">
+                  <img
+                    className="w-full max-w-[267px] h-auto object-cover rounded-[12px]"
+                    alt={product.name}
+                    src={product.imageUrl}
+                  />
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
-                    <h1 className="font-medium text-[#4b4a4a] text-[25px]">
+                    <h1 className="font-bold text-[#4b4a4a] text-[28px]">
                       {product.name}
                     </h1>
                     <div className="flex items-center gap-2">
@@ -152,7 +151,7 @@ const ProductDetails = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="mt-6 space-y-2 font-medium text-black text-base">
+                  <div className="mt-6 space-y-2 font-medium text-black text-[16px]">
                     <p>{product.description}</p>
                   </div>
                 </div>
@@ -161,19 +160,19 @@ const ProductDetails = () => {
           </Card>
 
           {/* Purchase Section */}
-          <Card className="shadow-md">
+          <Card className="shadow-md rounded-[12px]">
             <CardContent className="p-6 space-y-6">
               <div>
-                <h3 className="font-medium text-[#807e7e] text-[19px] mb-2">
+                <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
                   Size:
                 </h3>
                 <div className="flex gap-2">
-                  <div className="flex-1 p-2 rounded-[5px] border border-[#1286ce] bg-[#ecf9ff] shadow-md">
+                  <div className="flex-1 p-2 rounded-[8px] border border-[#1286ce] bg-[#ecf9ff] shadow-md">
                     <div className="flex flex-col items-center">
-                      <span className="font-semibold text-[#535353] text-[19px]">
+                      <span className="font-semibold text-[#535353] text-[16px]">
                         Default
                       </span>
-                      <span className="font-medium text-[#12a140] text-xs">
+                      <span className="font-medium text-[#12a140] text-[14px]">
                         {product.price} VND
                       </span>
                     </div>
@@ -182,12 +181,10 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-[#494444] text-[34px]">
-                    {product.price} VND
-                  </p>
-                </div>
-                <Badge className="bg-[#12a140] text-white text-sm py-2 px-3 h-auto">
+                <p className="font-bold text-[#494444] text-[28px]">
+                  {product.price} VND
+                </p>
+                <Badge className="bg-[#12a140] text-white text-[16px] h-[56px] px-6 rounded-[10px] flex items-center justify-center">
                   Sale
                 </Badge>
               </div>
@@ -195,11 +192,11 @@ const ProductDetails = () => {
               <Separator />
 
               <div className="flex gap-4">
-                <Button className="flex-1 bg-[#12a140] hover:bg-[#0e8a34] text-white font-medium text-xl py-6">
-                  ADD TO CART
+                <Button className="w-[40%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]">
+                  Add to Cart
                 </Button>
-                <Button className="bg-[#12a140] hover:bg-[#0e8a34] text-white font-medium text-2xl py-6">
-                  BUY
+                <Button className="w-[60%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]">
+                  Buy
                 </Button>
               </div>
             </CardContent>
@@ -208,7 +205,7 @@ const ProductDetails = () => {
 
         {/* ================= Details ================= */}
         <div className="mt-10">
-          <h2 className="font-medium text-[#494444] text-[25px] mb-4">
+          <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
             Details
           </h2>
           <Table>
@@ -218,10 +215,10 @@ const ProductDetails = () => {
                   key={index}
                   className={`${detail.bgColor} ${detail.height || "h-10"}`}
                 >
-                  <TableCell className="font-semibold text-[#494444] text-lg w-[155px]">
+                  <TableCell className="font-semibold text-[#494444] text-[16px] w-[155px]">
                     {detail.label}
                   </TableCell>
-                  <TableCell className="font-normal text-[#494444] text-base">
+                  <TableCell className="font-normal text-[#494444] text-[16px]">
                     {detail.value}
                   </TableCell>
                 </TableRow>
@@ -234,7 +231,7 @@ const ProductDetails = () => {
 
         {/* ================= Related Products ================= */}
         <div className="mt-10">
-          <h2 className="font-medium text-[#494444] text-[25px] mb-4">
+          <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
             Other Products
           </h2>
           <Carousel className="w-full">
@@ -242,18 +239,18 @@ const ProductDetails = () => {
               {relatedProducts.map((item) => (
                 <CarouselItem key={item.id} className="md:basis-1/4">
                   <Link to={`/product/${item.id}`}>
-                    <Card className="h-80 shadow-md cursor-pointer hover:shadow-lg">
+                    <Card className="h-80 shadow-md hover:shadow-lg rounded-[12px]">
                       <CardContent className="flex flex-col items-center p-4">
                         <img
-                          className="w-[108px] h-[122px] mt-4 object-cover"
+                          className="w-[108px] h-[122px] mt-4 object-cover rounded-md"
                           alt={item.name}
                           src={item.imageUrl}
                         />
                         <div className="mt-6 text-center">
-                          <h3 className="font-medium text-black text-base mb-6">
+                          <h3 className="font-medium text-black text-[16px] mb-4">
                             {item.name}
                           </h3>
-                          <p className="font-medium text-[#494444] text-xl">
+                          <p className="font-medium text-[#494444] text-[18px]">
                             {item.price} VND
                           </p>
                         </div>
@@ -270,7 +267,7 @@ const ProductDetails = () => {
 
         {/* ================= Reviews ================= */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-[40px] mb-6">
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Reviews
           </h2>
 
@@ -278,15 +275,15 @@ const ProductDetails = () => {
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-bold text-black text-[32px] mb-4">
+                  <h3 className="font-bold text-black text-[28px] mb-4">
                     Average Rating
                   </h3>
                   <div className="flex items-center gap-2 mb-4">
-                    <StarIcon className="w-6 h-6 fill-current text-[#ffd400]" />
-                    <span className="font-bold text-black text-[32px]">4</span>
+                    <StarIcon className="w-6 h-6 fill-[#ffd400]" />
+                    <span className="font-bold text-black text-[28px]">4</span>
                     <span className="font-bold text-black text-base">/5</span>
                   </div>
-                  <p className="text-[#7f7f7f] font-light text-xl">
+                  <p className="text-[#7f7f7f] font-light text-[18px]">
                     {reviews.length} Reviews
                   </p>
                 </div>
@@ -294,15 +291,15 @@ const ProductDetails = () => {
                 <div className="space-y-3">
                   {ratings.map((rating, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <span className="font-bold text-black text-2xl w-4">
+                      <span className="font-bold text-black text-[18px] w-4">
                         {rating.stars}
                       </span>
-                      <StarIcon className="w-6 h-6 fill-current text-[#ffd400]" />
+                      <StarIcon className="w-5 h-5 fill-[#ffd400]" />
                       <Progress
                         className="h-2 flex-1"
                         value={rating.stars === 4 ? 100 : 0}
                       />
-                      <span className="font-bold text-black text-xl w-12">
+                      <span className="font-bold text-black text-[18px] w-12">
                         {rating.percentage}
                       </span>
                     </div>
@@ -317,47 +314,45 @@ const ProductDetails = () => {
               <Button
                 key={index}
                 variant="outline"
-                className={`rounded-[10px] border-2 h-[43px] min-w-[109px] ${
+                className={`rounded-[10px] border-2 h-[43px] min-w-[109px] font-bold text-[16px] ${
                   option === "All" ? "border-[#119c39]" : "border-black"
                 }`}
               >
                 {option === "All" ? (
-                  <span className="font-bold text-black text-xl">All</span>
+                  <span>All</span>
                 ) : (
                   <div className="flex items-center gap-1">
-                    <span className="font-bold text-black text-xl">
-                      {option}
-                    </span>
-                    <StarIcon className="w-5 h-5 fill-current text-[#ffd400]" />
+                    <span>{option}</span>
+                    <StarIcon className="w-4 h-4 fill-[#ffd400]" />
                   </div>
                 )}
               </Button>
             ))}
           </div>
 
-          <Button className="bg-[#12a73b] hover:bg-[#0e8a34] text-white font-bold text-2xl h-[70px] px-10 rounded-[20px] mb-8">
+          <Button className="bg-[#12a73b] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[60px] px-10 rounded-[20px] mb-8">
             Leave A Review
           </Button>
 
           <div className="space-y-8">
             {reviews.map((review, index) => (
-              <div key={index} className="mb-6">
-                <h4 className="font-bold text-black text-2xl mb-2">
+              <div key={index}>
+                <h4 className="font-bold text-black text-[20px] mb-2">
                   {review.name}
                 </h4>
                 <div className="flex mb-2">
                   {[...Array(5)].map((_, i) => (
                     <StarIcon
                       key={i}
-                      className={`w-6 h-6 ${
+                      className={`w-5 h-5 ${
                         i < review.rating
-                          ? "fill-current text-[#ffd400]"
+                          ? "fill-[#ffd400]"
                           : "text-gray-300"
                       }`}
                     />
                   ))}
                 </div>
-                <p className="font-normal text-black text-xl">
+                <p className="font-normal text-black text-[16px]">
                   {review.comment}
                 </p>
               </div>

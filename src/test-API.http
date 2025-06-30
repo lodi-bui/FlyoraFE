@@ -2,7 +2,7 @@
 # Content-Type: application/json
 
 # {
-#   "name": ""
+#   "category": "FOODS"
 # }
 
 
@@ -15,11 +15,16 @@
 # }
 
 
-curl -X 'GET' \
-  'http://flyora-backend.onrender.com/api/v1/my-orders?customerId=5' \
-  -H 'accept: */*'
+# curl -X 'GET' \
+#   'http://flyora-backend.onrender.com/api/v1/my-orders?customerId=5' \
+#   -H 'accept: */*'
 
 
 # curl -X 'GET' \
 #   'http://flyora-backend.onrender.com/api/v1/products/6' \
 #   -H 'accept: */*'
+
+
+curl -X 'GET' \
+  'http://flyora-backend.onrender.com/api/v1/products/search?name=hat' \
+  -H 'accept: */*'

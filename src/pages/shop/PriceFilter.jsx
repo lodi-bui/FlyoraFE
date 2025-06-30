@@ -1,0 +1,61 @@
+import React, { useState } from "react";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+
+const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
+  const [priceRange, setPriceRange] = useState([min, max]);
+
+  const handleChange = (value) => {
+    setPriceRange(value);
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-xl font-bold mb-4">Filter by Price</h2>
+
+      {/* <div className="flex justify-between mb-3">
+        <span className="text-sm text-gray-700">
+          ₫{priceRange[0].toLocaleString()}
+        </span>
+        <span className="text-sm text-gray-700">
+          ₫{priceRange[1].toLocaleString()}
+        </span>
+      </div> */}
+
+      <Slider
+        range
+        min={min}
+        max={max}
+        step={5000}
+        defaultValue={[min, max]}
+        value={priceRange}
+        onChange={handleChange}
+        trackStyle={[{ backgroundColor: "#f97316" }]}
+        handleStyle={[
+          { borderColor: "#f97316", backgroundColor: "#f97316" },
+          { borderColor: "#f97316", backgroundColor: "#f97316" },
+        ]}
+        railStyle={{ backgroundColor: "#e5e7eb" }}
+      />
+
+      <div className="flex justify-between items-center mt-4">
+        <p className="text-sm">
+          Price:{" "}
+          <strong>₫{priceRange[0].toLocaleString()}</strong> -{" "}
+          <strong>₫{priceRange[1].toLocaleString()}</strong>
+        </p>
+        <button
+          onClick={() => onChange(priceRange)}
+          className="bg-black text-white px-4 py-1 rounded hover:bg-gray-800"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default PriceFilter;
