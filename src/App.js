@@ -59,7 +59,7 @@ function App() {
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
 
-        {/* Fallback route */}
+    
 
 
       </Routes>
