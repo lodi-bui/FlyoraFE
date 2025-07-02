@@ -18,12 +18,32 @@ export const AuthCartProvider = ({ children }) => {
   const logout = () => {
     setIsLoggedIn(false);
     setUser(null);
-    resetCart();
+
   };
 
   // ==== Cart & Wishlist ====
-  const addToCart = () => setCartCount((n) => n + 1);
-  const resetCart = () => setCartCount(0);
+  // context/AuthCartContext.js
+const addToCart = (productId) => {
+  const current = JSON.parse(localStorage.getItem("cart")) || [];
+  const existing = current.find((item) => item.id === productId);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    current.push({ id: productId, qty: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(current));
+
+  // Cập nhật số lượng sản phẩm trong giỏ
+  const totalQty = current.reduce((sum, item) => sum + item.qty, 0);
+  setCartCount(totalQty);
+};
+useEffect(() => {
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalQty = localCart.reduce((sum, item) => sum + item.qty, 0);
+  setCartCount(totalQty);
+}, []);
 
 
   return (
@@ -40,10 +60,12 @@ export const AuthCartProvider = ({ children }) => {
         addToCart,
         // updateQty,
         // removeFromCart,
-        resetCart,
+
       }}
     >
       {children}
+      
+
     </AuthCartContext.Provider>
   );
 };
