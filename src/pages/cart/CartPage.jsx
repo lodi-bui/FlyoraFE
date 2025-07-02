@@ -5,7 +5,7 @@ import Footer from "../navfoot/Footer";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 import { MdRadioButtonUnchecked, MdRadioButtonChecked } from "react-icons/md";
-
+import { useLocation } from "react-router-dom";
 import { getCart } from "../../api/Cart";
 
 const CartPage = () => {
@@ -15,44 +15,59 @@ const CartPage = () => {
   const [setEmptyCart] = useState(false);
 
   // ✅ Load từ localStorage và fetch thông tin sản phẩm từ API
+  const location = useLocation();
+
+  // ✅ Sử dụng useLocation để theo dõi thay đổi URL
+  // ✅ Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
       try {
-        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // ✅ Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
+        const localCart = rawCart.filter(
+          (item) =>
+            item &&
+            item.id !== undefined &&
+            item.id !== null &&
+            typeof item.id === "number" &&
+            item.qty > 0
+        );
 
         if (localCart.length === 0) {
           setItems([]);
-          setEmptyCart(true); // 👉 đánh dấu giỏ hàng rỗng
+          setLoading(false);
           return;
         }
 
         const productData = await getCart(localCart);
-        // Trả về danh sách CartItemDTO
 
         const merged = productData.map((prod) => {
-          const match = localCart.find((c) => c.id === prod.productId);
+          const match = localCart.find(
+            (c) => c.id === prod.id || c.id === prod.productId
+          );
           return {
-            id: prod.productId,
+            id: prod.id || prod.productId,
             name: prod.name,
             img: prod.imageUrl,
             price: prod.price,
             originalPrice: prod.price * 1.2,
-            quantity: match ? match.quantity : 1,
+            qty: match ? match.qty : 1,
             selected: true,
           };
         });
 
         setItems(merged);
       } catch (err) {
-        console.error("Lỗi khi fetch giỏ hàng:", err);
+        console.error("❌ Lỗi khi fetch giỏ hàng:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCartItems();
-  }, []);
+  }, [location]);
 
   const syncToLocalStorage = (updated) => {
     const simplified = updated.map(({ id, qty }) => ({ id, qty }));
