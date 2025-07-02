@@ -1,4 +1,3 @@
-//src
 import React from "react";
 import {
   MdDeleteOutline,
@@ -12,7 +11,6 @@ const CartItem = ({ item, onToggleSelect, onQtyChange, onRemove }) => {
 
   return (
     <div className="flex items-center justify-between py-6 border-b">
-      {/* checkbox dot + image + info */}
       <div className="flex items-center space-x-4">
         <button
           onClick={() => onToggleSelect(id)}
@@ -30,21 +28,25 @@ const CartItem = ({ item, onToggleSelect, onQtyChange, onRemove }) => {
         <div>
           <p className="text-lg font-medium">{name}</p>
           <div className="flex items-baseline space-x-2">
-            <span className="text-red-500 font-semibold">
-              {price.toLocaleString()}₫
-            </span>
-            <span className="text-gray-400 line-through text-sm">
-              {originalPrice.toLocaleString()}₫
-            </span>
+            <div className="flex items-baseline space-x-2">
+              <span className="text-red-500 font-semibold">
+                {typeof price === "number" ? price.toLocaleString() : "0"}₫
+              </span>
+              <span className="text-gray-400 line-through text-sm">
+                {typeof originalPrice === "number"
+                  ? originalPrice.toLocaleString()
+                  : ""}
+                ₫
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* remove + qty */}
       <div className="flex items-center space-x-6">
         <button
           onClick={() => onRemove(id)}
-          className="text-2xl text-gray-600 hover:text-red-500 focus:outline-none"
+          className="text-2xl text-gray-600 hover:text-red-500"
         >
           <MdDeleteOutline />
         </button>
@@ -52,14 +54,14 @@ const CartItem = ({ item, onToggleSelect, onQtyChange, onRemove }) => {
         <div className="flex items-center border rounded">
           <button
             onClick={() => onQtyChange(id, qty - 1)}
-            className="px-3 py-1 focus:outline-none"
+            className="px-3 py-1"
           >
             <AiOutlineMinus />
           </button>
           <span className="px-4">{qty}</span>
           <button
             onClick={() => onQtyChange(id, qty + 1)}
-            className="px-3 py-1 focus:outline-none"
+            className="px-3 py-1"
           >
             <AiOutlinePlus />
           </button>

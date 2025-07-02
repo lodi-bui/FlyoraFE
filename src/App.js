@@ -15,13 +15,14 @@ import NewsPage from './pages/news/NewsPage';
 import CartPage from './pages/cart/CartPage';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
 
-
 import OrderHistoryPage from './pages/order/OrderHistoryPage';
 import OrderDetailsPage from './pages/order/OrderDetailsPage';
 import ProfilePage from './pages/profile/ProfilePage';
 
 import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
+import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage'; 
+
 
 function App() {
   return (
@@ -58,14 +59,12 @@ function App() {
 
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
-
-    
-
-
+     
       </Routes>
 
-      <Chatbotbox />
+ <Chatbotbox />
     </>
+
   );
 }
 
