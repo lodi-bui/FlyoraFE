@@ -1,12 +1,13 @@
-import axios from 'axios';
+// src/api/Register.js
+import axios from "axios";
 
-export const RegisterAPI = async (username, email, password, phone) => {
-  const res = await axios.post('https://flyora-backend.onrender.com/api/auth/register', {
+export const RegisterAPI = async (username, password, email, phone, name) => {
+  const res = await axios.post("https://flyora-backend.onrender.com/api/auth/register", {
     username,
     password,
     email,
     phone,
-    roleId: 0
+    name, // ✅ thêm trường name
   });
 
   return res.data;
