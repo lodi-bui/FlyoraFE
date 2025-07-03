@@ -11,11 +11,13 @@ const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     username: "",
+    name: "",             // ✅ Thêm name
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
@@ -27,15 +29,21 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
     if (form.password !== form.confirmPassword) {
       setError("Mật khẩu xác nhận không khớp.");
       return;
     }
+
     setLoading(true);
     try {
-      await RegisterAPI(form.username, form.password, form.email, form.phone);
-
-      console.log("Register form:", form);
+      await RegisterAPI(
+        form.username,
+        form.password,
+        form.email,
+        form.phone,
+        form.name
+      );
 
       setShowSuccess(true);
       setTimeout(() => {
@@ -55,7 +63,7 @@ const Register = () => {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#083622] to-[#12ab3c] px-4 md:px-16 py-8 flex items-center justify-center">
-      {/* Pop-up thông báo đăng ký thành công */}
+      {/* Success popup */}
       {showSuccess && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
           <div className="bg-white rounded-xl shadow-lg px-8 py-6 flex flex-col items-center">
@@ -79,7 +87,7 @@ const Register = () => {
         </div>
       )}
 
-      {/* Contact Header */}
+      {/* Header contact */}
       <header className="absolute top-0 left-0 w-full px-12 py-4 text-sm z-20 flex flex-col md:flex-row justify-between items-center">
         <div className="flex gap-6 items-center">
           <div className="flex items-center gap-2 text-white font-bold">
@@ -97,7 +105,7 @@ const Register = () => {
         </div>
       </header>
 
-      {/* Background images */}
+      {/* Background decoration */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
         <img
           className="absolute bottom-0 left-0 w-[600px] opacity-20 blur-sm"
@@ -136,13 +144,13 @@ const Register = () => {
         />
       </div>
 
-      {/* Content */}
+      {/* Register content */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 w-full max-w-6xl z-10 mt-24">
-        {/* Left: Welcome Section */}
+        {/* Welcome text */}
         <div className="text-white">
           <div className="flex items-center mb-6">
             <img
-              className="w-20 h-20 mr-4 rotate-0"
+              className="w-20 h-20 mr-4"
               src="https://c.animaapp.com/mc39o30rr6LbxJ/img/group-10.png"
               alt="Logo"
             />
@@ -161,7 +169,7 @@ const Register = () => {
           </Button>
         </div>
 
-        {/* Right: Register Form */}
+        {/* Register form */}
         <Card className="w-full max-w-md bg-white rounded-2xl shadow-xl">
           <CardContent className="p-10">
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -174,7 +182,21 @@ const Register = () => {
                   value={form.username}
                   onChange={handleChange}
                   placeholder="User name"
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full px-4 py-2 rounded shadow"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label className="block font-medium mb-1 text-gray-700">
+                  Full Name
+                </Label>
+                <Input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name..."
+                  className="w-full px-4 py-2 rounded shadow"
                   required
                 />
               </div>
@@ -188,7 +210,7 @@ const Register = () => {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="E-mail address..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full px-4 py-2 rounded shadow"
                   required
                 />
               </div>
@@ -202,7 +224,7 @@ const Register = () => {
                   value={form.phone}
                   onChange={handleChange}
                   placeholder="Enter your phone number..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full px-4 py-2 rounded shadow"
                   required
                 />
               </div>
@@ -217,7 +239,7 @@ const Register = () => {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Enter your password..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full px-4 py-2 rounded shadow"
                   required
                 />
               </div>
@@ -232,7 +254,7 @@ const Register = () => {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   placeholder="Confirm password..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full px-4 py-2 rounded shadow"
                   required
                 />
               </div>
@@ -246,7 +268,7 @@ const Register = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors duration-200 hover:bg-orange-600 hover:text-white"
+                className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors hover:bg-orange-600 hover:text-white"
               >
                 {loading ? "Đang đăng ký..." : "Register"}
               </Button>
@@ -264,4 +286,5 @@ const Register = () => {
     </div>
   );
 };
+
 export default Register;
