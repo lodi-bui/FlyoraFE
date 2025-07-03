@@ -12,10 +12,10 @@ export const getCart = async (items) => {
   });
 
   const url = `${BASE}?${params.toString()}`;
-  console.log("📦 URL gọi API:", url);  // log URL API
+  console.log("URL gọi API:", url);  // log URL API
 
   const res = await axios.get(url);
-  console.log("📨 Dữ liệu từ BE:", res.data);  // log phản hồi từ BE
+  console.log("Dữ liệu từ BE:", res.data);  // log phản hồi từ BE
   return res.data;
 };
 
