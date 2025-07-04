@@ -1,9 +1,12 @@
-# POST https://flyora-backend.onrender.com/api/v1/products/filter
-# Content-Type: application/json
+POST https://flyora-backend.onrender.com/api/v1/reviews/submit
+Content-Type: application/json
 
-# {
-#   "category": "FOODS"
-# }
+{
+  "customerId": 1,
+  "productId": 1,
+  "rating": 5,
+  "comment": "Great product!"
+}
 
 
 # POST https://flyora-backend.onrender.com/api/auth/login
@@ -25,6 +28,15 @@
 #   -H 'accept: */*'
 
 
-curl -X 'GET' \
-  'http://flyora-backend.onrender.com/api/v1/products/search?name=hat' \
-  -H 'accept: */*'
+# curl -X 'GET' \
+#   'http://flyora-backend.onrender.com/api/v1/products/search?name=hat' \
+#   -H 'accept: */*'
+
+# POST https://flyora-backend.onrender.com/api/v1/reviews/submit
+# Content-Type: application/json
+# {
+#   "customerId": 1,
+#   "productId": 6,
+#   "rating": 4,
+#   "comment": "Great product!"
+# }
