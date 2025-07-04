@@ -5,11 +5,12 @@ import { Card, CardContent } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
 import { Label } from "../../components/ui/Label";
 import { useNavigate } from "react-router-dom";
-import { RegisterAPI } from "../../api/Register";
+import { RegisterAPI } from "../../api/register/Register";
 
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
+    name :"",
     username: "",
     email: "",
     phone: "",
@@ -33,9 +34,8 @@ const Register = () => {
     }
     setLoading(true);
     try {
-      await RegisterAPI(form.username, form.password, form.email, form.phone);
+      await RegisterAPI(form.name, form.password ,form.phone ,form.username, form.email, );
 
-      console.log("Register form:", form);
 
       setShowSuccess(true);
       setTimeout(() => {
@@ -167,15 +167,28 @@ const Register = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <Label className="block font-medium mb-1 text-gray-700">
+                  Firstname
+                </Label>
+                <Input
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="First name"
+                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                    required
+                />
+              </div>
+              <div>
+                <Label className="block font-medium mb-1 text-gray-700">
                   User Name
                 </Label>
                 <Input
-                  name="username"
-                  value={form.username}
-                  onChange={handleChange}
-                  placeholder="User name"
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                  required
+                    name="username"
+                    value={form.username}
+                    onChange={handleChange}
+                    placeholder="User name"
+                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                    required
                 />
               </div>
 
@@ -184,12 +197,12 @@ const Register = () => {
                   Email Address
                 </Label>
                 <Input
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="E-mail address..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                  required
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="E-mail address..."
+                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                    required
                 />
               </div>
 
@@ -198,12 +211,12 @@ const Register = () => {
                   Phone Number
                 </Label>
                 <Input
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  placeholder="Enter your phone number..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                  required
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number..."
+                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                    required
                 />
               </div>
 
@@ -212,13 +225,13 @@ const Register = () => {
                   Password
                 </Label>
                 <Input
-                  name="password"
-                  type="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                  required
+                    name="password"
+                    type="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    placeholder="Enter your password..."
+                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                    required
                 />
               </div>
 
@@ -227,26 +240,26 @@ const Register = () => {
                   Confirm Password
                 </Label>
                 <Input
-                  name="confirmPassword"
-                  type="password"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm password..."
-                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                  required
+                    name="confirmPassword"
+                    type="password"
+                    value={form.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="Confirm password..."
+                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                    required
                 />
               </div>
 
               {error && (
-                <div className="text-red-500 text-sm font-semibold text-center">
-                  {error}
-                </div>
+                  <div className="text-red-500 text-sm font-semibold text-center">
+                    {error}
+                  </div>
               )}
 
               <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors duration-200 hover:bg-orange-600 hover:text-white"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors duration-200 hover:bg-orange-600 hover:text-white"
               >
                 {loading ? "Đang đăng ký..." : "Register"}
               </Button>
