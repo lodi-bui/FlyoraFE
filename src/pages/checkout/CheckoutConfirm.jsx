@@ -1,10 +1,11 @@
 import React from "react";
 import { MdCheckCircle } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const CheckoutConfirm = () => {
+  const location = useLocation();
+  const orderId = location.state?.orderId || "Không có mã đơn hàng";
   const navigate = useNavigate();
-  const orderId = "SPS12345H527"; // TODO: lấy từ API trả về
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center">

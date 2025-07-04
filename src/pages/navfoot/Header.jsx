@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-
 import { NavLink, Link, useNavigate } from "react-router-dom";
-
 import toast from "react-hot-toast";
 import phoneIcon from "../../icons/phone.png";
 import mailIcon from "../../icons/mail.png";
@@ -12,17 +10,18 @@ import searchIcon from "../../icons/search.png";
 import sunIcon from "../../icons/sun.png";
 import cartIcon from "../../icons/cart.png";
 import loginIcon from "../../icons/login.png";
-// import heartIcon from "../../icons/heart.png";
 import { useAuthCart } from "../../context/AuthCartContext";
 
 function Header() {
-  const { cartCount, isLoggedIn, logout } = useAuthCart(); // wishlistCount của heart
+  const { cartCount, isLoggedIn, logout } = useAuthCart();
   const [showMenu, setShowMenu] = useState(false);
   const [showNav, setNav] = useState(false);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const customerId = localStorage.getItem('customerId');
+  const customerId = localStorage.getItem("linkedId"); // Lấy linkedId từ localStorage
+  // Nếu không có linkedId, có thể đặt là null hoặc một giá trị mặc định
+  // const customerId = null; // Hoặc một giá trị mặc định nếu không có
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -71,20 +70,6 @@ function Header() {
     },
   ];
 
-// <<<<<<< Channnn
-//   // Xử lý bấm vào icon, nếu chưa login thì toast error, nếu đã login thì đi tới trang
-//   const handleProtectedClick = (action) => {
-//     if (!isLoggedIn) {
-//       if (action === "cart") toast.error("Bạn cần đăng nhập để xem giỏ hàng!");
-//       // else if (action === "wishlist")
-//       //   toast.error("Bạn cần đăng nhập để xem danh sách yêu thích!");
-//       else toast.error("Bạn cần đăng nhập để truy cập!");
-//     } else {
-//       window.location.href = `/${action}`;
-//     }
-//   };
-
-// =======
   return (
     <header className="relative w-full bg-gradient-to-tr from-[#12AB3C] to-[#083622] overflow-visible pb-10 md:pb-16">
       {/* Top contact bar */}
@@ -112,20 +97,22 @@ function Header() {
         </div>
       </div>
 
+      {/* Sun icon with lower z-index */}
       <img
         src={sunIcon}
         alt=""
-        className="hidden md:block absolute left-[35%] top-[15%] h-32 md:h-48 z-0"
+        className="hidden md:block absolute left-[35%] top-[15%] h-32 md:h-48 z-0 pointer-events-none"
       />
 
-      <div className="relative z-10 bg-white rounded-full shadow-lg flex items-center justify-around px-4 md:px-8 my-4 md:mx-auto w-full max-w-4xl md:max-w-6xl mt-2 md:my-10 h-16 md:h-20">
+      {/* Main navigation bar with higher z-index */}
+      <div className="relative z-20 bg-white rounded-full shadow-lg flex items-center justify-around px-4 md:px-8 my-4 md:mx-auto w-full max-w-4xl md:max-w-6xl mt-2 md:my-10 h-16 md:h-20">
         <div className="flex items-center">
           <img src={logoBlack} alt="Flyora" className="w-22 md:w-26 h-auto" />
         </div>
 
         {/* Mobile Hamburger */}
         <button
-          className="md:hidden flex items-center"
+          className="md:hidden flex items-center z-30"
           onClick={() => setNav(!showNav)}
         >
           <svg
@@ -144,7 +131,7 @@ function Header() {
         </button>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6 text-lg md:text-xl font-semibold">
+        <nav className="hidden md:flex items-center space-x-6 text-lg md:text-xl font-semibold z-20">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -162,7 +149,7 @@ function Header() {
         </nav>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-3 md:space-x-5">
+        <div className="flex items-center space-x-3 md:space-x-5 z-20">
           {/* Search */}
           <div className="relative">
             <input
@@ -173,40 +160,55 @@ function Header() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSearch();
               }}
-              className="border rounded-full px-3 py-1 w-32 sm:w-40 md:w-64 lg:w-80 pr-8 text-sm md:text-base"
+              className="border rounded-full px-3 py-1 w-32 sm:w-40 md:w-64 lg:w-80 pr-16 text-sm md:text-base"
             />
+
+            {/* Nút clear (X) */}
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  navigate("/shop");
+                }}
+                className="absolute right-12 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+              >
+                ✕
+              </button>
+            )}
+
+            {/* Icon search */}
             <img
               src={searchIcon}
               alt="Search"
               onClick={handleSearch}
-              className="absolute right-2 top-1.5 md:top-2 h-5 md:h-6 cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-5 md:h-6 cursor-pointer"
             />
           </div>
-
-
-          {/* Wishlist button removed due to undefined variables and unterminated comment */}
 
           {/* Cart */}
           <button
             type="button"
             onClick={() => handleProtectedClick("cart")}
-            className="relative"
+            className="relative z-20"
           >
             <img src={cartIcon} alt="Cart" className="w-6 h-6" />
             <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {cartCount}
             </span>
           </button>
-{/*  */}
 
-          {/* Login Menu */}
-          <div className="relative">
-            <button onClick={() => setShowMenu(!showMenu)}>
+          {/* Login Menu with proper z-index */}
+          <div className="relative z-30">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="z-30 relative"
+            >
               <img src={loginIcon} alt="Login" className="w-6 h-6" />
             </button>
-            {showMenu && (
 
-              <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-50">
+            {showMenu && (
+              <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-50 border">
                 {!isLoggedIn ? (
                   <>
                     <NavLink
@@ -226,20 +228,7 @@ function Header() {
                   </>
                 ) : (
                   <>
-                    <button
-                      onClick={() => {
-                        logout();
-                        setShowMenu(false);
-                        toast.success("Đăng xuất thành công!");
-                        navigate("/");
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                    >
-                      Đăng xuất
-                    </button>
-
-
-                     <Link
+                    <Link
                       to={`/order-history?customerId=${customerId}`}
                       onClick={() => setShowMenu(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
@@ -250,10 +239,22 @@ function Header() {
                     <NavLink
                       to="/profile"
                       onClick={() => setShowMenu(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
                       Thông tin cá nhân
                     </NavLink>
+
+                    <button
+                      onClick={() => {
+                        logout();
+                        setShowMenu(false);
+                        toast.success("Đăng xuất thành công!");
+                        navigate("/");
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold"
+                    >
+                      Đăng xuất
+                    </button>
                   </>
                 )}
               </div>
@@ -262,9 +263,9 @@ function Header() {
         </div>
       </div>
 
-      {/* Mobile nav */}
+      {/* Mobile nav with proper z-index */}
       {showNav && (
-        <nav className="md:hidden bg-white shadow-lg mx-4 rounded-md py-4">
+        <nav className="md:hidden bg-white shadow-lg mx-4 rounded-md py-4 relative z-40">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -283,6 +284,7 @@ function Header() {
         </nav>
       )}
 
+      {/* Content section with lower z-index */}
       <div className="relative px-4 md:px-20 pt-4 md:pt-10 z-10">
         <div className="max-w-2xl mx-auto md:ml-20 md:mx-0">
           <img
@@ -291,7 +293,6 @@ function Header() {
             className="w-40 md:w-64 mx-auto md:mx-0 mb-8 md:mb-12"
           />
           <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center md:text-left mb-4 -mt-4 md:-mt-6">
-
             A pet store with <br /> everything you need
           </h1>
           <p className="text-white mt-4 text-sm md:text-base text-center md:text-left">
@@ -301,9 +302,10 @@ function Header() {
         </div>
       </div>
 
-      {starIcons.map((star) => (
+      {/* Star icons with pointer-events-none and low z-index */}
+      {starIcons.map((star, index) => (
         <img
-          key={star.src}
+          key={`${star.src}-${index}`}
           className={`${star.className} z-0 pointer-events-none`}
           alt=""
           src={star.src}
