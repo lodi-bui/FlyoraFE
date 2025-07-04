@@ -10,10 +10,20 @@ export const AuthCartProvider = ({ children }) => {
   const [user, setUser] = useState(null);  // 👉 Thêm user
 
   // ==== Auth ====
+  // const login = (userData) => {
+  //   setIsLoggedIn(true);
+  //   setUser(userData); // Lưu thông tin user bao gồm linkedId
+  // };
+
   const login = (userData) => {
-    setIsLoggedIn(true);
-    setUser(userData); // Lưu thông tin user bao gồm linkedId
-  };
+  setIsLoggedIn(true);
+  setUser(userData);
+
+  // Lưu linkedId vào localStorage
+  if (userData?.linkedId) {
+    localStorage.setItem("linkedId", userData.linkedId);
+  }
+};
 
   const logout = () => {
     setIsLoggedIn(false);

@@ -173,7 +173,6 @@ const ProductFilterPage = () => {
   </div>
 </div>
 
-
           {/* Popular Products */}
           <div>
             <h2 className="text-xl font-bold mb-2">Popular products</h2>

@@ -10,13 +10,8 @@ export const getCart = async (items) => {
     params.append("productId", it.id);
     params.append("quantity", it.qty);
   });
-
-  const url = `${BASE}?${params.toString()}`;
-  console.log("URL gọi API:", url);  // log URL API
-
-  const res = await axios.get(url);
-  console.log("Dữ liệu từ BE:", res.data);  // log phản hồi từ BE
-  return res.data;
+ const res = await axios.get(`${BASE}?${params.toString()}`);
+  return res.data; 
 };
 
 

@@ -15,13 +15,14 @@ import NewsPage from './pages/news/NewsPage';
 import CartPage from './pages/cart/CartPage';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
 
-
 import OrderHistoryPage from './pages/order/OrderHistoryPage';
 import OrderDetailsPage from './pages/order/OrderDetailsPage';
 import ProfilePage from './pages/profile/ProfilePage';
 
 import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
+import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage'; 
+
 
 import UserManagement from './pages/admin/userMgm/UserManagement';
 
@@ -61,6 +62,7 @@ function App() {
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
 
+
         {/* Admin Routes */}
         <Route path="/admin-page" element={<UserManagement />} />
         <Route path="/admin-page/users" element={<UserManagement />} />
@@ -68,12 +70,11 @@ function App() {
         <Route path="/admin-page/settings" element={<UserManagement />} />
 
 
-
-
       </Routes>
 
-      <Chatbotbox />
+ <Chatbotbox />
     </>
+
   );
 }
 

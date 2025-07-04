@@ -19,7 +19,10 @@ function Header() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const customerId = localStorage.getItem("customerId");
+  const customerId = localStorage.getItem("linkedId"); // Lấy linkedId từ localStorage
+  // Nếu không có linkedId, có thể đặt là null hoặc một giá trị mặc định
+  // const customerId = null; // Hoặc một giá trị mặc định nếu không có
+
 
   const navItems = [
     { name: "Home", href: "/" },
