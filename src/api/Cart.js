@@ -14,6 +14,7 @@ export const getCart = async (items) => {
   return res.data; 
 };
 
+
 // Cập nhật số lượng
 export const updateQty = async (productId, quantity) => {
   await axios.put(`${BASE}/${productId}`, { quantity });

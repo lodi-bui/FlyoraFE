@@ -23,6 +23,7 @@ function Header() {
   // Nếu không có linkedId, có thể đặt là null hoặc một giá trị mặc định
   // const customerId = null; // Hoặc một giá trị mặc định nếu không có
 
+
   const navItems = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },

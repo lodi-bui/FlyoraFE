@@ -1,43 +1,34 @@
-// ✅ BestSellingProducts.jsx
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import cartIcon from "../../icons/cart-shop.png";
 import { useAuthCart } from "../../context/AuthCartContext";
 import toast from "react-hot-toast";
-
-const mockProducts = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 10,
-    imageUrl: "https://via.placeholder.com/300x300?text=Product+1",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 15,
-    imageUrl: "https://via.placeholder.com/300x300?text=Product+2",
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    price: 14,
-    imageUrl: "https://via.placeholder.com/300x300?text=Product+3",
-  },
-  {
-    id: 4,
-    name: "Product 4",
-    price: 17,
-    imageUrl: "https://via.placeholder.com/300x300?text=Product+4",
-  },
-];
+import axios from "axios";
 
 const BestSellingProducts = () => {
   const [product, setProduct] = useState([]);
   const { isLoggedIn, addToCart } = useAuthCart();
 
   useEffect(() => {
-    setProduct(mockProducts);
+    const fetchBestSellers = async () => {
+      try {
+        const response = await axios.get(
+          "https://flyora-backend.onrender.com/api/v1/products/best-sellers/top1"
+        );
+        const mapped = response.data.map((item) => ({
+          id: item.productId,
+          name: item.productName,
+          price: item.price,
+          imageUrl: item.imageUrl,
+        }));
+        setProduct(mapped);
+      } catch (error) {
+        console.error("Error fetching best sellers:", error);
+        toast.error("Không thể tải sản phẩm bán chạy.");
+      }
+    };
+
+    fetchBestSellers();
   }, []);
 
   const handleAddToCart = (p) => {
@@ -54,10 +45,12 @@ const BestSellingProducts = () => {
       <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
         Best selling products
       </h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+
+      {/* ✅ Flexbox layout to center the cards */}
+      <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
         {product.map((p) => (
           <NavLink to={`/product/${p.id}`} key={p.id} className="block h-full">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-200 flex flex-col min-h-[350px] aspect-[4/5] p-6">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-200 flex flex-col min-h-[350px] aspect-[4/5] p-6 w-[220px]">
               <img
                 src={p.imageUrl}
                 alt={p.name}
@@ -99,4 +92,4 @@ const BestSellingProducts = () => {
   );
 };
 
-export default BestSellingProducts;
+export default ProductFilterPage;

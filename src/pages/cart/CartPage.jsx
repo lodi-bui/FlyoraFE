@@ -19,6 +19,7 @@ const CartPage = () => {
 
   // ✅ Sử dụng useLocation để theo dõi thay đổi URL
   // ✅ Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
+
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
@@ -26,6 +27,7 @@ const CartPage = () => {
         const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
 
         // ✅ Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
+
         const localCart = rawCart.filter(
           (item) =>
             item &&
@@ -73,6 +75,7 @@ const CartPage = () => {
     const simplified = updated
       .filter((it) => typeof it.qty === "number" && it.qty > 0)
       .map(({ id, qty }) => ({ id, qty }));
+
     localStorage.setItem("cart", JSON.stringify(simplified));
   };
 
@@ -85,6 +88,7 @@ const CartPage = () => {
   const changeQty = (id, newQty) => {
     if (!Number.isInteger(newQty) || newQty < 1) {
       removeItem(id); // Nếu số lượng không hợp lệ thì xóa luôn
+
     } else {
       const updated = items.map((it) =>
         it.id === id ? { ...it, qty: newQty } : it

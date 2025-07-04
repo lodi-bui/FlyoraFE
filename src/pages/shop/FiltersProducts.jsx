@@ -152,26 +152,26 @@ const ProductFilterPage = () => {
           </div>
 
           {/* Tags Filter */}
-          <div>
-            <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
-            <div className="flex flex-wrap gap-2">
-              {tagsList.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => handleTagClick(tag)}
-                  className={`border px-3 py-1 rounded text-sm font-medium 
+<div>
+  <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
+  <div className="flex flex-wrap gap-2">
+    {tagsList.map((tag) => (
+      <button
+        key={tag}
+        onClick={() => handleTagClick(tag)}
+        className={`border px-3 py-1 rounded text-sm font-medium 
           min-w-[100px] h-[40px] flex items-center justify-center
           ${
             selectedTag === tag
               ? "bg-orange-500 text-white"
               : "bg-gray-50 text-black"
           }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
+      >
+        {tag}
+      </button>
+    ))}
+  </div>
+</div>
 
           {/* Popular Products */}
           <div>

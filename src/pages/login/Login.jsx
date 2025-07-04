@@ -43,19 +43,31 @@ const Login = () => {
       // }
 
       if (res.status === 200) {
+
+        const { userId, name, linkedId, role, token } = res.data;
+
+      // Lưu token vào localStorage
+      localStorage.setItem("token", token);
+
+      // Lưu thông tin vào context
+      login({ userId, name, linkedId, role });
         setShowSuccess(true);
         
         // Lưu thông tin người dùng vào context
-        login({
-          userId: res.data.userId,
-          name: res.data.name,
-          linkedId: res.data.linkedId,
-          role: res.data.role,
-        });
+        // login({
+        //   userId: res.data.userId,
+        //   name: res.data.name,
+        //   linkedId: res.data.linkedId,
+        //   role: res.data.role,
+        // });
 
         setTimeout(() => {
           setShowSuccess(false);
-          navigate("/");
+          if(role === "Admin"){
+            navigate("/admin-page");
+          } else {
+            navigate("/");
+          }
         }, 500);
       } else {
         setError("Tài khoản hoặc mật khẩu không đúng.");

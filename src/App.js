@@ -24,6 +24,8 @@ import ContactUsPage from 'pages/contactUs/ContactUsPage';
 import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage'; 
 
 
+import UserManagement from './pages/admin/userMgm/UserManagement';
+
 function App() {
   return (
     <>
@@ -59,7 +61,15 @@ function App() {
 
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
-     
+
+
+        {/* Admin Routes */}
+        <Route path="/admin-page" element={<UserManagement />} />
+        <Route path="/admin-page/users" element={<UserManagement />} />
+        <Route path="/admin-page/contents" element={<UserManagement />} />
+        <Route path="/admin-page/settings" element={<UserManagement />} />
+
+
       </Routes>
 
  <Chatbotbox />
