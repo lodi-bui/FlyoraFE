@@ -1,94 +1,108 @@
+// src/pages/cart/CartPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import Header from "../navfoot/Header";
 import Footer from "../navfoot/Footer";
 import CartItem from "./CartItem";
+import { useNavigate } from "react-router-dom";
 import { MdRadioButtonUnchecked, MdRadioButtonChecked } from "react-icons/md";
+import { useLocation } from "react-router-dom";
+import { getCart } from "../../api/Cart";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [setEmptyCart] = useState(false);
 
-  // 1. Fetch giỏ hàng khi mount
+  // Load từ localStorage và fetch thông tin sản phẩm từ API
+  const location = useLocation();
+
+  // Sử dụng useLocation để theo dõi thay đổi URL
+  // Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
   useEffect(() => {
-    const fetchCart = async () => {
+    const fetchCartItems = async () => {
       setLoading(true);
       try {
-        // TODO: gọi API GET /cart và setItems(res.data.items)
-        setItems([
-          {
-            id: 3,
-            name: "Product 3",
-            img: "/images/product3.jpg",
-            price: 50000,
-            originalPrice: 65000,
-            qty: 2,
+        const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
+        const localCart = rawCart.filter(
+          (item) =>
+            item &&
+            item.id !== undefined &&
+            item.id !== null &&
+            typeof item.id === "number" &&
+            item.qty > 0
+        );
+
+        if (localCart.length === 0) {
+          setItems([]);
+          setLoading(false);
+          return;
+        }
+
+        const productData = await getCart(localCart);
+
+        const merged = productData.map((prod) => {
+          const match = localCart.find(
+            (c) => c.id === prod.id || c.id === prod.productId
+          );
+          return {
+            id: prod.id || prod.productId,
+            name: prod.name,
+            img: prod.imageUrl,
+            price: prod.price,
+            originalPrice: prod.price * 1.2,
+            qty: match ? match.qty : 1,
             selected: true,
-          },
-          {
-            id: 7,
-            name: "Product 7",
-            img: "/images/product7.jpg",
-            price: 60000,
-            originalPrice: 75000,
-            qty: 1,
-            selected: true,
-          },
-          {
-            id: 8,
-            name: "Product 8",
-            img: "/images/product8.jpg",
-            price: 100000,
-            originalPrice: 115000,
-            qty: 1,
-            selected: true,
-          },
-          {
-            id: 13,
-            name: "Product 13",
-            img: "/images/product13.jpg",
-            price: 150000,
-            originalPrice: 165000,
-            qty: 2,
-            selected: false,
-          },
-        ]);
+          };
+        });
+
+        setItems(merged);
       } catch (err) {
-        console.error("Lỗi fetch cart:", err);
+        console.error("Lỗi khi fetch giỏ hàng:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCart();
-  }, []);
+    fetchCartItems();
+  }, [location]);
 
-  // 2. Handlers
-  const toggleSelect = (id) =>
+  const syncToLocalStorage = (updated) => {
+    const simplified = updated.map(({ id, qty }) => ({ id, qty }));
+    localStorage.setItem("cart", JSON.stringify(simplified));
+  };
+
+  const toggleSelect = (id) => {
     setItems((prev) =>
       prev.map((it) => (it.id === id ? { ...it, selected: !it.selected } : it))
     );
+  };
 
   const changeQty = (id, newQty) => {
     if (newQty < 1) {
-      // nếu số lượng giảm dưới 1 thì xoá item
       removeItem(id);
     } else {
-      setItems((prev) =>
-        prev.map((it) => (it.id === id ? { ...it, qty: newQty } : it))
+      const updated = items.map((it) =>
+        it.id === id ? { ...it, qty: newQty } : it
       );
+      setItems(updated);
+      syncToLocalStorage(updated);
     }
-    // TODO: gọi API PATCH hoặc DELETE tương ứng
   };
 
-  const removeItem = (id) =>
-    setItems((prev) => prev.filter((it) => it.id !== id));
+  const removeItem = (id) => {
+    const updated = items.filter((it) => it.id !== id);
+    setItems(updated);
+    syncToLocalStorage(updated);
+  };
 
-  // 3. Select All
-  const allSelected = items.length > 0 && items.every((it) => it.selected);
-  const toggleSelectAll = () =>
+  const toggleSelectAll = () => {
+    const allSelected = items.every((it) => it.selected);
     setItems((prev) => prev.map((it) => ({ ...it, selected: !allSelected })));
+  };
 
-  // 4. Tính tổng
   const selectedItems = useMemo(
     () => items.filter((it) => it.selected),
     [items]
@@ -98,35 +112,48 @@ const CartPage = () => {
     [selectedItems]
   );
 
-  if (loading) {
-    return <p className="text-center py-20">Đang tải giỏ hàng...</p>;
-  }
+  // const handleCheckout = async () => {
+  //   try {
+  //     const payload = selectedItems.map((item) => ({
+  //       productId: item.id,
+  //       quantity: item.qty,
+  //     }));
+
+  //     await axios.post(
+  //       "https://flyora-backend.onrender.com/api/v1/checkout",
+  //       payload
+  //     );
+
+  //     navigate("/checkout");
+  //   } catch (err) {
+  //     console.error("Checkout error:", err);
+  //     alert("Thanh toán thất bại!");
+  //   }
+  // };
+
+  if (loading) return <p className="text-center py-20">Đang tải giỏ hàng...</p>;
 
   return (
     <>
       <Header />
 
-      <div className="max-w-4xl mx-auto p-8 bg-white shadow my-12">
-        <h1 className="text-2xl font-bold text-center mb-4">Giỏ Hàng</h1>
-        <hr />
+      <div className="max-w-4xl mx-auto px-4 py-10">
+        <h1 className="text-2xl font-bold text-center mb-8">🛒 Giỏ Hàng</h1>
 
         {/* Select All */}
-        <div className="flex items-center space-x-4 mt-6 mb-4">
-          <button
-            onClick={toggleSelectAll}
-            className="text-2xl focus:outline-none"
-          >
-            {allSelected ? (
+        <div className="flex items-center mb-4">
+          <button onClick={toggleSelectAll} className="text-2xl mr-2">
+            {items.every((it) => it.selected) ? (
               <MdRadioButtonChecked className="text-green-500" />
             ) : (
               <MdRadioButtonUnchecked className="text-gray-400" />
             )}
           </button>
-          <span className="text-lg">Select All</span>
+          <span className="text-lg text-gray-700">Chọn tất cả</span>
         </div>
 
-        {/* Danh sách CartItem */}
-        <div>
+        {/* Danh sách sản phẩm */}
+        <div className="space-y-6">
           {items.map((item) => (
             <CartItem
               key={item.id}
@@ -138,30 +165,31 @@ const CartPage = () => {
           ))}
         </div>
 
-        {/* Tổng cộng + nút Mua Hàng */}
-        <div className="mt-8 flex items-center justify-between">
-          <div>
-            <span className="text-lg font-semibold">Tổng Cộng</span>
-            <span className="ml-4 text-xl font-bold text-red-500">
+        {/* Tổng cộng và nút thanh toán */}
+        <div className="mt-10 flex items-center justify-between border-t pt-6">
+          <p className="text-xl font-medium">
+            Tổng cộng:{" "}
+            <span className="text-red-500 font-semibold">
               {total.toLocaleString()}₫
             </span>
-          </div>
+          </p>
 
           <button
-            disabled={selectedItems.length === 0}
-            className={`px-6 py-3 rounded-lg text-white font-medium shadow transition ${
-              selectedItems.length
-                ? "bg-red-400 hover:bg-red-500"
-                : "bg-gray-300 cursor-not-allowed"
-            }`}
+            // onClick={handleCheckout}
             onClick={() => {
-              /* TODO: gọi API checkout với selectedItems */
+              if (selectedItems.length === 0) {
+                alert("Bạn cần thêm sản phẩm vào giỏ hàng!");
+                return;
+              }
+              navigate("/checkout");
             }}
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg shadow-md"
           >
             Mua Hàng ({selectedItems.length})
           </button>
         </div>
       </div>
+
       <Footer />
     </>
   );

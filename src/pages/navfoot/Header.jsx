@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import phoneIcon from "../../icons/phone.png";
 import mailIcon from "../../icons/mail.png";
@@ -10,22 +10,40 @@ import searchIcon from "../../icons/search.png";
 import sunIcon from "../../icons/sun.png";
 import cartIcon from "../../icons/cart.png";
 import loginIcon from "../../icons/login.png";
-import heartIcon from "../../icons/heart.png";
 import { useAuthCart } from "../../context/AuthCartContext";
-import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const { cartCount, wishlistCount, isLoggedIn, logout } = useAuthCart();
+  const { cartCount, isLoggedIn, logout } = useAuthCart();
   const [showMenu, setShowMenu] = useState(false);
   const [showNav, setNav] = useState(false);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const customerId = localStorage.getItem("customerId");
 
   const navItems = [
-    { name: "Home", href: "/home" },
+    { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
     { name: "About Us", href: "/about-us" },
     { name: "Contact Us", href: "/contact-us" },
   ];
+
+  const handleProtectedClick = (action) => {
+    if (!isLoggedIn) {
+      if (action === "cart") toast.error("Bạn cần đăng nhập để xem giỏ hàng!");
+      else if (action === "wishlist")
+        toast.error("Bạn cần đăng nhập để xem danh sách yêu thích!");
+      else toast.error("Bạn cần đăng nhập để truy cập!");
+    } else {
+      navigate(`/${action}`);
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim() !== "") {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   const starIcons = [
     {
@@ -50,38 +68,18 @@ function Header() {
     },
   ];
 
-  // Xử lý bấm vào icon, nếu chưa login thì toast error, nếu đã login thì đi tới trang
-  const handleProtectedClick = (action) => {
-    if (!isLoggedIn) {
-      if (action === "cart") toast.error("Bạn cần đăng nhập để xem giỏ hàng!");
-      else if (action === "wishlist")
-        toast.error("Bạn cần đăng nhập để xem danh sách yêu thích!");
-      else toast.error("Bạn cần đăng nhập để truy cập!");
-    } else {
-      window.location.href = `/${action}`;
-    }
-  };
-
   return (
-    <header className="relative w-full bg-gradient-to-tr from-[#12AB3C] to-[#083622] overflow-hidden pb-10 md:pb-16">
+    <header className="relative w-full bg-gradient-to-tr from-[#12AB3C] to-[#083622] overflow-visible pb-10 md:pb-16">
       {/* Top contact bar */}
       <div className="w-full mx-auto py-4 md:py-7 px-4 mt-0">
         <div className="flex flex-col md:flex-row justify-evenly items-center w-full max-w-7xl mx-auto gap-4 md:gap-0">
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
             {[
-              {
-                icon: phoneIcon,
-                text: "+84 3367 8915",
-                label: "Phone number +84 3367 8915",
-              },
-              {
-                icon: mailIcon,
-                text: "ntrang21102005@gmail.com",
-                label: "Email address ntrang21102005@gmail.com",
-              },
+              { icon: phoneIcon, text: "+84 3367 8915" },
+              { icon: mailIcon, text: "ntrang21102005@gmail.com" },
             ].map((item) => (
               <div key={item.text} className="flex items-center gap-2">
-                <img src={item.icon} alt={item.label} className="w-5 h-5" />
+                <img src={item.icon} alt="" className="w-5 h-5" />
                 <span className="font-medium text-white text-sm md:text-base">
                   {item.text}
                 </span>
@@ -89,37 +87,31 @@ function Header() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <img src={locationIcon} alt="Location icon" className="w-5 h-5" />
-            <span className="font-medium text-white text-sm md:text-base whitespace-nowrap">
+            <img src={locationIcon} alt="" className="w-5 h-5" />
+            <span className="font-medium text-white text-sm md:text-base">
               12 Hoàng Hoa Thám, Q.3, TP.HCM
             </span>
           </div>
         </div>
       </div>
 
+      {/* Sun icon with lower z-index */}
       <img
         src={sunIcon}
-        alt="Decorative sun"
-        className="hidden md:block absolute left-[35%] top-[15%] h-32 md:h-48 z-0"
+        alt=""
+        className="hidden md:block absolute left-[35%] top-[15%] h-32 md:h-48 z-0 pointer-events-none"
       />
 
-      <div
-        className="relative z-10 bg-white rounded-full shadow-lg flex items-center justify-around px-4 
-      md:px-8 my-4 md:mx-auto w-full max-w-4xl md:max-w-6xl mt-2 md:my-10 h-16 md:h-20"
-      >
+      {/* Main navigation bar with higher z-index */}
+      <div className="relative z-20 bg-white rounded-full shadow-lg flex items-center justify-around px-4 md:px-8 my-4 md:mx-auto w-full max-w-4xl md:max-w-6xl mt-2 md:my-10 h-16 md:h-20">
         <div className="flex items-center">
-          <img
-            src={logoBlack}
-            alt="Flyora logo"
-            className="w-22 md:w-26 h-auto"
-          />
+          <img src={logoBlack} alt="Flyora" className="w-22 md:w-26 h-auto" />
         </div>
 
-        {/* Hamburger button for mobile */}
+        {/* Mobile Hamburger */}
         <button
-          className="md:hidden flex items-center"
+          className="md:hidden flex items-center z-30"
           onClick={() => setNav(!showNav)}
-          aria-label="Toggle mobile navigation"
         >
           <svg
             className="w-6 h-6"
@@ -136,11 +128,8 @@ function Header() {
           </svg>
         </button>
 
-        {/* Navigation for desktop */}
-        <nav
-          className="hidden md:flex items-center space-x-6 text-lg md:text-xl font-semibold"
-          aria-label="Main navigation"
-        >
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-6 text-lg md:text-xl font-semibold z-20">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -157,79 +146,67 @@ function Header() {
           ))}
         </nav>
 
-        {/* Icons section */}
-        <div className="flex items-center space-x-3 md:space-x-5">
+        {/* Right Section */}
+        <div className="flex items-center space-x-3 md:space-x-5 z-20">
+          {/* Search */}
           <div className="relative">
             <input
               type="text"
               placeholder="Search products..."
-              aria-label="Search products"
-              className="border rounded-full px-3 py-1 w-32 sm:w-40 md:w-64 lg:w-80 pr-8 text-sm md:text-base"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
+              className="border rounded-full px-3 py-1 w-32 sm:w-40 md:w-64 lg:w-80 pr-16 text-sm md:text-base"
             />
+
+            {/* Nút clear (X) */}
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  navigate("/shop");
+                }}
+                className="absolute right-12 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+              >
+                ✕
+              </button>
+            )}
+
+            {/* Icon search */}
             <img
               src={searchIcon}
-              alt="Search icon"
-              className="absolute right-2 top-1.5 md:top-2 h-5 md:h-6"
+              alt="Search"
+              onClick={handleSearch}
+              className="absolute right-2 top-1/2 -translate-y-1/2 h-5 md:h-6 cursor-pointer"
             />
           </div>
 
-          {/* Wishlist icon */}
+          {/* Cart */}
           <button
             type="button"
-            className="relative cursor-pointer"
-            onClick={() => handleProtectedClick("wishlist")}
-            aria-label="View wishlist"
-          >
-            <img src={heartIcon} alt="Wishlist icon" className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center">
-              {wishlistCount}
-            </span>
-          </button>
-
-          {/* Cart icon */}
-          <button
-            type="button"
-            className="relative cursor-pointer"
             onClick={() => handleProtectedClick("cart")}
-            aria-label="View cart"
+            className="relative z-20"
           >
-            <img src={cartIcon} alt="Cart icon" className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center">
+            <img src={cartIcon} alt="Cart" className="w-6 h-6" />
+            <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {cartCount}
             </span>
           </button>
 
-          {/* Login menu */}
-          <div className="relative">
+          {/* Login Menu with proper z-index */}
+          <div className="relative z-30">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="focus:outline-none"
-              aria-haspopup="true"
-              aria-expanded={showMenu}
-              aria-label="User menu"
+              className="z-30 relative"
             >
-              <img src={loginIcon} alt="User menu icon" className="w-6 h-6" />
+              <img src={loginIcon} alt="Login" className="w-6 h-6" />
             </button>
 
             {showMenu && (
-              <div
-                className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-50"
-                role="menu"
-              >
-
-
-                {/*✅ Link luôn hiển thị */ }
-                <Link
-                  to="/order-history"
-                  onClick={() => setShowMenu(false)}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
-                  role="menuitem"
-                >
-                  Lịch sử đơn hàng
-                </Link>
-                
-
-
+              <div className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md z-50 border">
                 {!isLoggedIn ? (
                   <>
                     <NavLink
@@ -249,49 +226,44 @@ function Header() {
                   </>
                 ) : (
                   <>
+                    <Link
+                      to={`/order-history?customerId=${customerId}`}
+                      onClick={() => setShowMenu(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
+                    >
+                      Lịch sử đơn hàng
+                    </Link>
+
+                    <NavLink
+                      to="/profile"
+                      onClick={() => setShowMenu(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
+                    >
+                      Thông tin cá nhân
+                    </NavLink>
+
                     <button
-                      type="button"
                       onClick={() => {
                         logout();
                         setShowMenu(false);
                         toast.success("Đăng xuất thành công!");
                         navigate("/");
                       }}
-                      className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 bg-white"
-                      role="menuitem"
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 font-semibold"
                     >
                       Đăng xuất
                     </button>
-                    <NavLink
-                      to="/orders"
-                      onClick={() => setShowMenu(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Tra cứu đơn hàng
-                    </NavLink>
-                    <NavLink
-                      to="/profile"
-                      onClick={() => setShowMenu(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Thông tin cá nhân
-                    </NavLink>
-                    
                   </>
                 )}
               </div>
             )}
-
           </div>
         </div>
       </div>
 
-      {/* Mobile navigation */}
+      {/* Mobile nav with proper z-index */}
       {showNav && (
-        <nav
-          className="md:hidden bg-white shadow-lg mx-4 rounded-md py-4"
-          aria-label="Mobile navigation"
-        >
+        <nav className="md:hidden bg-white shadow-lg mx-4 rounded-md py-4 relative z-40">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -310,14 +282,15 @@ function Header() {
         </nav>
       )}
 
+      {/* Content section with lower z-index */}
       <div className="relative px-4 md:px-20 pt-4 md:pt-10 z-10">
         <div className="max-w-2xl mx-auto md:ml-20 md:mx-0">
           <img
             src={logoChim}
-            alt="Flyora logo orange"
+            alt="Flyora"
             className="w-40 md:w-64 mx-auto md:mx-0 mb-8 md:mb-12"
           />
-          <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center md:text-left  mb-4 -mt-4 md:-mt-6">
+          <h1 className="text-white text-3xl md:text-4xl font-bold leading-tight text-center md:text-left mb-4 -mt-4 md:-mt-6">
             A pet store with <br /> everything you need
           </h1>
           <p className="text-white mt-4 text-sm md:text-base text-center md:text-left">
@@ -327,11 +300,12 @@ function Header() {
         </div>
       </div>
 
-      {starIcons.map((star) => (
+      {/* Star icons with pointer-events-none and low z-index */}
+      {starIcons.map((star, index) => (
         <img
-          key={star.src}
+          key={`${star.src}-${index}`}
           className={`${star.className} z-0 pointer-events-none`}
-          alt="Decorative star"
+          alt=""
           src={star.src}
         />
       ))}

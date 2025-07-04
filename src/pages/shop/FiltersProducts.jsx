@@ -1,86 +1,113 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import cartIcon from "../../icons/cart-shop.png";
-import loveProduct from "../../icons/heart-shop.png";
+import toast from "react-hot-toast";
 import { useAuthCart } from "../../context/AuthCartContext";
-
-const Categories = [
-  { name: "Furniture", count: 21 },
-  { name: "Food", count: 80 },
-  { name: "Toys", count: 90 },
-];
-
-const Tags = ["Parrot", "Toys", "Chào máo"];
-
-const PopularProducts = [
-  { name: "Premium Dog Food", price: 99 },
-  { name: "Premium Cat Food", price: 220 },
-  { name: "Cat Bed", price: 50 },
-  { name: "Dog Leash", price: 220 },
-];
+import { getProductsByCategory } from "../../api/Product";
+import { getCategories } from "../../api/Categories";
+import PriceFilter from "./PriceFilter"; // Assuming you have a PriceFilter component
 
 const ProductFilterPage = () => {
+  const { isLoggedIn, addToCart } = useAuthCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [product, setProduct] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages] = useState(3); // sau này set từ API
-  const [productsPerPage] = useState(9);
-  const [totalResults] = useState(14); // sau này set từ API
-  const startResult = (currentPage - 1) * productsPerPage + 1;
-  const endResult = Math.min(currentPage * productsPerPage, totalResults);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  const [minPrice, setMinPrice] = useState(15000);
+  const [maxPrice, setMaxPrice] = useState(300000);
+  const [selectedTag, setSelectedTag] = useState(null);
+
+  const tagsList = ["Chào Mào", "Vẹt Xích", "Yến Phụng", "Chích Chòe"];
+
+  // ✅ Mapping tags to birdTypeId
+  const birdTypeMap = {
+    "Chào Mào": 1,
+    "Vẹt Xích": 2,
+    "Yến Phụng": 3,
+    "Chích Chòe": 4,
+  };
+
+  const params = new URLSearchParams(location.search);
+  const categoryId = params.get("categoryId");
+  const search = params.get("search");
+
+  // Lấy danh sách categories
   useEffect(() => {
-    // Dữ liệu mock, sau này thay bằng fetch từ API
-    const mockData = Array.from({ length: 9 }, (_, index) => ({
-      id: (currentPage - 1) * 9 + index + 1,
-      name: `Product ${(currentPage - 1) * 9 + index + 1}`,
-      price: (10 + index * 5).toFixed(2),
-      imageUrl: "https://via.placeholder.com/270x270?text=Product",
-    }));
-    setProduct(mockData);
-  }, [currentPage]);
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data || []);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load categories.");
+      }
+    };
+    fetchCategories();
+  }, []);
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+  // ✅ Fetch products có lọc theo tags và price
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const payload = {
+          categoryId: categoryId ? parseInt(categoryId) : null,
+          birdTypeId: selectedTag ? birdTypeMap[selectedTag] : null,
+          minPrice: minPrice,
+          maxPrice: maxPrice,
+          name: search || "",
+          page: 0,
+          size: 100,
+        };
+
+        const response = await getProductsByCategory(payload);
+        setProduct(response.content || []);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load products.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, [categoryId, search, selectedTag, minPrice, maxPrice]);
+
+  // Click vào category
+  const handleCategoryClick = (id) => {
+    const isSelected = categoryId === String(id);
+    const newParams = new URLSearchParams(location.search);
+
+    if (isSelected) {
+      newParams.delete("categoryId");
+    } else {
+      newParams.set("categoryId", id);
     }
+
+    navigate(`/shop?${newParams.toString()}`);
   };
 
-  const renderPageNumbers = () => {
-    let pages = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
-        <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 rounded ${
-            currentPage === i
-              ? "bg-orange-500 text-white"
-              : "border border-gray-400 text-gray-800"
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-    return pages;
+  // ✅ Click vào tag
+  const handleTagClick = (tag) => {
+    setSelectedTag(tag === selectedTag ? null : tag);
   };
-
-  const { isLoggedIn, addToCart, addToWishlist } = useAuthCart();
 
   const handleAddToCart = (id) => {
     if (!isLoggedIn) {
-      alert("Bạn phải đăng nhập để thêm vào giỏ hàng!");
+      toast.error("Bạn phải đăng nhập để thêm vào giỏ hàng!");
       return;
     }
     addToCart(id);
+    toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
-  const handleAddToWishlist = (id) => {
-    if (!isLoggedIn) {
-      alert("Bạn phải đăng nhập để thêm vào danh sách yêu thích!");
-      return;
-    }
-    addToWishlist(id);
+  const handleApplyPrice = () => {
+    toast.success(`Applied price: ₫${minPrice} - ₫${maxPrice}`);
   };
 
   return (
@@ -92,147 +119,157 @@ const ProductFilterPage = () => {
           <div>
             <h2 className="text-xl font-bold mb-2">Filter by categories</h2>
             <ul className="space-y-2 text-gray-800">
-              {Categories.map((bird) => (
-                <li
-                  key={bird.name}
-className="flex items-center justify-between"
-                >
-                  <div className="flex items-center">
-                    <input type="checkbox" className="mr-2" />
-                    <span>{bird.name}</span>
-                  </div>
-                  <span className="bg-gray-100 text-orange-500 text-sm font-semibold px-2.5 py-0.5 rounded-full">
-                    {bird.count}
-                  </span>
+              {categories.map((cat) => {
+                const isSelected = categoryId === String(cat.id);
+                return (
+                  <li key={cat.id}>
+                    <button
+                      onClick={() => handleCategoryClick(cat.id)}
+                      className={`w-full text-left flex justify-between ${
+                        isSelected ? "font-bold text-orange-500" : ""
+                      }`}
+                    >
+                      {cat.name}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Filter by Price */}
+          <div>
+            <PriceFilter
+              min={15000}
+              max={300000}
+              onChange={(range) => {
+                const [minPrice, maxPrice] = range;
+                setMinPrice(minPrice);
+                setMaxPrice(maxPrice);
+                // Call API hoặc cập nhật query param tùy ý
+              }}
+            />
+          </div>
+
+          {/* Tags Filter */}
+<div>
+  <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
+  <div className="flex flex-wrap gap-2">
+    {tagsList.map((tag) => (
+      <button
+        key={tag}
+        onClick={() => handleTagClick(tag)}
+        className={`border px-3 py-1 rounded text-sm font-medium 
+          min-w-[100px] h-[40px] flex items-center justify-center
+          ${
+            selectedTag === tag
+              ? "bg-orange-500 text-white"
+              : "bg-gray-50 text-black"
+          }`}
+      >
+        {tag}
+      </button>
+    ))}
+  </div>
+</div>
+
+
+          {/* Popular Products */}
+          <div>
+            <h2 className="text-xl font-bold mb-2">Popular products</h2>
+            <ul className="space-y-3">
+              {product.slice(0, 4).map((p) => (
+                <li key={p.id} className="flex items-center gap-3">
+                  <NavLink
+                    to={`/product/${p.id}`}
+                    state={{ product: p }}
+                    className="flex items-center gap-3 hover:bg-gray-100 p-2 rounded-md"
+                  >
+                    <img
+                      src={p.imageUrl}
+                      alt={p.name}
+                      className="w-12 h-12 object-cover rounded-md"
+                    />
+                    <div>
+                      <p className="text-sm font-medium">{p.name}</p>
+                      <p className="text-sm font-semibold text-gray-700">
+                        {p.price.toLocaleString()} VND
+                      </p>
+                    </div>
+                  </NavLink>
                 </li>
               ))}
             </ul>
-          </div>
-          {/* Price Filter */}
-          <div>
-            <h2 className="text-xl font-bold mb-2">Filter by Price</h2>
-            <input
-              type="range"
-              min="9"
-              max="399"
-              className="w-full accent-orange-500"
-            />
-            <div className="flex items-center justify-between mt-2 gap-4">
-              <div className="text-sm">Price: $9 - $399</div>
-              <button className="px-4 py-1 bg-black text-white rounded-xl text-[16px] font-semibold">
-                Apply
-              </button>
-            </div>
-          </div>
-          {/* Tags */}
-          <div>
-            <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
-            <div className="flex flex-wrap gap-2">
-              {Tags.map((tag) => (
-                <button
-                  key={tag}
-                  className="bg-gray-100 text-black px-3 py-1 rounded"
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-          {/* Popular products */}
-          <div>
-            <h2 className="text-xl font-bold mb-2">Popular products</h2>
-            <div className="space-y-4">
-              {PopularProducts.map((prod, i) => (
-                <div key={i} className="flex items-center space-x-3">
-                  <img
-                    src="https://via.placeholder.com/50"
-                    alt={prod.name}
-                    className="w-12 h-12 rounded object-cover"
-                  />
-                  <div>
-                    <div className="font-semibold text-sm">{prod.name}</div>
-                    <div className="text-xs text-gray-600">${prod.price}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
         {/* Product Grid */}
         <div className="md:col-span-3">
-          <div className="flex justify-between items-center mb-6">
-            <span className="text-gray-500">
-              Showing {startResult}–{endResult} of {totalResults} results
-            </span>
-            <select className="bg-white border border-gray-400 text-gray-800 px-4 py-2 rounded">
-              <option>Sort by latest</option>
-              <option>Sort by price</option>
-            </select>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {product.map((p) => (
-              <NavLink
-                to={`/product/${p.id}`}
-key={p.id}
-                className="block h-full"
-              >
-                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
-                  <img
-                    src={p.imageUrl}
-                    alt={p.name}
-                    className="w-full h-[200px] object-cover rounded-xl"
-                  />
-                  {/* info row (name + icons) */}
-                  <div className="mt-4 flex items-center justify-between">
-                    <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
-                      {p.name}
-                    </h3>
-                    <div className="flex gap-3 shrink-0">
-                      <button
-                        type="button"
-                        tabIndex={-1}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleAddToWishlist(p.id);
-                        }}
-                        className="hover:scale-110 transition-transform"
-                      >
-                        <img
-                          src={loveProduct}
-                          alt="heart"
-                          className="w-5 h-5"
-                        />
-                      </button>
-                      <button
-                        type="button"
-                        tabIndex={-1}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleAddToCart(p.id);
-                        }}
-                        className="hover:scale-110 transition-transform"
-                      >
-                        <img src={cartIcon} alt="cart" className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 text-[15px] mt-1">${p.price}</p>
+          {loading && (
+            <div className="text-center text-gray-500 py-10">Loading...</div>
+          )}
+          {error && (
+            <div className="text-center text-red-500 py-10">{error}</div>
+          )}
+          {!loading && !error && (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-gray-500">
+                  Showing {product.length} products
+                </span>
+              </div>
+
+              {product.length === 0 ? (
+                <div className="text-center text-gray-500">
+                  No products found.
                 </div>
-              </NavLink>
-            ))}
-          </div>
-          {/* Pagination */}
-          <div className="flex justify-center items-center gap-4 mt-10">
-            {renderPageNumbers()}
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="border border-gray-400 text-gray-800 px-3 py-1 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                  {product.map((p) => (
+                    <NavLink
+                      to={`/product/${p.id}`}
+                      state={{ product: p }}
+                      key={p.id}
+                      className="block h-full"
+                    >
+                      <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
+                        <img
+                          src={p.imageUrl}
+                          alt={p.name}
+                          className="w-full h-[200px] object-cover rounded-xl"
+                        />
+                        <div className="mt-4 flex items-center justify-between">
+                          <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
+                            {p.name}
+                          </h3>
+                          <div className="flex gap-3 shrink-0">
+                            <button
+                              type="button"
+                              tabIndex={-1}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleAddToCart(p.id);
+                              }}
+                              className="hover:scale-110 transition-transform"
+                            >
+                              <img
+                                src={cartIcon}
+                                alt="cart"
+                                className="w-5 h-5"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-gray-600 text-[15px] mt-1">
+                          {p.price.toLocaleString()} VND
+                        </p>
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

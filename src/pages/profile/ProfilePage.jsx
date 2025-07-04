@@ -1,15 +1,15 @@
 import Footer from "../navfoot/Footer";
 import Header from "../navfoot/Header";
-import { ProductDetails } from "./ProductDetails";
+import EditProfile from "./EditProfile";
 
-const ProductDetailsPage = () => {
+const ShopPage = () => {
   return (
     <>
       <Header />
-      <ProductDetails />
+      <EditProfile />
       <Footer />
     </>
   );
 };
 
-export default ProductDetailsPage;
+export default ShopPage;

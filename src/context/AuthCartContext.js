@@ -1,39 +1,74 @@
-import { createContext, useContext, useState } from "react";
+// src/context/AuthCartContext.js
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);      // 👤
-  const [cartCount, setCartCount] = useState(0);            // 🛒
-  const [wishlistCount, setWishlistCount] = useState(0);    // 💓
 
-  // auth
-  const login  = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [user, setUser] = useState(null);  // 👉 Thêm user
 
-  // cart & wishlist
-  const addToCart      = () => setCartCount((n) => n + 1);
-  const addToWishlist  = () => setWishlistCount((n) => n + 1);
-  const resetCart      = () => setCartCount(0);
-  const resetWishlist  = () => setWishlistCount(0);
+  // ==== Auth ====
+  const login = (userData) => {
+    setIsLoggedIn(true);
+    setUser(userData); // Lưu thông tin user bao gồm linkedId
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUser(null);
+
+  };
+
+  // ==== Cart & Wishlist ====
+  // context/AuthCartContext.js
+const addToCart = (productId) => {
+  const current = JSON.parse(localStorage.getItem("cart")) || [];
+  const existing = current.find((item) => item.id === productId);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    current.push({ id: productId, qty: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(current));
+
+  // Cập nhật số lượng sản phẩm trong giỏ
+  const totalQty = current.reduce((sum, item) => sum + item.qty, 0);
+  setCartCount(totalQty);
+};
+useEffect(() => {
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalQty = localCart.reduce((sum, item) => sum + item.qty, 0);
+  setCartCount(totalQty);
+}, []);
+
 
   return (
     <AuthCartContext.Provider
       value={{
         isLoggedIn,
+
+
         login,
         logout,
+        user,             // 👉 Truyền user ra ngoài context
+
         cartCount,
-        wishlistCount,
         addToCart,
-        addToWishlist,
-        resetCart,
-        resetWishlist,
+        // updateQty,
+        // removeFromCart,
+
       }}
     >
       {children}
+      
+
     </AuthCartContext.Provider>
   );
 };
+
 
 export const useAuthCart = () => useContext(AuthCartContext);

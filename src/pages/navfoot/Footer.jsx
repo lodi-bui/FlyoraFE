@@ -27,7 +27,10 @@ const Footer = () => {
       },
       {
         title: "Customer Service",
-        links: [{ name: "Contact Us" }, { name: "F.A.Q" }],
+        links: [
+          { name: "Contact Us" },
+          // { name: "F.A.Q" }
+        ],
       },
     ],
     store: {
@@ -52,7 +55,7 @@ const Footer = () => {
       sectionId: "deliveryPolicy",
     },
 
-    "F.A.Q": { path: "/faq", sectionId: "faq" },
+    // "F.A.Q": { path: "/faq", sectionId: "faq" },
     "Contact Us": { path: "/contact-us", sectionId: "contact-us" },
   };
 
