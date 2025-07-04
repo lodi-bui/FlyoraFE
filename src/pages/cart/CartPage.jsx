@@ -14,18 +14,18 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [setEmptyCart] = useState(false);
 
-  // ✅ Load từ localStorage và fetch thông tin sản phẩm từ API
+  // Load từ localStorage và fetch thông tin sản phẩm từ API
   const location = useLocation();
 
-  // ✅ Sử dụng useLocation để theo dõi thay đổi URL
-  // ✅ Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
+  // Sử dụng useLocation để theo dõi thay đổi URL
+  // Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
       try {
         const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // ✅ Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
+        // Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
         const localCart = rawCart.filter(
           (item) =>
             item &&
@@ -60,7 +60,7 @@ const CartPage = () => {
 
         setItems(merged);
       } catch (err) {
-        console.error("❌ Lỗi khi fetch giỏ hàng:", err);
+        console.error("Lỗi khi fetch giỏ hàng:", err);
       } finally {
         setLoading(false);
       }
