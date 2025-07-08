@@ -23,9 +23,11 @@ import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
 import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage'; 
 
-
 import UserManagement from './pages/admin/userMgm/UserManagement';
+import ContentPage from './pages/admin/content/ContentPage';
 
+import ProductManagement from 'pages/manager/product/ProductManagement';
+import AddProduct from 'pages/manager/product/AddProduct';
 function App() {
   return (
     <>
@@ -66,10 +68,13 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin-page" element={<UserManagement />} />
         <Route path="/admin-page/users" element={<UserManagement />} />
-        <Route path="/admin-page/contents" element={<UserManagement />} />
+        <Route path="/admin-page/contents" element={<ContentPage />} />
         <Route path="/admin-page/settings" element={<UserManagement />} />
 
-
+        {/* Manager Routes */}
+        <Route path="/manager-page" element={<ProductManagement />} />
+        <Route path="/manager-page/product" element={<ProductManagement />} />
+        <Route path="/manager-page/add-product" element={<AddProduct />} />
       </Routes>
 
  <Chatbotbox />

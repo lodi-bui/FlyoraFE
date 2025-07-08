@@ -1,57 +1,61 @@
 import React, { useState } from 'react';
 import { Search, Plus, Edit2, Trash2, Settings, LogOut, Users, FileText, ChevronDown } from 'lucide-react';
 import { useAuthCart } from '../../../context/AuthCartContext';
-import Sidebar from '../sidebar/Sidebar';
-import toast from "react-hot-toast";
+import Sidebar from 'pages/admin/sidebar/Sidebar';
 import { useNavigate } from "react-router-dom";
 
-const UserManagement = () => {
+const ProductManagement = () => {
   const { logout } = useAuthCart();
   const navigate = useNavigate();
-  const [users] = useState([
+  const [products] = useState([
     {
       id: 1,
-      username: 'User1',
-      email: 'User1@gmail.com',
-      phone: '0903829011',
-      address: '123 Hung Vuong, Q3, HCM',
-      role: 'Customer',
+      nameProduct: 'Laptop Dell',
+      category: 'Electronics',
+      price: 15000000,
+      discount: 10,
+      sold: 50,
+      totalQuantity: 100,
       status: 'Active'
     },
     {
       id: 2,
-      username: 'User1',
-      email: 'User1@gmail.com',
-      phone: '0903829011',
-      address: '123 Hung Vuong, Q3, HCM',
-      role: 'Admin',
+      nameProduct: 'Smartphone Samsung',
+      category: 'Electronics',
+      price: 8000000,
+      discount: 5,
+      sold: 30,
+      totalQuantity: 80,
       status: 'Active'
     },
     {
       id: 3,
-      username: 'User1',
-      email: 'User1@gmail.com',
-      phone: '0903829011',
-      address: '123 Hung Vuong, Q3, HCM',
-      role: 'Sale Staff',
+      nameProduct: 'Headphones Sony',
+      category: 'Accessories',
+      price: 2000000,
+      discount: 15,
+      sold: 20,
+      totalQuantity: 60,
       status: 'Inactive'
     },
     {
       id: 4,
-      username: 'User1',
-      email: 'User1@gmail.com',
-      phone: '0903829011',
-      address: '123 Hung Vuong, Q3, HCM',
-      role: 'Shop Owner',
+      nameProduct: 'Mouse Logitech',
+      category: 'Accessories',
+      price: 500000,
+      discount: 0,
+      sold: 15,
+      totalQuantity: 40,
       status: 'Active'
     },
     {
       id: 5,
-      username: 'User1',
-      email: 'User1@gmail.com',
-      phone: '0903829011',
-      address: '123 Hung Vuong, Q3, HCM',
-      role: 'Customer',
+      nameProduct: 'Keyboard Razer',
+      category: 'Accessories',
+      price: 1200000,
+      discount: 8,
+      sold: 25,
+      totalQuantity: 70,
       status: 'Active'
     }
   ]);
@@ -76,59 +80,6 @@ const UserManagement = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar
-      <div className="w-64 bg-green-600 text-white"> */}
-        {/* Logo */}
-        {/* <div className="flex items-center p-6 border-b border-green-500">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-              <span className="text-green-600 font-bold text-sm">F</span>
-            </div>
-            <span className="text-xl font-bold">Flyora</span>
-          </div>
-        </div> */}
-
-        {/* Navigation */}
-        {/* <nav className="mt-8">
-          <div className="px-4 mb-2">
-            <span className="text-sm font-medium text-green-200">Main</span>
-          </div>
-          <ul className="space-y-2 px-4">
-            <li>
-              <a href="/admin-page/users" className="flex items-center px-4 py-3 bg-green-500 rounded-lg">
-                <Users className="w-5 h-5 mr-3" />
-                <span className="font-medium">Users</span>
-              </a>
-            </li>
-            <li>
-              <a href="/admin-page/contents" className="flex items-center px-4 py-3 text-green-100 hover:bg-green-500 rounded-lg transition-colors">
-                <FileText className="w-5 h-5 mr-3" />
-                <span>Contents</span>
-              </a>
-            </li>
-            <li>
-              <a href="/admin-page/settings" className="flex items-center px-4 py-3 text-green-100 hover:bg-green-500 rounded-lg transition-colors">
-                <Settings className="w-5 h-5 mr-3" />
-                <span>Manage System</span>
-                <ChevronDown className="w-4 h-4 ml-auto" />
-              </a>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  logout();
-                  toast.success("Đăng xuất thành công!");
-                  navigate("/");
-                }}
-                className="w-full text-left flex items-center px-4 py-3 text-red-200 hover:bg-green-500 rounded-lg font-medium transition-colors"
-              >
-                <LogOut className="w-5 h-5 mr-3" />
-                <span>Logout</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div> */}
       {/* Sidebar */}
       <Sidebar />
       {/* Main Content */}
@@ -137,9 +88,8 @@ const UserManagement = () => {
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-semibold text-gray-900">User Management</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Product Management</h1>
             </div>
-            
             {/* Search */}
             <div className="flex items-center space-x-4">
               <div className="relative">
@@ -150,7 +100,6 @@ const UserManagement = () => {
                   className="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
-              
               {/* User Profile */}
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
@@ -172,11 +121,12 @@ const UserManagement = () => {
         {/* Content */}
         <main className="flex-1 p-6">
           <div className="bg-white rounded-lg shadow">
-            {/* Users Header */}
+            {/* Products Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div className="flex items-center space-x-4">
-                <h2 className="text-lg font-semibold text-gray-900">Users</h2>
-                <button className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                <h2 className="text-lg font-semibold text-gray-900">Products</h2>
+                <button className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                onClick={() => navigate('/manager-page/add-product')}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add New
                 </button>
@@ -198,26 +148,28 @@ const UserManagement = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name Product</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price (VND)</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khuyến mãi (%)</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đã bán</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng số lượng</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modify</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {users.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.username}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.phone}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.address}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.role}</td>
+                  {products.map((product) => (
+                    <tr key={product.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.nameProduct}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.category}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.price.toLocaleString()} VND</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.discount}%</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.sold}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.totalQuantity}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {getStatusBadge(user.status)}
+                        {getStatusBadge(product.status)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <div className="flex items-center space-x-2">
@@ -275,4 +227,4 @@ const UserManagement = () => {
   );
 };
 
-export default UserManagement;
+export default ProductManagement;
