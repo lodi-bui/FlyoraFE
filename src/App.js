@@ -21,7 +21,7 @@ import ProfilePage from './pages/profile/ProfilePage';
 
 import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
-import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage'; 
+import DashBoard from './pages/shopOwner/DashBoard';
 
 
 import UserManagement from './pages/admin/userMgm/UserManagement';
@@ -68,6 +68,10 @@ function App() {
         <Route path="/admin-page/users" element={<UserManagement />} />
         <Route path="/admin-page/contents" element={<UserManagement />} />
         <Route path="/admin-page/settings" element={<UserManagement />} />
+
+        <Route path="/shopowner" element={<DashBoard />} />
+        <Route path="/shopowner/dashboard" element={<DashBoard />} />
+        <Route path="/shopowner/products" element={<DashBoard />} />
 
 
       </Routes>
