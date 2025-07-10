@@ -103,7 +103,7 @@ const BackgroundSection = () => {
   ];
 
   return (
-    <section className="relative w-full h-[306px] bg-neutral-700">
+    <section className="relative w-full h-[306px]">
       <div className="container mx-auto flex justify-center items-end h-full">
         <div className="grid grid-cols-4 gap-8 mb-8 -mt-[60px]">
           {birdCategories.map((bird, index) => (
@@ -120,7 +120,7 @@ const BackgroundSection = () => {
                 href={bird.link}
                 rel="noopener noreferrer"
                 target="_blank"
-                className={`text-white font-bold text-2xl text-center leading-[29px] whitespace-nowrap ${
+                className={` font-bold text-2xl text-center leading-[29px] whitespace-nowrap ${
                   index === 3
                     ? "[font-family:'Times_New_Roman-Bold',Helvetica]"
                     : "font-demo-templatemonster-com-semantic-link-upper"
