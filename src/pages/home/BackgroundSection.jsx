@@ -77,57 +77,92 @@
 
 import React from "react";
 
+import chaomao from "../../icons/chaomao.png";
+import chichchoe from "../../icons/chichchoe.png";
+import vetxich from "../../icons/vetxich.png";
+import yenphung from "../../icons/yenphung.png";
+
 const BackgroundSection = () => {
   // Data for bird categories
   const birdCategories = [
     {
       name: "Chào Mào",
-      image: "https://i.postimg.cc/pVQ7qM1k/Link.png",
+      image: chaomao,
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
+      scientificName: "Pycnonotus jocosus",
     },
     {
       name: "Vẹt Xích",
-      image: "https://i.postimg.cc/j506J6C8/vetxich.png",
+      image: vetxich,
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
+      scientificName: "Alexandrine Parakeet",
     },
     {
       name: " Yến Phụng",
-      image: "https://i.postimg.cc/xTRsDZq9/yenphung.png",
+      image: yenphung,
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
+      scientificName: "Budgerigar",
     },
     {
       name: "Chích Chòe",
-      image: "https://i.postimg.cc/sXNn8G27/chichchoe.png",
+      image: chichchoe,
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
+      scientificName: "Magpie-robin"
     },
   ];
 
+  // return (
+  //   <section className="relative w-full h-[306px]">
+  //     <div className="container mx-auto flex justify-center items-end h-full">
+  //       <div className="grid grid-cols-4 gap-8 mb-8 -mt-[60px]">
+  //         {birdCategories.map((bird, index) => (
+  //           <div key={index} className="flex flex-col items-center">
+  //             {/* Dùng Tailwind aspect-square để đạt tỉ lệ 1:1 */}
+  //             <div className="w-[250px] aspect-square overflow-hidden rounded-full mb-4">
+  //               <img
+  //                 src={bird.image}
+  //                 alt={bird.name}
+  //                 className="object-cover w-full h-full"
+  //               />
+  //             </div>
+  //             <a
+  //               href={bird.link}
+  //               rel="noopener noreferrer"
+  //               target="_blank"
+  //               className={` font-bold text-2xl text-center leading-[29px] whitespace-nowrap ${
+  //                 index === 3
+  //                   ? "[font-family:'Times_New_Roman-Bold',Helvetica]"
+  //                   : "font-demo-templatemonster-com-semantic-link-upper"
+  //               }`}
+  //             >
+  //               {bird.name}
+  //             </a>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   </section>
+  // );
   return (
-    <section className="relative w-full h-[306px]">
-      <div className="container mx-auto flex justify-center items-end h-full">
-        <div className="grid grid-cols-4 gap-8 mb-8 -mt-[60px]">
+    <section className="py-8 bg-white">
+      <div className="">
+        <h2 className="text-2xl font-bold text-black mb-6">
+          Chuyên sản phẩm cho các loại chim
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 flex justify-between ">
           {birdCategories.map((bird, index) => (
-            <div key={index} className="flex flex-col items-center">
-              {/* Dùng Tailwind aspect-square để đạt tỉ lệ 1:1 */}
-              <div className="w-[250px] aspect-square overflow-hidden rounded-full mb-4">
+            <div key={index} className="bg-gray-100 rounded-lg shadow-md">
+              <div className="w-full overflow-hidden rounded-lg">
                 <img
                   src={bird.image}
                   alt={bird.name}
-                  className="object-cover w-full h-full"
+                  className="w-full h-full object-cover"
                 />
               </div>
-              <a
-                href={bird.link}
-                rel="noopener noreferrer"
-                target="_blank"
-                className={` font-bold text-2xl text-center leading-[29px] whitespace-nowrap ${
-                  index === 3
-                    ? "[font-family:'Times_New_Roman-Bold',Helvetica]"
-                    : "font-demo-templatemonster-com-semantic-link-upper"
-                }`}
-              >
-                {bird.name}
-              </a>
+              <div className="px-4 py-2">
+                <p className="text-md font-bold text-black">{bird.name}</p>
+                <p className="text-primary-orange text-sm font-semibold">{bird.scientificName}</p>
+              </div>
             </div>
           ))}
         </div>
