@@ -107,7 +107,7 @@ const BackgroundSection = () => {
       name: "Chích Chòe",
       image: chichchoe,
       link: "https://livedemo00.template-help.com/muse_57607/read-more.html",
-      scientificName: "Magpie-robin"
+      scientificName: "Magpie-robin",
     },
   ];
 
@@ -160,8 +160,17 @@ const BackgroundSection = () => {
                 />
               </div>
               <div className="px-4 py-2">
-                <p className="text-md font-bold text-black">{bird.name}</p>
-                <p className="text-primary-orange text-sm font-semibold">{bird.scientificName}</p>
+                <a
+                  href={bird.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <p className="text-md font-bold text-black">{bird.name}</p>
+                  <p className="text-primary-orange text-sm font-semibold">
+                    {bird.scientificName}
+                  </p>
+                </a>
               </div>
             </div>
           ))}

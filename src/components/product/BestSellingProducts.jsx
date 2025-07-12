@@ -13,7 +13,7 @@ const BestSellingProducts = () => {
     const fetchBestSellers = async () => {
       try {
         const response = await axios.get(
-          "https://flyora-backend.onrender.com/api/v1/products/best-sellers/top1"
+          "https://flyora-backend.onrender.com/api/v1/products/best-sellers/top15"
         );
         const mapped = response.data.map((item) => ({
           id: item.productId,
@@ -41,22 +41,22 @@ const BestSellingProducts = () => {
   };
 
   return (
-    <div className="py-12 px-4 bg-white">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
-        Best selling products
+    <div className="py-12 bg-white">
+      <h2 className="text-2xl font-bold mb-10">
+        Sản phẩm bán chạy
       </h2>
 
       {/* ✅ Flexbox layout to center the cards */}
-      <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
+      <div className="flex flex-wrap justify-between gap-6 w-full ">
         {product.map((p) => (
-          <NavLink to={`/product/${p.id}`} key={p.id} className="block h-full">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-200 flex flex-col min-h-[350px] aspect-[4/5] p-6 w-[220px]">
+          <NavLink to={`/product/${p.id}`} key={p.id} className="block">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-200 flex flex-col w-[220px]">
               <img
                 src={p.imageUrl}
                 alt={p.name}
                 className="w-full h-[180px] object-contain rounded-xl bg-gray-50"
               />
-              <div className="flex-1 flex flex-col justify-between mt-4">
+              <div className="p-4">
                 <div className="flex justify-between items-start">
                   <h3 className="font-semibold text-[17px] leading-5">
                     {p.name}
@@ -80,7 +80,7 @@ const BestSellingProducts = () => {
                     />
                   </button>
                 </div>
-                <p className="text-gray-700 font-semibold text-base mt-2">
+                <p className="text-primary-orange font-semibold text-base">
                   ${p.price.toFixed(2)}
                 </p>
               </div>

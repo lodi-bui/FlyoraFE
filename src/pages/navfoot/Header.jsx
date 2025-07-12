@@ -271,7 +271,7 @@ function Header() {
   return (
     <header className="relative w-full bg-white">
       {/* draft */}
-      <div className="flex justify-evenly items-center w-full py-6">
+      <div className="flex justify-evenly items-center w-full">
         {/* Logo and Navigation */}
         <div>
           <img src={logoBird} alt="Flyora Logo" className="w-50" />
@@ -300,7 +300,7 @@ function Header() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Tìm kiếm sản phẩm..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
@@ -354,14 +354,14 @@ function Header() {
                       onClick={() => setShowMenu(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
-                      Login
+                      Đăng nhập
                     </NavLink>
                     <NavLink
                       to="/register"
                       onClick={() => setShowMenu(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
-                      Register
+                      Đăng ký
                     </NavLink>
                   </>
                 ) : (

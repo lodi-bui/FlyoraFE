@@ -46,12 +46,12 @@ const NewsBlogSalesSection = () => {
   );
 
   const SectionTitle = ({ title }) => (
-    <h2 className="text-2xl font-bold text-center text-gray-800">{title}</h2>
+    <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
   );
 
   return (
     <section className="py-10 px-6 bg-white">
-      <SectionTitle title="News & Blog & Sales" />
+      <SectionTitle title="Tin tức nổi bật" />
       <div className="mt-6 overflow-x-auto">
         <div className="flex gap-6 w-max pb-2">
           {posts.map((post) => (
