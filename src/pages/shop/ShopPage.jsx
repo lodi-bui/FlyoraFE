@@ -8,7 +8,6 @@ const ShopPage = () => {
     <>
       <Header />
       <FiltersProducts />
-      <PriceFilter />
       <Footer />
     </>
   );
