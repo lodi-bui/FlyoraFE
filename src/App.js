@@ -30,7 +30,7 @@ import ProductManagement from 'pages/manager/product/ProductManagement';
 import AddProduct from 'pages/manager/product/AddProduct';
 function App() {
   return (
-    <>
+    <div className="max-w-screen-xl mx-auto px-4">
       <Routes>
 
         <Route path="/" element={<HomePage />} />
@@ -44,8 +44,6 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} /> 
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />        
-        
-
 
         {/* <Route path="/about" element={<AboutPage />} /> */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}
@@ -77,8 +75,8 @@ function App() {
         <Route path="/manager-page/add-product" element={<AddProduct />} />
       </Routes>
 
- <Chatbotbox />
-    </>
+      <Chatbotbox />
+    </div>
 
   );
 }
