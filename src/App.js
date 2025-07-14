@@ -23,12 +23,14 @@ import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
 import DashBoard from './pages/shopOwner/DashBoard';
 
-
 import UserManagement from './pages/admin/userMgm/UserManagement';
+import ContentPage from './pages/admin/content/ContentPage';
 
+import ProductManagement from 'pages/manager/product/ProductManagement';
+import AddProduct from 'pages/manager/product/AddProduct';
 function App() {
   return (
-    <>
+    <div className="max-w-screen-xl mx-auto px-4">
       <Routes>
 
         <Route path="/" element={<HomePage />} />
@@ -42,8 +44,6 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} /> 
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />        
-        
-
 
         {/* <Route path="/about" element={<AboutPage />} /> */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}
@@ -66,7 +66,7 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin-page" element={<UserManagement />} />
         <Route path="/admin-page/users" element={<UserManagement />} />
-        <Route path="/admin-page/contents" element={<UserManagement />} />
+        <Route path="/admin-page/contents" element={<ContentPage />} />
         <Route path="/admin-page/settings" element={<UserManagement />} />
 
         <Route path="/shopowner" element={<DashBoard />} />
@@ -74,10 +74,16 @@ function App() {
         <Route path="/shopowner/products" element={<DashBoard />} />
 
 
+
+        {/* Manager Routes */}
+        <Route path="/manager-page" element={<ProductManagement />} />
+        <Route path="/manager-page/product" element={<ProductManagement />} />
+        <Route path="/manager-page/add-product" element={<AddProduct />} />
+
       </Routes>
 
- <Chatbotbox />
-    </>
+      <Chatbotbox />
+    </div>
 
   );
 }

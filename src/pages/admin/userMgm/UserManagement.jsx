@@ -1,15 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  Plus,
-  Edit2,
-  Trash2,
-  Settings,
-  LogOut,
-  Users,
-  FileText,
-  ChevronDown,
-} from "lucide-react";
-import { useAuthCart } from "../../../context/AuthCartContext";
+import React, { useState, useEffect } from 'react';
+import { Search, Plus, Edit2, Trash2, Settings, LogOut, Users, FileText, ChevronDown } from 'lucide-react';
+import { useAuthCart } from '../../../context/AuthCartContext';
+import Sidebar from '../sidebar/Sidebar';
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { UserAccounts } from "api/UserManagement";
@@ -203,52 +195,8 @@ const UserManagement = () => {
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="mt-8">
-          <ul className="space-y-2 px-4">
-            <li>
-              <a
-                href="/admin-page/users"
-                className="flex items-center px-4 py-3 bg-green-500 rounded-lg"
-              >
-                <Users className="w-5 h-5 mr-3" />
-                <span className="font-medium">Users</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin-page/contents"
-                className="flex items-center px-4 py-3 text-green-100 hover:bg-green-500 rounded-lg transition-colors"
-              >
-                <FileText className="w-5 h-5 mr-3" />
-                <span>Contents</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin-page/settings"
-                className="flex items-center px-4 py-3 text-green-100 hover:bg-green-500 rounded-lg transition-colors"
-              >
-                <Settings className="w-5 h-5 mr-3" />
-                <span>Manage System</span>
-                <ChevronDown className="w-4 h-4 ml-auto" />
-              </a>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  logout();
-                  toast.success("Đăng xuất thành công!");
-                  navigate("/");
-                }}
-                className="w-full text-left flex items-center px-4 py-3 text-red-200 hover:bg-green-500 rounded-lg font-medium transition-colors"
-              >
-                <LogOut className="w-5 h-5 mr-3" />
-                <span>Logout</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
+        {/* Sidebar */}
+        <Sidebar />
       </div>
 
       {/* Main Content */}

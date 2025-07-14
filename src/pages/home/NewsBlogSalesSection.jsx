@@ -61,7 +61,7 @@ const NewsBlogSalesSection = () => {
   );
 
   const SectionTitle = ({ title }) => (
-    <h2 className="text-2xl font-bold text-center text-gray-800">{title}</h2>
+    <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
   );
 
   return (
@@ -82,6 +82,7 @@ const NewsBlogSalesSection = () => {
           <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
           <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
         </Carousel>
+
       </div>
     </section>
   );
