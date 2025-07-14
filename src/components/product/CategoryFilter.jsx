@@ -10,6 +10,14 @@ const CategoryFilter = () => {
   const params = new URLSearchParams(location.search);
   const selectedCategory = params.get("categoryId");
 
+  const nameViMap = {
+  "Food": "Thức ăn",
+  "Toy": "Đồ chơi",
+  "Furniture": "Nội thất",
+  // Thêm các ánh xạ khác nếu cần
+};
+
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -32,7 +40,7 @@ const CategoryFilter = () => {
   return (
     <section className="py-12 px-6">
       <h2 className="text-3xl font-bold mb-10 text-center">
-        Browse by category
+        Tìm kiếm theo danh mục
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {categories.map((cat) => (
@@ -54,7 +62,8 @@ const CategoryFilter = () => {
             />
             <div className="p-4 flex justify-between items-center">
               <div>
-                <h3 className="text-lg font-semibold">{cat.name}</h3>
+                <h3 className="text-lg font-semibold">{nameViMap[cat.name] || cat.name}</h3>
+
               </div>
             </div>
           </NavLink>

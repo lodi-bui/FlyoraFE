@@ -120,20 +120,20 @@ const ProductDetails = () => {
   };
 
   const productDetails = [
-    { label: "Name", value: product?.name, bgColor: "bg-neutral-200" },
+    { label: "Tên", value: product?.name, bgColor: "bg-neutral-200" },
     {
-      label: "Type",
+      label: "Loại",
       value: translateCategory(product?.category),
       bgColor: "bg-white",
     },
     {
-      label: "Indication",
+      label: "Chỉ định",
       value: product?.birdType,
       bgColor: "bg-neutral-200",
     },
-    { label: "Stock", value: product?.stock, bgColor: "bg-white" },
+    { label: "Tồn kho", value: product?.stock, bgColor: "bg-white" },
     {
-      label: "Description",
+      label: "Mô tả",
       value: product?.description,
       bgColor: "bg-neutral-200",
     },
@@ -143,7 +143,7 @@ const ProductDetails = () => {
   if (error)
     return <div className="text-center py-20 text-red-500">{error}</div>;
   if (!product)
-    return <div className="text-center py-20">Product not found.</div>;
+    return <div className="text-center py-20">Sản phẩm không tồn tại.</div>;
 
   return (
     <>
@@ -181,13 +181,13 @@ const ProductDetails = () => {
             <CardContent className="p-6 space-y-6">
               <div>
                 <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
-                  Size:
+                  Kích thước:
                 </h3>
                 <div className="flex gap-2">
                   <div className="flex-1 p-2 rounded-[8px] border border-[#1286ce] bg-[#ecf9ff] shadow-md">
                     <div className="flex flex-col items-center">
                       <span className="font-semibold text-[#535353] text-[16px]">
-                        Default
+                        Mặc định
                       </span>
                       <span className="font-medium text-[#12a140] text-[14px]">
                         {product.price.toLocaleString()} VNĐ
@@ -220,9 +220,9 @@ const ProductDetails = () => {
                     addToCart(product.id); // ✅ đúng format
                     toast.success("Đã thêm vào giỏ hàng! 🎉");
                   }}
-                  className="w-[40%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                  className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
                 >
-                  Add to Cart
+                  Thêm vào giỏ hàng
                 </button>
 
                 <button
@@ -239,9 +239,9 @@ const ProductDetails = () => {
                     // Chuyển sang trang checkout
                     window.location.href = "/checkout";
                   }}
-                  className="w-[60%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                  className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
                 >
-                  Buy
+                  Mua ngay
                 </button>
               </div>
             </CardContent>
@@ -251,7 +251,7 @@ const ProductDetails = () => {
         {/* Details */}
         <div className="mt-10">
           <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
-            Details
+            Chi tiết
           </h2>
           <Table>
             <TableBody>
@@ -272,7 +272,7 @@ const ProductDetails = () => {
         {/* Other Products */}
         <div className="mt-16">
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
-            Other Products
+            Sản phẩm khác
           </h2>
           <Carousel>
             <CarouselContent>
@@ -302,7 +302,7 @@ const ProductDetails = () => {
         {/* Reviews */}
         <div className="mt-16">
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
-            Reviews
+            Đánh giá
           </h2>
 
           {/* Review Form */}
