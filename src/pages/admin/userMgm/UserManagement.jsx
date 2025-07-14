@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, Settings, LogOut, Users, FileText, ChevronDown } from 'lucide-react';
 import { useAuthCart } from '../../../context/AuthCartContext';
 import Sidebar from '../sidebar/Sidebar';
@@ -195,11 +196,11 @@ const UserManagement = () => {
             </div>
             <span className="text-xl font-bold">Flyora</span>
           </div>
-        </div> */}
+        </div> 
 
         {/* Navigation */}
 
-        <nav className="mt-8">
+        {/* <nav className="mt-8"> */}
 
       {/* Sidebar */}
       <Sidebar />
@@ -407,6 +408,7 @@ const UserManagement = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };
