@@ -1,15 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  Plus,
-  Edit2,
-  Trash2,
-  Settings,
-  LogOut,
-  Users,
-  FileText,
-  ChevronDown,
-} from "lucide-react";
-import { useAuthCart } from "../../../context/AuthCartContext";
+import React, { useState } from 'react';
+import { Search, Plus, Edit2, Trash2, Settings, LogOut, Users, FileText, ChevronDown } from 'lucide-react';
+import { useAuthCart } from '../../../context/AuthCartContext';
+import Sidebar from '../sidebar/Sidebar';
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { UserAccounts } from "api/UserManagement";
@@ -192,65 +184,25 @@ const UserManagement = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
+
       {/* Sidebar */}
       <div className="w-64 bg-green-600 text-white">
         <div className="flex items-center p-6 border-b border-green-500">
+
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
               <span className="text-green-600 font-bold text-sm">F</span>
             </div>
             <span className="text-xl font-bold">Flyora</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Navigation */}
-        <nav className="mt-8">
-          <ul className="space-y-2 px-4">
-            <li>
-              <a
-                href="/admin-page/users"
-                className="flex items-center px-4 py-3 bg-green-500 rounded-lg"
-              >
-                <Users className="w-5 h-5 mr-3" />
-                <span className="font-medium">Users</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin-page/contents"
-                className="flex items-center px-4 py-3 text-green-100 hover:bg-green-500 rounded-lg transition-colors"
-              >
-                <FileText className="w-5 h-5 mr-3" />
-                <span>Contents</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin-page/settings"
-                className="flex items-center px-4 py-3 text-green-100 hover:bg-green-500 rounded-lg transition-colors"
-              >
-                <Settings className="w-5 h-5 mr-3" />
-                <span>Manage System</span>
-                <ChevronDown className="w-4 h-4 ml-auto" />
-              </a>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  logout();
-                  toast.success("Đăng xuất thành công!");
-                  navigate("/");
-                }}
-                className="w-full text-left flex items-center px-4 py-3 text-red-200 hover:bg-green-500 rounded-lg font-medium transition-colors"
-              >
-                <LogOut className="w-5 h-5 mr-3" />
-                <span>Logout</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
 
+        <nav className="mt-8">
+
+      {/* Sidebar */}
+      <Sidebar />
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow-sm border-b border-gray-200">

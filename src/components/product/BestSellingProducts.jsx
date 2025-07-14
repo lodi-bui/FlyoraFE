@@ -48,12 +48,13 @@ const BestSellingProducts = () => {
   };
 
   return (
-    <div className="py-12 px-4 bg-white">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
-        Best selling products
+    <div className="py-12 bg-white">
+      <h2 className="text-2xl font-bold mb-10">
+        Sản phẩm bán chạy
       </h2>
 
       {/* ✅ Flexbox layout to center the cards */}
+
       <Carousel className="max-w-6xl mx-auto">
   <CarouselContent>
     {product.map((p) => (
@@ -88,6 +89,7 @@ const BestSellingProducts = () => {
                     }}
                   />
                 </button>
+
               </div>
               <p className="text-gray-700 font-semibold text-base mt-2">
                 {p.price.toLocaleString()} VNĐ
