@@ -79,7 +79,7 @@ function App() {
         <Route path="/manager-page" element={<ProductManagement />} />
         <Route path="/manager-page/product" element={<ProductManagement />} />
         <Route path="/manager-page/add-product" element={<AddProduct />} />
-
+        <Route path="/manager-page/dashboard" element={<ProductManagement />} />
       </Routes>
 
       <Chatbotbox />
