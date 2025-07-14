@@ -63,8 +63,11 @@ const Login = () => {
 
         setTimeout(() => {
           setShowSuccess(false);
+          console.log("Đăng nhập thành công:", res.data);
           if(role === "Admin"){
             navigate("/admin-page");
+          } else if(role === "ShopOwner"){
+            navigate("/shopowner");
           } else {
             navigate("/");
           }

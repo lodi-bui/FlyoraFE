@@ -21,7 +21,7 @@ import ProfilePage from './pages/profile/ProfilePage';
 
 import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
-import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage'; 
+import DashBoard from './pages/shopOwner/DashBoard';
 
 import UserManagement from './pages/admin/userMgm/UserManagement';
 import ContentPage from './pages/admin/content/ContentPage';
@@ -69,10 +69,17 @@ function App() {
         <Route path="/admin-page/contents" element={<ContentPage />} />
         <Route path="/admin-page/settings" element={<UserManagement />} />
 
+        <Route path="/shopowner" element={<DashBoard />} />
+        <Route path="/shopowner/dashboard" element={<DashBoard />} />
+        <Route path="/shopowner/products" element={<DashBoard />} />
+
+
+
         {/* Manager Routes */}
         <Route path="/manager-page" element={<ProductManagement />} />
         <Route path="/manager-page/product" element={<ProductManagement />} />
         <Route path="/manager-page/add-product" element={<AddProduct />} />
+
       </Routes>
 
       <Chatbotbox />

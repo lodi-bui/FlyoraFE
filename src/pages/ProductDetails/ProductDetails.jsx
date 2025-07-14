@@ -7,13 +7,20 @@ import { getProductsByCategory } from "api/Product";
 import { submitReview, getReviewsByProductId } from "api/Review";
 import { Card, CardContent } from "components/ui/Card";
 import { Button } from "components/ui/Button";
-import { Badge } from "components/ui/Badge";
+// import { Badge } from "components/ui/Badge";
 import { Separator } from "components/ui/Separator";
 import { Table, TableBody, TableCell, TableRow } from "components/ui/Table";
 import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "components/ui/Carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "components/ui/Carousel";
 import { Link } from "react-router-dom";
+import { useAuthCart } from "context/AuthCartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -27,6 +34,8 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([]);
 
   const customerId = Number(localStorage.getItem("linkedId"));
+
+  const { isLoggedIn, addToCart } = useAuthCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,21 +121,34 @@ const ProductDetails = () => {
 
   const productDetails = [
     { label: "Name", value: product?.name, bgColor: "bg-neutral-200" },
-    { label: "Type", value: translateCategory(product?.category), bgColor: "bg-white" },
-    { label: "Indication", value: product?.birdType, bgColor: "bg-neutral-200" },
+    {
+      label: "Type",
+      value: translateCategory(product?.category),
+      bgColor: "bg-white",
+    },
+    {
+      label: "Indication",
+      value: product?.birdType,
+      bgColor: "bg-neutral-200",
+    },
     { label: "Stock", value: product?.stock, bgColor: "bg-white" },
-    { label: "Description", value: product?.description, bgColor: "bg-neutral-200" },
+    {
+      label: "Description",
+      value: product?.description,
+      bgColor: "bg-neutral-200",
+    },
   ];
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
-  if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
-  if (!product) return <div className="text-center py-20">Product not found.</div>;
+  if (error)
+    return <div className="text-center py-20 text-red-500">{error}</div>;
+  if (!product)
+    return <div className="text-center py-20">Product not found.</div>;
 
   return (
     <>
       <Header />
       <div className="container mx-auto px-6 py-6">
-
         {/* Product Info */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="col-span-2 shadow-md rounded-[12px]">
@@ -145,9 +167,6 @@ const ProductDetails = () => {
                       {product.name}
                     </h1>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-[#ffd400] text-base">Sale</span>
-                      <StarIcon className="w-5 h-5 fill-[#ffd400]" />
-                      <span className="font-medium text-[#ffd400] text-base">(4)</span>
                     </div>
                   </div>
                   <div className="mt-6 space-y-2 font-medium text-black text-[16px]">
@@ -161,13 +180,17 @@ const ProductDetails = () => {
           <Card className="shadow-md rounded-[12px]">
             <CardContent className="p-6 space-y-6">
               <div>
-                <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">Size:</h3>
+                <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
+                  Size:
+                </h3>
                 <div className="flex gap-2">
                   <div className="flex-1 p-2 rounded-[8px] border border-[#1286ce] bg-[#ecf9ff] shadow-md">
                     <div className="flex flex-col items-center">
-                      <span className="font-semibold text-[#535353] text-[16px]">Default</span>
+                      <span className="font-semibold text-[#535353] text-[16px]">
+                        Default
+                      </span>
                       <span className="font-medium text-[#12a140] text-[14px]">
-                        {product.price} VND
+                        {product.price.toLocaleString()} VNĐ
                       </span>
                     </div>
                   </div>
@@ -175,21 +198,51 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="font-bold text-[#494444] text-[28px]">{product.price} VND</p>
-                <Badge className="bg-[#12a140] text-white text-[16px] h-[56px] px-6 rounded-[10px] flex items-center justify-center">
+                <p className="font-bold text-[#494444] text-[28px]">
+                  {product.price.toLocaleString()} VNĐ
+                </p>
+                {/* <Badge className="bg-[#12a140] text-white text-[16px] h-[56px] px-6 rounded-[10px] flex items-center justify-center">
                   Sale
-                </Badge>
+                </Badge> */}
               </div>
 
               <Separator />
 
+              {/* Add to Cart and Buy Buttons */}
               <div className="flex gap-4">
-                <Button className="w-[40%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (!isLoggedIn) {
+                      toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
+                      return;
+                    }
+                    addToCart(product.id); // ✅ đúng format
+                    toast.success("Đã thêm vào giỏ hàng! 🎉");
+                  }}
+                  className="w-[40%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                >
                   Add to Cart
-                </Button>
-                <Button className="w-[60%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]">
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      toast.error("Bạn cần đăng nhập để mua hàng!");
+                      return;
+                    }
+
+                    // Ghi sản phẩm hiện tại vào localStorage.cart
+                    const cartItem = [{ id: product.id, qty: 1 }];
+                    localStorage.setItem("cart", JSON.stringify(cartItem));
+
+                    // Chuyển sang trang checkout
+                    window.location.href = "/checkout";
+                  }}
+                  className="w-[60%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                >
                   Buy
-                </Button>
+                </button>
               </div>
             </CardContent>
           </Card>
@@ -197,7 +250,9 @@ const ProductDetails = () => {
 
         {/* Details */}
         <div className="mt-10">
-          <h2 className="font-semibold text-[#494444] text-[28px] mb-4">Details</h2>
+          <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
+            Details
+          </h2>
           <Table>
             <TableBody>
               {productDetails.map((detail, index) => (
@@ -216,7 +271,9 @@ const ProductDetails = () => {
 
         {/* Other Products */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-[32px] mb-6">Other Products</h2>
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
+            Other Products
+          </h2>
           <Carousel>
             <CarouselContent>
               {relatedProducts.map((item) => (
@@ -229,7 +286,9 @@ const ProductDetails = () => {
                         className="h-[150px] w-full object-cover rounded"
                       />
                       <h3 className="font-semibold mt-2">{item.name}</h3>
-                      <p className="text-sm text-gray-600">{item.price} VND</p>
+                      <p className="text-sm text-gray-600">
+                        {item.price.toLocaleString()} VNĐ
+                      </p>
                     </Card>
                   </Link>
                 </CarouselItem>
@@ -242,7 +301,9 @@ const ProductDetails = () => {
 
         {/* Reviews */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-[32px] mb-6">Reviews</h2>
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
+            Reviews
+          </h2>
 
           {/* Review Form */}
           <div className="mb-8 space-y-4">
@@ -292,12 +353,12 @@ const ProductDetails = () => {
                     />
                   ))}
                 </div>
-                <p className="font-normal text-black text-[16px]">{review.comment}</p>
+                <p className="font-normal text-black text-[16px]">
+                  {review.comment}
+                </p>
               </div>
             ))}
           </div>
-
-          
         </div>
       </div>
       <Footer />
