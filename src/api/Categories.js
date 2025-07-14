@@ -1,8 +1,8 @@
 
 const mockCategories = [
-  { id: '1', slug: '1', name: 'Food', image: '../category-pics/food.jpg' },
-  { id: '2', slug: '2', name: 'Toy', image: '../category-pics/toys.jpg' },
-  { id: '3', slug: '3', name: 'Furniture', image: '../category-pics/furniture.jpg' },
+  { id: '1', slug: '1', name: 'Food', image: "https://i.postimg.cc/g2Dc3Jd5/food.jpg" },
+  { id: '2', slug: '2', name: 'Toy', image: "https://i.postimg.cc/5NJMpVPM/toys.webp" },
+  { id: '3', slug: '3', name: 'Furniture', image: "https://i.postimg.cc/d0fY9ZfW/furniture.jpg" },
 ];
 
 export async function getCategories() {

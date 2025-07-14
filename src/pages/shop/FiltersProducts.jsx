@@ -7,6 +7,14 @@ import { getProductsByCategory } from "../../api/Product";
 import { getCategories } from "../../api/Categories";
 import PriceFilter from "./PriceFilter"; // Assuming you have a PriceFilter component
 
+// ✅ Mapping tags to birdTypeId
+const birdTypeMap = {
+  "Chào Mào": 1,
+  "Vẹt Xích": 2,
+  "Yến Phụng": 3,
+  "Chích Chòe": 4,
+};
+
 const ProductFilterPage = () => {
   const { isLoggedIn, addToCart } = useAuthCart();
   const navigate = useNavigate();
@@ -23,15 +31,8 @@ const ProductFilterPage = () => {
 
   const tagsList = ["Chào Mào", "Vẹt Xích", "Yến Phụng", "Chích Chòe"];
 
-  // ✅ Mapping tags to birdTypeId
-  const birdTypeMap = {
-    "Chào Mào": 1,
-    "Vẹt Xích": 2,
-    "Yến Phụng": 3,
-    "Chích Chòe": 4,
-  };
-
   const params = new URLSearchParams(location.search);
+  const tagFromUrl = params.get("tag");
   const categoryId = params.get("categoryId");
   const search = params.get("search");
 
@@ -78,6 +79,14 @@ const ProductFilterPage = () => {
     fetchProducts();
   }, [categoryId, search, selectedTag, minPrice, maxPrice]);
 
+  useEffect(() => {
+    if (tagFromUrl) {
+      setSelectedTag(tagFromUrl);
+    } else {
+      setSelectedTag(null);
+    }
+  }, [tagFromUrl]);
+
   // Click vào category
   const handleCategoryClick = (id) => {
     const isSelected = categoryId === String(id);
@@ -94,7 +103,17 @@ const ProductFilterPage = () => {
 
   // ✅ Click vào tag
   const handleTagClick = (tag) => {
-    setSelectedTag(tag === selectedTag ? null : tag);
+    const newParams = new URLSearchParams(location.search);
+
+    if (tag === selectedTag) {
+      setSelectedTag(null);
+      newParams.delete("tag");
+    } else {
+      setSelectedTag(tag);
+      newParams.set("tag", tag);
+    }
+
+    navigate(`/shop?${newParams.toString()}`);
   };
 
   const handleAddToCart = (id) => {
@@ -106,9 +125,9 @@ const ProductFilterPage = () => {
     toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
-  const handleApplyPrice = () => {
-    toast.success(`Applied price: ₫${minPrice} - ₫${maxPrice}`);
-  };
+  // const handleApplyPrice = () => {
+  //   toast.success(`Applied price: ₫${minPrice} - ₫${maxPrice}`);
+  // };
 
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
@@ -152,26 +171,26 @@ const ProductFilterPage = () => {
           </div>
 
           {/* Tags Filter */}
-<div>
-  <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
-  <div className="flex flex-wrap gap-2">
-    {tagsList.map((tag) => (
-      <button
-        key={tag}
-        onClick={() => handleTagClick(tag)}
-        className={`border px-3 py-1 rounded text-sm font-medium 
+          <div>
+            <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
+            <div className="flex flex-wrap gap-2">
+              {tagsList.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  className={`border px-3 py-1 rounded text-sm font-medium 
           min-w-[100px] h-[40px] flex items-center justify-center
           ${
             selectedTag === tag
               ? "bg-orange-500 text-white"
               : "bg-gray-50 text-black"
           }`}
-      >
-        {tag}
-      </button>
-    ))}
-  </div>
-</div>
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Popular Products */}
           <div>
@@ -192,7 +211,7 @@ const ProductFilterPage = () => {
                     <div>
                       <p className="text-sm font-medium">{p.name}</p>
                       <p className="text-sm font-semibold text-gray-700">
-                        {p.price.toLocaleString()} VND
+                        {p.price.toLocaleString()} VNĐ
                       </p>
                     </div>
                   </NavLink>
