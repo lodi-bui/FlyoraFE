@@ -14,7 +14,7 @@ const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Filter by Price</h2>
+      <h2 className="text-xl font-bold mb-4">Lọc theo giá</h2>
 
       {/* <div className="flex justify-between mb-3">
         <span className="text-sm text-gray-700">

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
+
 import { Search, Plus, Edit2, Trash2, Settings, LogOut, Users, FileText, ChevronDown } from 'lucide-react';
 import { useAuthCart } from '../../../context/AuthCartContext';
 import Sidebar from '../sidebar/Sidebar';
@@ -185,25 +186,23 @@ const UserManagement = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-
       {/* Sidebar */}
       <div className="w-64 bg-green-600 text-white">
         <div className="flex items-center p-6 border-b border-green-500">
-
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
               <span className="text-green-600 font-bold text-sm">F</span>
             </div>
             <span className="text-xl font-bold">Flyora</span>
           </div>
-        </div> 
 
-        {/* Navigation */}
+        </div>
 
-        {/* <nav className="mt-8"> */}
+        {/* Sidebar */}
+        <Sidebar />
+      </div>
 
-      {/* Sidebar */}
-      <Sidebar />
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow-sm border-b border-gray-200">
