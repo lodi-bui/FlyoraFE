@@ -65,7 +65,7 @@ const NewsBlogSalesSection = () => {
   );
 
   return (
-    <section className="py-10 px-6 bg-white">
+    <section className="py-10 px-6 bg-white px-[200px]" >
 
       <SectionTitle title="News & Blog & Sales" />
       <div className="relative mt-6 justify-center">

@@ -63,7 +63,7 @@ const CategoryFilter = () => {
   //   </section>
   // );
   return (
-  <section className="py-12">
+  <section className="py-12 px-[200px]">
     <div className="flex justify-between items-center mb-6">
       <h2 className="text-2xl font-bold text-black">Danh mục sản phẩm</h2>
     </div>

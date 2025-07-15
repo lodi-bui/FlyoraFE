@@ -48,7 +48,7 @@ const BestSellingProducts = () => {
   };
 
   return (
-    <div className="py-12 bg-white">
+    <div className="py-12 bg-white px-[200px]">
       <h2 className="text-2xl font-bold mb-10">
         Sản phẩm bán chạy
       </h2>

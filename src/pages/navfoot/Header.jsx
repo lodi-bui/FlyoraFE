@@ -269,9 +269,9 @@ function Header() {
   };
 
   return (
-    <header className="relative w-full bg-white">
+    <header className="relative w-full bg-white px-[200px]" >
       {/* draft */}
-      <div className="flex justify-evenly items-center w-full">
+      <div className="flex justify-between items-center w-full">
         {/* Logo and Navigation */}
         <div>
           <img src={logoBird} alt="Flyora Logo" className="w-50" />
@@ -420,7 +420,7 @@ function Header() {
         </nav>
       )}
       {/* Banner section */}
-      <div className=" w-full">
+      <div className="w-full flex justify-center">
         <img src={bannerImg} alt="Banner" />
       </div>
     </header>

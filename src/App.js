@@ -30,7 +30,7 @@ import ProductManagement from 'pages/manager/product/ProductManagement';
 import AddProduct from 'pages/manager/product/AddProduct';
 function App() {
   return (
-    <div className="max-w-screen-xl mx-auto px-4">
+    <div className="max-w-screen-[1440px] mx-auto">
       <Routes>
 
         <Route path="/" element={<HomePage />} />

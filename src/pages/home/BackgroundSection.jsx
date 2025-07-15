@@ -72,8 +72,8 @@ const BackgroundSection = () => {
   // );
   return (
     <section className="py-8 bg-white">
-      <div className="">
-        <h2 className="text-2xl font-bold text-black mb-6">
+      <div className="px-[200px]">
+        <h2 className="text-2xl font-bold text-black mb-6 ">
           Chuyên sản phẩm cho các loại chim
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 flex justify-between ">
