@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "components/ui/Carousel";
 
 const NewsBlogSalesSection = () => {
   const [posts, setPosts] = useState([]);
@@ -7,13 +14,17 @@ const NewsBlogSalesSection = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await axios.get("https://flyora-backend.onrender.com/api/v1/news");
+        const res = await axios.get(
+          "https://flyora-backend.onrender.com/api/v1/news"
+        );
         const data = res.data.map((item) => ({
           id: item.id,
           title: item.title,
           link: item.url,
           createdAt: item.createdAt,
-          image: item.imageUrl || `https://source.unsplash.com/400x300/?bird,news,${item.id}` // fallback
+          image:
+            item.imageUrl ||
+            `https://source.unsplash.com/400x300/?bird,news,${item.id}`, // fallback
         }));
         setPosts(data);
       } catch (err) {
@@ -29,35 +40,50 @@ const NewsBlogSalesSection = () => {
       href={post.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="bg-white rounded-xl shadow-md hover:shadow-lg transition w-[300px] flex-shrink-0 overflow-hidden"
+      className="bg-white rounded-xl shadow-md hover:shadow-lg transition flex-shrink-0 overflow-hidden block w-[280px] h-[240px]"
     >
       <div className="flex flex-col h-full">
         <img
           src={post.image}
           alt={post.title}
-          className="w-full h-[180px] object-cover"
+          className="w-full h-[140px] object-cover flex-shrink-0"
         />
-        <div className="p-4 flex-grow flex flex-col justify-start">
-          <h3 className="text-base font-semibold leading-snug line-clamp-2">{post.title}</h3>
-          <p className="text-sm text-gray-500 mt-1">{new Date(post.createdAt).toLocaleDateString()}</p>
+        <div className="p-3 flex-grow flex flex-col justify-between">
+          <h3 className="text-base font-semibold leading-tight line-clamp-2 flex-grow">
+            {post.title}
+          </h3>
+          <p className="text-sm text-gray-500 mt-1 flex-shrink-0">
+            {new Date(post.createdAt).toLocaleDateString()}
+          </p>
         </div>
       </div>
     </a>
   );
 
   const SectionTitle = ({ title }) => (
-    <h2 className="text-2xl font-bold text-center text-gray-800">{title}</h2>
+    <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
   );
 
   return (
-    <section className="py-10 px-6 bg-white">
+    <section className="py-10 px-6 bg-white px-[200px]" >
+
       <SectionTitle title="News & Blog & Sales" />
-      <div className="mt-6 overflow-x-auto">
-        <div className="flex gap-6 w-max pb-2">
-          {posts.map((post) => (
-            <BlogCard key={post.id} post={post} />
-          ))}
-        </div>
+      <div className="relative mt-6 justify-center">
+        <Carousel className="w-full">
+          <CarouselContent className="center ml-1 pl-6 justify-start">
+            {posts.map((post) => (
+              <CarouselItem
+                key={post.id}
+                className="pl-1 basis-1/5 min-w-0 justify-center"
+              >
+                <BlogCard post={post} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
+          <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
+        </Carousel>
+
       </div>
     </section>
   );

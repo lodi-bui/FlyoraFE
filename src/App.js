@@ -15,19 +15,22 @@ import NewsPage from './pages/news/NewsPage';
 import CartPage from './pages/cart/CartPage';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
 
-
 import OrderHistoryPage from './pages/order/OrderHistoryPage';
 import OrderDetailsPage from './pages/order/OrderDetailsPage';
 import ProfilePage from './pages/profile/ProfilePage';
 
 import AboutUsPage from 'pages/aboutUs/AboutUsPage';
 import ContactUsPage from 'pages/contactUs/ContactUsPage';
+import DashBoard from './pages/shopOwner/DashBoard';
 
 import UserManagement from './pages/admin/userMgm/UserManagement';
+import ContentPage from './pages/admin/content/ContentPage';
 
+import ProductManagement from 'pages/manager/product/ProductManagement';
+import AddProduct from 'pages/manager/product/AddProduct';
 function App() {
   return (
-    <>
+    <div className="max-w-screen-[1440px] mx-auto">
       <Routes>
 
         <Route path="/" element={<HomePage />} />
@@ -41,8 +44,6 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} /> 
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />        
-        
-
 
         {/* <Route path="/about" element={<AboutPage />} /> */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}
@@ -61,19 +62,29 @@ function App() {
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/contact-us" element={<ContactUsPage />} />
 
+
         {/* Admin Routes */}
         <Route path="/admin-page" element={<UserManagement />} />
         <Route path="/admin-page/users" element={<UserManagement />} />
-        <Route path="/admin-page/contents" element={<UserManagement />} />
+        <Route path="/admin-page/contents" element={<ContentPage />} />
         <Route path="/admin-page/settings" element={<UserManagement />} />
 
+        <Route path="/shopowner" element={<DashBoard />} />
+        <Route path="/shopowner/dashboard" element={<DashBoard />} />
+        <Route path="/shopowner/products" element={<DashBoard />} />
 
 
 
+        {/* Manager Routes */}
+        <Route path="/manager-page" element={<ProductManagement />} />
+        <Route path="/manager-page/product" element={<ProductManagement />} />
+        <Route path="/manager-page/add-product" element={<AddProduct />} />
+        <Route path="/manager-page/dashboard" element={<ProductManagement />} />
       </Routes>
 
       <Chatbotbox />
-    </>
+    </div>
+
   );
 }
 

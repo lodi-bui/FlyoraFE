@@ -14,18 +14,20 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [setEmptyCart] = useState(false);
 
-  // Load từ localStorage và fetch thông tin sản phẩm từ API
+  // ✅ Load từ localStorage và fetch thông tin sản phẩm từ API
   const location = useLocation();
 
-  // Sử dụng useLocation để theo dõi thay đổi URL
-  // Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
+  // ✅ Sử dụng useLocation để theo dõi thay đổi URL
+  // ✅ Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
+
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
       try {
         const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
+        // ✅ Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
+
         const localCart = rawCart.filter(
           (item) =>
             item &&
@@ -70,7 +72,10 @@ const CartPage = () => {
   }, [location]);
 
   const syncToLocalStorage = (updated) => {
-    const simplified = updated.map(({ id, qty }) => ({ id, qty }));
+    const simplified = updated
+      .filter((it) => typeof it.qty === "number" && it.qty > 0)
+      .map(({ id, qty }) => ({ id, qty }));
+
     localStorage.setItem("cart", JSON.stringify(simplified));
   };
 
@@ -81,8 +86,9 @@ const CartPage = () => {
   };
 
   const changeQty = (id, newQty) => {
-    if (newQty < 1) {
-      removeItem(id);
+    if (!Number.isInteger(newQty) || newQty < 1) {
+      removeItem(id); // Nếu số lượng không hợp lệ thì xóa luôn
+
     } else {
       const updated = items.map((it) =>
         it.id === id ? { ...it, qty: newQty } : it

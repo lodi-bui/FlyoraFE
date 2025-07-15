@@ -1,5 +1,6 @@
 import React from "react";
 import { FaTruck } from "react-icons/fa";
+import Vnpay from "../../icons/vnpay.png"; // Assuming you have this image in your icons folder
 
 const PaymentMethod = ({ method, onChange }) => (
   <div className="bg-white p-6 rounded-lg shadow">
@@ -33,7 +34,7 @@ const PaymentMethod = ({ method, onChange }) => (
           onChange={onChange}
           className="mr-3"
         />
-        <img src="/icons/vnpay.png" alt="VNPay" className="w-8 h-8 mr-3" />
+        <img src={Vnpay} alt="" className="w-8 h-8 mr-3" />
         <span>Thanh toán VNPay – QR</span>
       </label>
     </div>

@@ -1,26 +1,26 @@
-// src/api/NewsBlogSales.js
-
-const newsBlogSalesPosts = [
-  {
-    title: "Chăm sóc vẹt mùa hè",
-    description: "Hướng dẫn giữ vẹt khỏe mạnh trong thời tiết nóng.",
-    image: "/images/blog1.jpg",
-    link: "http://facebook.com/", //sau nay thêm link thật
-  },
-  {
-    title: "Thức ăn dinh dưỡng cho chim",
-    description: "Top 5 loại thức ăn giúp chim phát triển toàn diện.",
-    image: "/images/blog2.jpg",
-    link: "http://instagram.com/", //sau nay thêm link thật
-  },
-  {
-    title: "Black Friday - Giảm 50%",
-    description: "Ưu đãi siêu khủng cho phụ kiện & thức ăn.",
-    image: "/images/blog3.jpg",
-    link: "http://twitter.com/", //sau nay thêm link thật
-  },
-];
-
-export { newsBlogSalesPosts };
-
 // sau nay có thể thay thế bằng axios để lấy dữ liệu từ API
+import axios from "axios";
+
+const API_URL = "https://flyora-backend.onrender.com/api/v1/news-blog-sales";
+
+const getNewsBlogSalesPosts = async () => {
+  try {
+    const response = await axios.get(API_URL);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching news/blog sales posts:", error);
+    throw error;
+  }
+};
+
+const createNewsBlogSalesPost = async (postData) => {
+  try {
+    const response = await axios.post(API_URL, postData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating news/blog sales post:", error);
+    throw error;
+  }
+};
+
+export { getNewsBlogSalesPosts, createNewsBlogSalesPost };

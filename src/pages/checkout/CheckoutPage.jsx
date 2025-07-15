@@ -6,6 +6,9 @@ import PaymentMethod from "./PaymentMethod";
 import VnpaySection from "./VnpaySection";
 import Header from "../navfoot/Header";
 import Footer from "../navfoot/Footer";
+import { createOrder } from "../../api/Order";
+import { createPayment } from "../../api/Payment";
+import { getCart } from "../../api/Cart"; // Sửa nếu file là cart.js
 
 const CheckoutPage = () => {
   // 1) Thông tin giao hàng
@@ -23,31 +26,42 @@ const CheckoutPage = () => {
   // 2) Giỏ hàng
   const [items, setItems] = useState([]);
   useEffect(() => {
-    // TODO: replace bằng fetch thực từ API /cart
-    setItems([
-      {
-        id: 3,
-        name: "Product 3",
-        img: "/images/product3.jpg",
-        price: 50000,
-        qty: 2,
-      },
-      {
-        id: 7,
-        name: "Product 7",
-        img: "/images/product7.jpg",
-        price: 60000,
-        qty: 1,
-      },
-      {
-        id: 8,
-        name: "Product 8",
-        img: "/images/product8.jpg",
-        price: 100000,
-        qty: 1,
-      },
-    ]);
+    const fetchCart = async () => {
+      const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Nếu giỏ hàng trống thì không làm gì
+      if (rawCart.length === 0) {
+        setItems([]);
+        return;
+      }
+
+      try {
+        // Gọi API lấy thông tin chi tiết sản phẩm từ productId và quantity
+        const productData = await getCart(rawCart);
+
+        // Gộp lại thông tin qty từ local với dữ liệu chi tiết từ API
+        const merged = productData.map((prod) => {
+          const match = rawCart.find(
+            (c) => c.id === prod.id || c.id === prod.productId
+          );
+          return {
+            id: prod.id || prod.productId,
+            name: prod.name,
+            img: prod.imageUrl,
+            price: prod.price,
+            qty: match ? match.qty : 1,
+          };
+        });
+
+        setItems(merged);
+      } catch (err) {
+        console.error("Lỗi khi gọi getCart:", err);
+      }
+    };
+
+    fetchCart();
   }, []);
+
   const total = useMemo(
     () => items.reduce((sum, it) => sum + it.price * it.qty, 0),
     [items]
@@ -62,25 +76,81 @@ const CheckoutPage = () => {
 
   // 5) Đặt hàng thành công với COD → redirect confirm
   const [success, setSuccess] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   // Mã đơn mô phỏng, về sau lấy từ backend trả về
-  const orderId = "SPS12345H527";
 
   // Khi nhấn Đặt Hàng
-  const handleSubmit = () => {
-    if (payment === "vnpay") {
-      // VNPAY: hiện màn QR
-      setShowVnpay(true);
-    } else {
-      // COD: đặt luôn và redirect
-      // TODO: gọi API checkout ở đây
-      setSuccess(true);
+  const handleSubmit = async () => {
+    
+    try {
+      const requiredFields = ["name", "phone", "email", "address", "city"];
+    const emptyFields = requiredFields.filter((field) => !shipping[field]?.trim());
+
+    if (emptyFields.length > 0) {
+      alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
+      return;
+    }
+      // Lấy cart từ localStorage
+      const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const itemsToSend = rawCart
+        .filter((item) => item.qty && item.qty > 0)
+        .map((item) => ({
+          productId: item.id,
+          quantity: item.qty,
+        }));
+
+      if (itemsToSend.length === 0) {
+        alert("Giỏ hàng trống!");
+        return;
+      }
+
+      // Lấy customerId từ localStorage (hoặc context nếu có)
+      const customerId = parseInt(localStorage.getItem("linkedId"));
+      if (!customerId) {
+        alert("Bạn chưa đăng nhập!");
+        return;
+      }
+
+      // 1. Gọi API tạo đơn hàng
+      const orderRes = await createOrder(customerId, itemsToSend);
+      const newOrderId = orderRes.orderId;
+      setOrderId(newOrderId); // Gán vào state
+      // 2. Nếu phương thức thanh toán là VNPAY
+      const paymentMethodId = payment === "vnpay" ? 1 : 2;
+      const paymentData = {
+        orderId: newOrderId, // ✅ dùng biến local này, không đụng tới state
+        customerId,
+        paymentMethodId,
+        ...(paymentMethodId === 1 ? { amount: total } : {}),
+      };
+
+      // 3. Gọi API thanh toán
+      const payRes = await createPayment(paymentData);
+
+      // 4. Xử lý kết quả theo phương thức thanh toán
+      if (paymentMethodId === 1) {
+        // VNPAY → redirect sang trang thanh toán
+        const redirectUrl = payRes.url || payRes.paymentUrl;
+        window.location.href = redirectUrl;
+      } else {
+        // COD → chuyển trang thành công
+        setSuccess(true);
+        localStorage.removeItem("cart");
+      }
+    } catch (err) {
+      console.error("Lỗi đặt hàng:", err);
+      if (err.response) {
+        console.error("Server trả về:", err.response.data); // <-- Quan trọng!
+      }
+      alert("Đặt hàng thất bại. Vui lòng thử lại.");
     }
   };
 
   // Nếu COD thành công thì chuyển confirm
   if (success) {
-    return <Navigate to="/checkout/confirm" replace />;
+    return <Navigate to="/checkout/confirm" replace state={{ orderId }} />;
   }
 
   return (

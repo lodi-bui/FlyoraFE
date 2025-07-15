@@ -1,8 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FiEdit, FiX } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { toast } from "react-hot-toast";
+import { getProfile } from "../../api/Profile"; // Assuming you have a getProfile API function
+import { updateProfile } from "../../api/UpdateProfile"; // Assuming you have an updateProfile API function
+import { changePassword } from "../../api/ChangePassword"; // Assuming you have a changePassword API function
 
 const EditProfile = () => {
   const fileInputRef = useRef(null);
@@ -32,15 +35,64 @@ const EditProfile = () => {
   const openPasswordModal = () => setPasswordModalOpen(true);
   const closePasswordModal = () => setPasswordModalOpen(false);
 
-  const handlePasswordChange = () => {
-    console.log({ currentPass, newPass, confirmPass });
-    closePasswordModal();
+  const handlePasswordChange = async () => {
+    try {
+      if (newPass !== confirmPass) {
+        toast.error("Mật khẩu mới không trùng khớp");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      await changePassword(token, currentPass, newPass);
+      toast.success("Đổi mật khẩu thành công");
+      closePasswordModal();
+      setCurrentPass("");
+      setNewPass("");
+      setConfirmPass("");
+    } catch (error) {
+      toast.error("Đổi mật khẩu thất bại");
+      console.error("Đổi mật khẩu lỗi:", error);
+    }
   };
 
-  const handleSaveProfile = () => {
-    console.log({ avatar, name, email, phone, address });
-    toast.success("Bạn đã cập nhật thành công");
+  const handleSaveProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const payload = {
+        name,
+        email,
+        phone,
+      };
+
+      console.log("== GỬI CẬP NHẬT HỒ SƠ ==");
+      console.log("Token:", token);
+      console.log("Payload:", payload);
+
+      const res = await updateProfile(token, payload);
+      toast.success("Cập nhật hồ sơ thành công");
+    } catch (error) {
+      toast.error("Lỗi khi cập nhật hồ sơ");
+      console.error("Chi tiết lỗi:", error?.response?.data || error);
+    }
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const data = await getProfile(token);
+        setName(data.name);
+        setEmail(data.email);
+        setPhone(data.phone);
+        // Nếu có địa chỉ từ DB thì set thêm
+      } catch (error) {
+        toast.error("Không thể lấy hồ sơ người dùng");
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   return (
     <div className="bg-gray-100 py-10 px-4 min-h-screen flex justify-center">
@@ -157,7 +209,8 @@ const EditProfile = () => {
                 </button>
               </div>
               <div className="p-6 space-y-4">
-                <input type="password"
+                <input
+                  type="password"
                   value={currentPass}
                   onChange={(e) => setCurrentPass(e.target.value)}
                   placeholder="Mật khẩu hiện tại"
