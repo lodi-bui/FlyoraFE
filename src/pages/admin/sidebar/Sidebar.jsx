@@ -8,7 +8,7 @@ const Sidebar = () => {
   const { logout } = useAuthCart();
   const navigate = useNavigate();
   const location = useLocation();
-  const role = useAuthCart().user?.role || 'manager'; // Default to 'manager' if role is not defined
+  const role = useAuthCart().user?.roleId || 'manager'; // Default to 'manager' if role is not defined
 
   return (
     <div className="w-64 bg-green-600 text-white">
@@ -28,7 +28,7 @@ const Sidebar = () => {
           <span className="text-sm font-medium text-green-200">Main</span>
         </div>
         <ul className="space-y-2 px-4">
-          {role === 'admin' ? (
+          {role === '1' ? (
             <>
               <li>
                 <a href="/admin-page/users" className={`flex items-center px-4 py-3 rounded-lg ${location.pathname === '/admin-page/users' ? 'bg-green-700 text-white' : 'text-green-100 hover:bg-green-500 transition-colors'}`}>

@@ -38,6 +38,7 @@ const CategoryFilter = () => {
     return <div className="text-center py-10 text-red-500">{error}</div>;
 
   return (
+
     <section className="py-12 px-6">
       <h2 className="text-3xl font-bold mb-10 text-center">
         Tìm kiếm theo danh mục
@@ -45,6 +46,7 @@ const CategoryFilter = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {categories.map((cat) => (
           <NavLink
+
             key={cat.id}
             to={`/shop?categoryId=${cat.slug}`}
             className={`rounded-2xl overflow-hidden bg-white shadow hover:shadow-lg transition duration-300 block ${
