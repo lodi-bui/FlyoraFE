@@ -15,6 +15,8 @@ import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "components/ui/Carousel";
 import { Link } from "react-router-dom";
+import { useAuthCart } from "context/AuthCartContext";
+
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -29,6 +31,7 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([]);
 
   const customerId = Number(localStorage.getItem("linkedId"));
+  const { isLoggedIn, addToCart } = useAuthCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +62,7 @@ const ProductDetails = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [customerId, id]);
 
   const handleSubmitReview = async () => {
     if (!customerId) {
@@ -201,7 +204,7 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="font-bold text-[#494444] text-3xl">{product.price} VND</p>
+                <p className="font-bold text-[#494444] text-3xl">{product.price.toLocaleString()} VND</p>
                 <Badge className="bg-[#12a140] text-white text-lg h-14 px-6 rounded-xl flex items-center justify-center">
                   Sale
                 </Badge>
