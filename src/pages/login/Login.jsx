@@ -43,16 +43,15 @@ const Login = () => {
       // }
 
       if (res.status === 200) {
-
         const { userId, name, linkedId, role, token } = res.data;
 
-      // Lưu token vào localStorage
-      localStorage.setItem("token", token);
+        // Lưu token vào localStorage
+        localStorage.setItem("token", token);
 
-      // Lưu thông tin vào context
-      login({ userId, name, linkedId, role });
+        // Lưu thông tin vào context
+        login({ userId, name, linkedId, role });
         setShowSuccess(true);
-        
+
         // Lưu thông tin người dùng vào context
         // login({
         //   userId: res.data.userId,
@@ -64,9 +63,9 @@ const Login = () => {
         setTimeout(() => {
           setShowSuccess(false);
           console.log("Đăng nhập thành công:", res.data);
-          if(role === "Admin"){
+          if (role === "Admin") {
             navigate("/admin-page");
-          } else if(role === "ShopOwner"){
+          } else if (role === "ShopOwner") {
             navigate("/shopowner");
           } else {
             navigate("/");

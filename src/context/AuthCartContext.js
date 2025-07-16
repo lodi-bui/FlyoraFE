@@ -4,81 +4,74 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [user, setUser] = useState(null);  // 👉 Thêm user
+  const [user, setUser] = useState(null);
 
-  // ==== Auth ====
-  // const login = (userData) => {
-  //   setIsLoggedIn(true);
-  //   setUser(userData); // Lưu thông tin user bao gồm linkedId
-  // };
-
-  const login = (userData) => {
-  setIsLoggedIn(true);
-  setUser(userData);
-
-  // Lưu linkedId vào localStorage
-  if (userData?.linkedId) {
-    localStorage.setItem("linkedId", userData.linkedId);
-  }
-};
-
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-
+  // Thêm hàm để đồng bộ cartCount từ localStorage
+  const updateCartCountFromLocalStorage = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+    setCartCount(count);
   };
 
-  // ==== Cart & Wishlist ====
-  // context/AuthCartContext.js
-const addToCart = (productId) => {
-  const current = JSON.parse(localStorage.getItem("cart")) || [];
-  const existing = current.find((item) => item.id === productId);
+ const addToCart = (id) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingItem = cart.find((item) => item.id === id);
 
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    current.push({ id: productId, qty: 1 });
-  }
+    if (existingItem) {
+      existingItem.qty += 1;
+    } else {
+      cart.push({ id, qty: 1 });
+    }
 
-  localStorage.setItem("cart", JSON.stringify(current));
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCountFromLocalStorage();
+  };
 
-  // Cập nhật số lượng sản phẩm trong giỏ
-  const totalQty = current.reduce((sum, item) => sum + item.qty, 0);
-  setCartCount(totalQty);
-};
-useEffect(() => {
-  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-  const totalQty = localCart.reduce((sum, item) => sum + item.qty, 0);
-  setCartCount(totalQty);
-}, []);
+  const login = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+    updateCartCountFromLocalStorage(); // Khi login xong thì đồng bộ cartCount
+  };
 
+  const logout = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+    setCartCount(0); // Reset về 0 khi logout
+    localStorage.removeItem("cart");
+    localStorage.removeItem("token");
+    localStorage.removeItem("linkedId");
+  };
+
+  const clearCart = () => {
+    localStorage.removeItem("cart");
+    setCartCount(0);
+  };
+
+  useEffect(() => {
+    updateCartCountFromLocalStorage(); // Gọi khi load lại page
+  }, []);
 
   return (
     <AuthCartContext.Provider
       value={{
         isLoggedIn,
-
-
+        setIsLoggedIn,
+        cartCount,
+        setCartCount,
+        updateCartCountFromLocalStorage, // Export
+        user,
+        setUser,
         login,
         logout,
-        user,             // 👉 Truyền user ra ngoài context
-
-        cartCount,
-        addToCart,
-        // updateQty,
-        // removeFromCart,
-
+        clearCart,
+        addToCart, 
       }}
     >
       {children}
-      
-
     </AuthCartContext.Provider>
   );
 };
-
 
 export const useAuthCart = () => useContext(AuthCartContext);

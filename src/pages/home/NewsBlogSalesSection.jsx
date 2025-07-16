@@ -67,8 +67,7 @@ const NewsBlogSalesSection = () => {
   );
 
   return (
-
-    <section className="py-10 px-6 bg-white">
+    <section className="py-10 px-6 bg-white text-center">
       <SectionTitle title="Tin tức & Blog & Khuyến mãi" />
 
       <div className="relative mt-6 justify-center">
@@ -86,7 +85,6 @@ const NewsBlogSalesSection = () => {
           <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
           <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
         </Carousel>
-
       </div>
     </section>
   );
