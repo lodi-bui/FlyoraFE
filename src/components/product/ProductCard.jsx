@@ -40,7 +40,7 @@ const ProductCard = ({ id, image, title, price }) => {
             />
           </button>
         </div>
-        <p className="text-green-600 font-bold text-base">{price} VND</p>
+        <p className="text-green-600 font-bold text-base">{price.toLocaleString()} VND</p>
       </div>
     </NavLink>
   );

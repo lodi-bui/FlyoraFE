@@ -5,7 +5,15 @@ import toast from "react-hot-toast";
 import { useAuthCart } from "../../context/AuthCartContext";
 import { getProductsByCategory } from "../../api/Product";
 import { getCategories } from "../../api/Categories";
-import PriceFilter from "./PriceFilter"; // Assuming you have a PriceFilter component
+import PriceFilter from "./PriceFilter";
+
+// ✅ Mapping tags to birdTypeId
+const birdTypeMap = {
+  "Chào Mào": 1,
+  "Vẹt Xích": 2,
+  "Yến Phụng": 3,
+  "Chích Chòe": 4,
+};
 
 const ProductFilterPage = () => {
   const { isLoggedIn, addToCart } = useAuthCart();
@@ -19,19 +27,11 @@ const ProductFilterPage = () => {
 
   const [minPrice, setMinPrice] = useState(15000);
   const [maxPrice, setMaxPrice] = useState(300000);
-  const [selectedTag, setSelectedTag] = useState(null);
 
   const tagsList = ["Chào Mào", "Vẹt Xích", "Yến Phụng", "Chích Chòe"];
 
-  // ✅ Mapping tags to birdTypeId
-  const birdTypeMap = {
-    "Chào Mào": 1,
-    "Vẹt Xích": 2,
-    "Yến Phụng": 3,
-    "Chích Chòe": 4,
-  };
-
   const params = new URLSearchParams(location.search);
+  const tagFromUrl = params.get("tag");
   const categoryId = params.get("categoryId");
   const search = params.get("search");
 
@@ -58,7 +58,7 @@ const ProductFilterPage = () => {
       try {
         const payload = {
           categoryId: categoryId ? parseInt(categoryId) : null,
-          birdTypeId: selectedTag ? birdTypeMap[selectedTag] : null,
+          birdTypeId: tagFromUrl ? birdTypeMap[tagFromUrl] : null,
           minPrice: minPrice,
           maxPrice: maxPrice,
           name: search || "",
@@ -75,10 +75,11 @@ const ProductFilterPage = () => {
         setLoading(false);
       }
     };
-    fetchProducts();
-  }, [categoryId, search, selectedTag, minPrice, maxPrice]);
 
-  // Click vào category
+    fetchProducts();
+  }, [categoryId, search, tagFromUrl, minPrice, maxPrice]);
+
+  // ✅ Click vào category
   const handleCategoryClick = (id) => {
     const isSelected = categoryId === String(id);
     const newParams = new URLSearchParams(location.search);
@@ -94,7 +95,15 @@ const ProductFilterPage = () => {
 
   // ✅ Click vào tag
   const handleTagClick = (tag) => {
-    setSelectedTag(tag === selectedTag ? null : tag);
+    const newParams = new URLSearchParams(location.search);
+
+    if (tag === tagFromUrl) {
+      newParams.delete("tag");
+    } else {
+      newParams.set("tag", tag);
+    }
+
+    navigate(`/shop?${newParams.toString()}`);
   };
 
   const handleAddToCart = (id) => {
@@ -106,10 +115,6 @@ const ProductFilterPage = () => {
     toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
-  const handleApplyPrice = () => {
-    toast.success(`Applied price: ₫${minPrice} - ₫${maxPrice}`);
-  };
-
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
       <div className="max-w-[1414px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -117,7 +122,7 @@ const ProductFilterPage = () => {
         <div className="space-y-8">
           {/* Categories */}
           <div>
-            <h2 className="text-xl font-bold mb-2">Filter by categories</h2>
+            <h2 className="text-xl font-bold mb-2">Lọc theo danh mục</h2>
             <ul className="space-y-2 text-gray-800">
               {categories.map((cat) => {
                 const isSelected = categoryId === String(cat.id);
@@ -146,36 +151,35 @@ const ProductFilterPage = () => {
                 const [minPrice, maxPrice] = range;
                 setMinPrice(minPrice);
                 setMaxPrice(maxPrice);
-                // Call API hoặc cập nhật query param tùy ý
               }}
             />
           </div>
 
           {/* Tags Filter */}
-<div>
-  <h2 className="text-xl font-bold mb-2">Filter by tags</h2>
-  <div className="flex flex-wrap gap-2">
-    {tagsList.map((tag) => (
-      <button
-        key={tag}
-        onClick={() => handleTagClick(tag)}
-        className={`border px-3 py-1 rounded text-sm font-medium 
-          min-w-[100px] h-[40px] flex items-center justify-center
-          ${
-            selectedTag === tag
-              ? "bg-orange-500 text-white"
-              : "bg-gray-50 text-black"
-          }`}
-      >
-        {tag}
-      </button>
-    ))}
-  </div>
-</div>
-
-          {/* Popular Products */}
           <div>
-            <h2 className="text-xl font-bold mb-2">Popular products</h2>
+            <h2 className="text-xl font-bold mb-2">Lọc theo thẻ</h2>
+            <div className="flex flex-wrap gap-2">
+              {tagsList.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  className={`border px-3 py-1 rounded text-sm font-medium 
+                    min-w-[100px] h-[40px] flex items-center justify-center
+                    ${
+                      tagFromUrl === tag
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-50 text-black"
+                    }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Sản phẩm phổ biến */}
+          <div>
+            <h2 className="text-xl font-bold mb-2">Sản phẩm phổ biến</h2>
             <ul className="space-y-3">
               {product.slice(0, 4).map((p) => (
                 <li key={p.id} className="flex items-center gap-3">
@@ -192,7 +196,7 @@ const ProductFilterPage = () => {
                     <div>
                       <p className="text-sm font-medium">{p.name}</p>
                       <p className="text-sm font-semibold text-gray-700">
-                        {p.price.toLocaleString()} VND
+                        {p.price.toLocaleString()} VNĐ
                       </p>
                     </div>
                   </NavLink>
@@ -214,13 +218,13 @@ const ProductFilterPage = () => {
             <>
               <div className="flex justify-between items-center mb-6">
                 <span className="text-gray-500">
-                  Showing {product.length} products
+                  Đang hiển thị {product.length} sản phẩm
                 </span>
               </div>
 
               {product.length === 0 ? (
                 <div className="text-center text-gray-500">
-                  No products found.
+                  Không tìm thấy sản phẩm nào.
                 </div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -260,7 +264,7 @@ const ProductFilterPage = () => {
                           </div>
                         </div>
                         <p className="text-gray-600 text-[15px] mt-1">
-                          {p.price.toLocaleString()} VND
+                          {p.price.toLocaleString()} VNĐ
                         </p>
                       </div>
                     </NavLink>

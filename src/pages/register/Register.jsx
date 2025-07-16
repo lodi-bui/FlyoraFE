@@ -10,9 +10,8 @@ import { RegisterAPI } from "../../api/register/Register";
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name :"",
+    name: "", // ✅ Đã có name
     username: "",
-    name: "",             // ✅ Thêm name
     email: "",
     phone: "",
     password: "",
@@ -38,10 +37,13 @@ const Register = () => {
 
     setLoading(true);
     try {
-
-      await RegisterAPI(form.name, form.password ,form.phone ,form.username, form.email, );
-
-
+      await RegisterAPI(
+        form.username,
+        form.email,
+        form.password,
+        form.phone,
+        form.name
+      );
 
       setShowSuccess(true);
       setTimeout(() => {
@@ -176,12 +178,12 @@ const Register = () => {
                   Firstname
                 </Label>
                 <Input
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="First name"
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="First name"
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
               <div>
@@ -189,12 +191,12 @@ const Register = () => {
                   User Name
                 </Label>
                 <Input
-                    name="username"
-                    value={form.username}
-                    onChange={handleChange}
-                    placeholder="User name"
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
+                  name="username"
+                  value={form.username}
+                  onChange={handleChange}
+                  placeholder="User name"
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
@@ -203,14 +205,12 @@ const Register = () => {
                   Email Address
                 </Label>
                 <Input
-
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="E-mail address..."
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
-
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="E-mail address..."
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
@@ -219,13 +219,12 @@ const Register = () => {
                   Phone Number
                 </Label>
                 <Input
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number..."
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
-
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="Enter your phone number..."
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
@@ -234,13 +233,13 @@ const Register = () => {
                   Password
                 </Label>
                 <Input
-                    name="password"
-                    type="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="Enter your password..."
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password..."
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
@@ -260,9 +259,9 @@ const Register = () => {
               </div>
 
               {error && (
-                  <div className="text-red-500 text-sm font-semibold text-center">
-                    {error}
-                  </div>
+                <div className="text-red-500 text-sm font-semibold text-center">
+                  {error}
+                </div>
               )}
 
               <Button
