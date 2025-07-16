@@ -29,28 +29,38 @@ export const AuthCartProvider = ({ children }) => {
     updateCartCountFromLocalStorage();
   };
 
-  const login = (userData) => {
+   const login = (userData) => {
     setUser(userData);
     setIsLoggedIn(true);
-    updateCartCountFromLocalStorage(); // Khi login xong thì đồng bộ cartCount
+    localStorage.setItem("user", JSON.stringify(userData)); // Lưu user
+    updateCartCountFromLocalStorage(); // Cập nhật cartCount từ localStorage
   };
-
   const logout = () => {
     setUser(null);
     setIsLoggedIn(false);
-    setCartCount(0); // Reset về 0 khi logout
+    setCartCount(0); // Reset cartCount khi logout
+    // Xóa thông tin khỏi localStorage
     localStorage.removeItem("cart");
     localStorage.removeItem("token");
+    localStorage.removeItem("user"); // ✅ Xóa user
     localStorage.removeItem("linkedId");
   };
-
   const clearCart = () => {
     localStorage.removeItem("cart");
     setCartCount(0);
   };
 
-  useEffect(() => {
-    updateCartCountFromLocalStorage(); // Gọi khi load lại page
+ useEffect(() => {
+    updateCartCountFromLocalStorage(); // load cartCount từ localStorage khi khởi tạo
+    // Kiểm tra nếu có user và token trong localStorage để xác định trạng thái đăng nhập
+
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUser && storedToken) {
+      setUser(JSON.parse(storedUser));
+      setIsLoggedIn(true);
+    }
   }, []);
 
   return (
