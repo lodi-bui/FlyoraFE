@@ -8,10 +8,10 @@ const Sidebar = () => {
   const { logout } = useAuthCart();
   const navigate = useNavigate();
   const location = useLocation();
-  const role = useAuthCart().user?.roleId || 'manager'; // Default to 'manager' if role is not defined
+  const role = useAuthCart().user?.roleId || 'Admin'; // Default to 'Admin' if role is not defined
 
   return (
-    <div className="w-64 bg-green-600 text-white">
+    <div className="w-64 min-h-screen bg-green-600 text-white">
       {/* Logo */}
       <div className="flex items-center p-6 border-b border-green-500">
         <div className="flex items-center space-x-2">
