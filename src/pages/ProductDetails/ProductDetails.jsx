@@ -13,8 +13,15 @@ import { Separator } from "components/ui/Separator";
 import { Table, TableBody, TableCell, TableRow } from "components/ui/Table";
 import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "components/ui/Carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "components/ui/Carousel";
 import { Link } from "react-router-dom";
+import { useAuthCart } from "context/AuthCartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -23,6 +30,7 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { isLoggedIn, addToCart } = useAuthCart();
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -37,9 +45,11 @@ const ProductDetails = () => {
 
         const productRes = await getProductDetail(id);
         setProduct(productRes);
-        
+
         const promotionsRes = await getPromotions(customerId);
-        setPromotions(promotionsRes.filter(promo => promo.productId === Number(id)));
+        setPromotions(
+          promotionsRes.filter((promo) => promo.productId === Number(id))
+        );
         const relatedRes = await getProductsByCategory({
           categoryId: null,
           name: "",
@@ -115,7 +125,6 @@ const ProductDetails = () => {
   };
 
   const productDetails = [
-
     { label: "Tên", value: product?.name, bgColor: "bg-neutral-200" },
     {
       label: "Loại",
@@ -141,12 +150,10 @@ const ProductDetails = () => {
   if (!product)
     return <div className="text-center py-20">Sản phẩm không tồn tại.</div>;
 
-
   return (
     <>
       <Header />
       <div className="container mx-auto px-6 py-8 bg-gray-50 min-h-screen">
-
         {/* Product Info */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <Card className="col-span-2 shadow-lg rounded-2xl overflow-hidden">
@@ -165,9 +172,13 @@ const ProductDetails = () => {
                       {product.name}
                     </h1>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-[#ffd400] text-lg">Sale</span>
+                      <span className="font-medium text-[#ffd400] text-lg">
+                        Sale
+                      </span>
                       <StarIcon className="w-6 h-6 fill-[#ffd400]" />
-                      <span className="font-medium text-[#ffd400] text-lg">(4)</span>
+                      <span className="font-medium text-[#ffd400] text-lg">
+                        (4)
+                      </span>
                     </div>
                   </div>
                   <div className="mt-6 space-y-3 font-medium text-black text-lg">
@@ -181,7 +192,6 @@ const ProductDetails = () => {
           <Card className="shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6 space-y-6">
               <div>
-
                 <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
                   Kích thước:
                 </h3>
@@ -193,7 +203,6 @@ const ProductDetails = () => {
                       </span>
                       <span className="font-medium text-[#12a140] text-[14px]">
                         {product.price.toLocaleString()} VNĐ
-
                       </span>
                     </div>
                   </div>
@@ -201,7 +210,9 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="font-bold text-[#494444] text-3xl">{product.price} VND</p>
+                <p className="font-bold text-[#494444] text-3xl">
+                  {product.price} VND
+                </p>
                 <Badge className="bg-[#12a140] text-white text-lg h-14 px-6 rounded-xl flex items-center justify-center">
                   Sale
                 </Badge>
@@ -209,7 +220,9 @@ const ProductDetails = () => {
               <div className="w-full border-b border-gray-200 my-8"></div>
               {/* Promotions list */}
               <div className="mt-6">
-                <h2 className="font-medium text-[#807e7e] text-2xl mb-4">Khuyến mãi</h2>
+                <h2 className="font-medium text-[#807e7e] text-2xl mb-4">
+                  Khuyến mãi
+                </h2>
                 <div className="space-y-4">
                   {promotions.length > 0 ? (
                     promotions.map((promo) => (
@@ -218,16 +231,22 @@ const ProductDetails = () => {
                         className="p-4 bg-gradient-to-r from-[#f0fff4] to-[#e6fffa] rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                       >
                         <p className="text-lg font-semibold text-[#494444]">
-                          Mã khuyến mãi: <span className="text-[#12a140]">{promo.code}</span> - Giảm giá: <span className="text-[#12a140]">{promo.discount} VND</span>
+                          Mã khuyến mãi:{" "}
+                          <span className="text-[#12a140]">{promo.code}</span> -
+                          Giảm giá:{" "}
+                          <span className="text-[#12a140]">
+                            {promo.discount} VND
+                          </span>
                         </p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-base text-gray-600 text-center">Không có khuyến mãi nào.</p>
+                    <p className="text-base text-gray-600 text-center">
+                      Không có khuyến mãi nào.
+                    </p>
                   )}
                 </div>
               </div>
-
 
               <Separator />
 
@@ -266,7 +285,6 @@ const ProductDetails = () => {
                 >
                   Mua ngay
                 </button>
-
               </div>
             </CardContent>
           </Card>
@@ -279,7 +297,6 @@ const ProductDetails = () => {
             Chi tiết
           </h2>
           <Table>
-
             <TableBody>
               {productDetails.map((detail, index) => (
                 <TableRow key={index} className={detail.bgColor}>
@@ -297,12 +314,10 @@ const ProductDetails = () => {
 
         {/* Other Products */}
         <div className="mt-16">
-
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Sản phẩm khác
           </h2>
           <Carousel>
-
             <CarouselContent>
               {relatedProducts.map((item) => (
                 <CarouselItem key={item.id} className="basis-1/2 md:basis-1/4">
@@ -313,8 +328,12 @@ const ProductDetails = () => {
                         alt={item.name}
                         className="h-[180px] w-full object-cover rounded-lg"
                       />
-                      <h3 className="font-semibold mt-3 text-lg">{item.name}</h3>
-                      <p className="text-base text-gray-600">{item.price} VND</p>
+                      <h3 className="font-semibold mt-3 text-lg">
+                        {item.name}
+                      </h3>
+                      <p className="text-base text-gray-600">
+                        {item.price} VND
+                      </p>
                     </Card>
                   </Link>
                 </CarouselItem>
@@ -327,11 +346,9 @@ const ProductDetails = () => {
 
         {/* Reviews */}
         <div className="mt-16">
-
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Đánh giá
           </h2>
-
 
           {/* Review Form */}
           <div className="mb-8 space-y-6">
@@ -364,7 +381,9 @@ const ProductDetails = () => {
           {/* Review List */}
           <div className="space-y-10">
             {reviews.length === 0 && (
-              <p className="text-gray-500 text-center text-xl">Chưa có đánh giá nào</p>
+              <p className="text-gray-500 text-center text-xl">
+                Chưa có đánh giá nào
+              </p>
             )}
             {reviews.map((review, index) => (
               <div key={index} className="p-6 bg-white rounded-xl shadow-md">
@@ -381,7 +400,9 @@ const ProductDetails = () => {
                     />
                   ))}
                 </div>
-                <p className="font-normal text-black text-lg">{review.comment}</p>
+                <p className="font-normal text-black text-lg">
+                  {review.comment}
+                </p>
               </div>
             ))}
           </div>
