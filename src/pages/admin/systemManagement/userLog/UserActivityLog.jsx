@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { getUserActivityLogs } from "api/UserActivityLog";
 import toast from "react-hot-toast";
-import { useAuthCart } from "context/AuthCartContext"; // 🔹 Dùng context để lấy user
+import { useAuthCart } from "context/AuthCartContext"; //  Dùng context để lấy user
 
 const ITEMS_PER_PAGE = 8;
 
 const UserActivityLog = () => {
-  const { user } = useAuthCart(); // 🔸 Lấy user từ context
-  const requesterId = user?.linkedId; // 🔸 Lấy linkedId từ user
+  const { user } = useAuthCart(); //  Lấy user từ context
+  const requesterId = user?.linkedId; //  Lấy linkedId từ user
   const [logs, setLogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if (!requesterId) return; // ❗ Đảm bảo requesterId có giá trị
+    if (!requesterId) return; //  Đảm bảo requesterId có giá trị
 
     const fetchLogs = async () => {
       try {
