@@ -276,7 +276,7 @@ function Header() {
         <div>
           <img src={logoBird} alt="Flyora Logo" className="w-50" />
         </div>
-        <nav className="flex items-center space-x-10 bg-primary-orange rounded-full px-8 py-2 h-fit">
+        <nav className="flex items-center space-x-5 bg-primary-orange rounded-full px-8 py-2 h-fit">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
