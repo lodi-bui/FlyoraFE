@@ -13,10 +13,15 @@ import { Separator } from "components/ui/Separator";
 import { Table, TableBody, TableCell, TableRow } from "components/ui/Table";
 import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "components/ui/Carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "components/ui/Carousel";
 import { Link } from "react-router-dom";
 import { useAuthCart } from "context/AuthCartContext";
-
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -40,9 +45,11 @@ const ProductDetails = () => {
 
         const productRes = await getProductDetail(id);
         setProduct(productRes);
-        
+
         const promotionsRes = await getPromotions(customerId);
-        setPromotions(promotionsRes.filter(promo => promo.productId === Number(id)));
+        setPromotions(
+          promotionsRes.filter((promo) => promo.productId === Number(id))
+        );
         const relatedRes = await getProductsByCategory({
           categoryId: null,
           name: "",
@@ -118,7 +125,6 @@ const ProductDetails = () => {
   };
 
   const productDetails = [
-
     { label: "Tên", value: product?.name, bgColor: "bg-neutral-200" },
     {
       label: "Loại",
@@ -144,14 +150,12 @@ const ProductDetails = () => {
   if (!product)
     return <div className="text-center py-20">Sản phẩm không tồn tại.</div>;
 
-
   return (
     <>
       <Header />
       <div className="container mx-auto px-6 py-8 bg-gray-50 min-h-screen">
-
         {/* Product Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <Card className="col-span-2 shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-8">
@@ -206,7 +210,6 @@ const ProductDetails = () => {
                 </Badge>
               </div>
               <div className="w-full border-b border-gray-200 my-8"></div>
-              {/* Promotions list */}
               <div className="mt-6">
                 <h2 className="font-medium text-[#807e7e] text-2xl mb-4">Khuyến mãi</h2>
                 <div className="space-y-4">
@@ -230,7 +233,6 @@ const ProductDetails = () => {
 
               <Separator />
 
-              {/* Add to Cart and Buy Buttons */}
               <div className="flex gap-4">
                 <button
                   onClick={(e) => {
@@ -271,8 +273,6 @@ const ProductDetails = () => {
           </Card>
         </div>
 
-        {/* Details */}
-
         <div className="mt-10">
           <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
             Chi tiết
@@ -292,16 +292,127 @@ const ProductDetails = () => {
               ))}
             </TableBody>
           </Table>
+        </div> */}
+        <div className="flex justify-center items-center mt-8 mb-12">
+          <Card className="w-3/4 shadow-lg rounded-2xl overflow-hidden">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-8">
+                {/* ẢNH */}
+                <div className="flex justify-center w-full md:w-auto">
+                  <img
+                    className="w-full max-w-[300px] h-auto object-cover rounded-xl"
+                    alt={product.name}
+                    src={product.imageUrl}
+                  />
+                </div>
+
+                {/* THÔNG TIN CHI TIẾT */}
+                <div className="flex-1 space-y-6">
+                  {/* TÊN + MÔ TẢ */}
+                  <div>
+                    <h1 className="font-bold text-[#4b4a4a] text-3xl mb-4">
+                      {product.name}
+                    </h1>
+                    <h1 className="font-medium text-[#12a140] text-2xl">
+                      {product.price.toLocaleString()} VND
+                    </h1>
+                  </div>
+
+                  {/* CHI TIẾT SẢN PHẨM */}
+                  <div>
+                    <h3 className="font-semibold text-[#494444] text-xl mb-2">
+                      Chi tiết sản phẩm
+                    </h3>
+                    <div className="space-y-2">
+                      {productDetails.map((detail, index) => (
+                        <div key={index} className="flex gap-2">
+                          <span className="font-semibold text-[#494444] w-[160px]">
+                            {detail.label}:
+                          </span>
+                          <span className="text-[#494444]">{detail.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                  </div>
+                  <h2 className="font-medium text-[#807e7e] text-2xl mb-4">
+                    Khuyến mãi
+                  </h2>
+                  <div className="space-y-4">
+                    {promotions.length > 0 ? (
+                      promotions.map((promo) => (
+                        <div
+                          key={promo.id}
+                          className="p-4 bg-gradient-to-r from-[#f0fff4] to-[#e6fffa] rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                        >
+                          <p className="text-lg font-semibold text-[#494444]">
+                            Mã khuyến mãi:{" "}
+                            <span className="text-[#12a140]">{promo.code}</span>{" "}
+                            - Giảm giá:{" "}
+                            <span className="text-[#12a140]">
+                              {promo.discount} VND
+                            </span>
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-base text-gray-600 text-center">
+                        Không có khuyến mãi nào.
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <div className="flex justify-evenly items-center gap-6">
+                      {/* Nút thêm vào giỏ hàng: dạng outline */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (!isLoggedIn) {
+                            toast.error(
+                              "Bạn cần đăng nhập để thêm vào giỏ hàng!"
+                            );
+                            return;
+                          }
+                          addToCart(product.id);
+                          toast.success("Đã thêm vào giỏ hàng! 🎉");
+                        }}
+                        className=" w-2/3 bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px] transition"
+                      >
+                        Thêm vào giỏ hàng
+                      </button>
+
+                      {/* Nút mua ngay: primary button */}
+                      <button
+                        onClick={() => {
+                          if (!isLoggedIn) {
+                            toast.error("Bạn cần đăng nhập để mua hàng!");
+                            return;
+                          }
+                          const cartItem = [{ id: product.id, qty: 1 }];
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify(cartItem)
+                          );
+                          window.location.href = "/checkout";
+                        }}
+                        className="w-2/3 border border-[#12a140] text-[#12a140] hover:bg-[#e6f8ec] font-bold text-[18px] h-[56px] rounded-[10px] transition"
+                      >
+                        Mua ngay
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Other Products */}
         <div className="mt-16">
-
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Sản phẩm khác
           </h2>
           <Carousel>
-
             <CarouselContent>
               {relatedProducts.map((item) => (
                 <CarouselItem key={item.id} className="basis-1/2 md:basis-1/4">
@@ -312,8 +423,12 @@ const ProductDetails = () => {
                         alt={item.name}
                         className="h-[180px] w-full object-cover rounded-lg"
                       />
-                      <h3 className="font-semibold mt-3 text-lg">{item.name}</h3>
-                      <p className="text-base text-gray-600">{item.price.toLocaleString('vi-VN')} VND</p>
+                      <h3 className="font-semibold mt-3 text-lg">
+                        {item.name}
+                      </h3>
+                      <p className="text-base text-gray-600">
+                        {item.price.toLocaleString("vi-VN")} VND
+                      </p>
                     </Card>
                   </Link>
                 </CarouselItem>
@@ -326,11 +441,9 @@ const ProductDetails = () => {
 
         {/* Reviews */}
         <div className="mt-16">
-
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Đánh giá
           </h2>
-
 
           {/* Review Form */}
           <div className="mb-8 space-y-6">
@@ -363,7 +476,9 @@ const ProductDetails = () => {
           {/* Review List */}
           <div className="space-y-10">
             {reviews.length === 0 && (
-              <p className="text-gray-500 text-center text-xl">Chưa có đánh giá nào</p>
+              <p className="text-gray-500 text-center text-xl">
+                Chưa có đánh giá nào
+              </p>
             )}
             {reviews.map((review, index) => (
               <div key={index} className="p-6 bg-white rounded-xl shadow-md">
@@ -380,7 +495,9 @@ const ProductDetails = () => {
                     />
                   ))}
                 </div>
-                <p className="font-normal text-black text-lg">{review.comment}</p>
+                <p className="font-normal text-black text-lg">
+                  {review.comment}
+                </p>
               </div>
             ))}
           </div>
