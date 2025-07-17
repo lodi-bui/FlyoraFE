@@ -13,9 +13,18 @@ const getNewsBlogSalesPosts = async () => {
   }
 };
 
-const createNewsBlogSalesPost = async (postData) => {
+const createNewsBlogSalesPost = async (
+  requesterId,
+  {
+    title,
+    url
+  }
+) => {
   try {
-    const response = await axios.post(API_URL, postData);
+    const response = await axios.post(`https://flyora-backend.onrender.com/api/v1/admin/accounts/news?requesterId=${requesterId}`, {
+      title,
+      url
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating news/blog sales post:", error);
