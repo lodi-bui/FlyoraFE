@@ -167,11 +167,7 @@ const ProductDetails = () => {
                     <h1 className="font-bold text-[#4b4a4a] text-3xl">
                       {product.name}
                     </h1>
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-[#ffd400] text-lg">Sale</span>
-                      <StarIcon className="w-6 h-6 fill-[#ffd400]" />
-                      <span className="font-medium text-[#ffd400] text-lg">(4)</span>
-                    </div>
+                    
                   </div>
                   <div className="mt-6 space-y-3 font-medium text-black text-lg">
                     <p>{product.description}</p>
@@ -317,7 +313,7 @@ const ProductDetails = () => {
                         className="h-[180px] w-full object-cover rounded-lg"
                       />
                       <h3 className="font-semibold mt-3 text-lg">{item.name}</h3>
-                      <p className="text-base text-gray-600">{item.price} VND</p>
+                      <p className="text-base text-gray-600">{item.price.toLocaleString('vi-VN')} VND</p>
                     </Card>
                   </Link>
                 </CarouselItem>
