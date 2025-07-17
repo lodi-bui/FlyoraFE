@@ -299,7 +299,7 @@ function Header() {
       <div className="relative px-4 md:px-20 pt-4 md:pt-10 z-10">
         <div className="max-w-2xl mx-auto md:ml-20 md:mx-0">
           <img
-            className="w-[1000px] h-[500px] right-[-50px] absolute top-0 z-0"
+            className="w-[1000px] h-[470px] right-[-50px] absolute top-0 z-0"
             alt="Group"
             src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/group-9-2.png"
           />

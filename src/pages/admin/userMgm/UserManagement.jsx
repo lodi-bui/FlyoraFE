@@ -11,10 +11,10 @@ import {
   FileText,
   ChevronDown,
 } from "lucide-react";
-import { useAuthCart } from "../../../context/AuthCartContext";
+import { useAuthCart } from "context/AuthCartContext";
 import Sidebar from "../sidebar/Sidebar";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { UserAccounts } from "api/UserManagement";
 import { addNewAccount } from "api/AddNewAccount";
 import AddAccount from "./AddAccount";
@@ -25,11 +25,14 @@ import { deactivateAccount } from "api/DeactivateAccount";
 
 const ITEMS_PER_PAGE = 6;
 
-const UserManagement = () => {
-  const { logout } = useAuthCart();
-  const navigate = useNavigate();
+//
+// // const { logout } = useAuthCart();
+// // const navigate = useNavigate();
 
-  const requesterId = localStorage.getItem("linkedId");
+// const requesterId = localStorage.getItem("linkedId");
+const UserManagement = () => {
+  const { user } = useAuthCart(); // ✅ lấy user từ context
+  const requesterId = user?.linkedId; // ✅ sử dụng linkedId từ context
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -155,6 +158,8 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
+    if (!requesterId) return; // ✅ không gọi API nếu chưa có requesterId
+
     const fetchUsers = async () => {
       try {
         const res = await UserAccounts(requesterId);
@@ -164,6 +169,7 @@ const UserManagement = () => {
         console.error(error);
       }
     };
+
     fetchUsers();
   }, [requesterId]);
 
