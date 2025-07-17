@@ -9,8 +9,7 @@ const Footer = () => {
 
   const footerData = {
     company: {
-      description:
-        "Flyora – người bạn đồng hành của chim cưng luôn vui vẻ. Hãy đến với chúng tôi!",
+      description: "Flyora – Nâng niu đàn chim Việt. Hãy đến với chúng tôi!",
     },
     navigation: [
       {
@@ -76,8 +75,8 @@ const Footer = () => {
       <div className="relative w-full py-6 pb-2 z-10">
         {/* Decorative images with adjusted z-index */}
         <img
-          className="absolute w-[135px] h-[194px] top-[77px] left-1/2 -translate-x-1/2 opacity-10 blur-sm z-0"
-          alt="Decorative bird"
+          className="absolute w-[135px] h-[194px] top-[77px] left-1/2 -translate-x-1/2 opacity-10 blur-1 z-0"
+          alt="Bird"
           src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/img-4.png"
         />
         <img

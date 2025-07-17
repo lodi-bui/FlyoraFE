@@ -12,6 +12,7 @@ import cartIcon from "../../icons/cart.png";
 import loginIcon from "../../icons/login.png";
 import bird from "../../icons/bird_hi.png";
 import { useAuthCart } from "../../context/AuthCartContext";
+import { PhoneIcon } from "lucide-react";
 
 function Header() {
   const { cartCount, isLoggedIn, logout } = useAuthCart();
@@ -47,66 +48,76 @@ function Header() {
     }
   };
 
-  // const starIcons = [
-  //   {
-  //     src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-19.svg",
-  //     className:
-  //       "hidden md:block absolute w-[93px] h-[102px] top-[116px] left-[1241px]",
-  //   },
-  //   {
-  //     src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-20-1.svg",
-  //     className:
-  //       "hidden md:block absolute w-[93px] h-[102px] top-60 left-[1303px]",
-  //   },
-  //   {
-  //     src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-17.svg",
-  //     className:
-  //       "hidden md:block absolute w-[93px] h-[102px] top-[357px] left-[1340px]",
-  //   },
-  //   {
-  //     src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-16.svg",
-  //     className:
-  //       "hidden md:block absolute w-[93px] h-[102px] top-[419px] left-[1225px]",
-  //   },
-  // ];
+  const starIcons = [
+    {
+      src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-19.svg",
+      className:
+        "hidden md:block absolute w-[73px] h-[82px] top-[100px] left-[1350px]",
+    },
+    {
+      src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-20-1.svg",
+      className:
+        "hidden md:block absolute w-[73px] h-[82px] top-60 left-[1303px]",
+    },
+    {
+      src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-17.svg",
+      className:
+        "hidden md:block absolute w-[73px] h-[82px] top-[357px] left-[1340px]",
+    },
+    {
+      src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-16.svg",
+      className:
+        "hidden md:block absolute w-[73px] h-[82px] top-[419px] left-[1225px]",
+    },
+  ];
 
   return (
-    <header className="relative w-full bg-gradient-to-tr from-[#12AB3C] to-[#083622] overflow-visible pb-10 md:pb-16">
+    <header className="relative w-full [background:linear-gradient(336deg,rgba(8,54,34,1)_0%,rgba(18,171,60,1)_100%)] overflow-visible pb-10 md:pb-16">
+      {/* className="relative w-full bg-gradient-to-tr from-[#12AB3C] to-[#083622] overflow-visible pb-10 md:pb-16" */}
       {/* Top contact bar */}
       <div className="w-full mx-auto py-4 md:py-7 px-4 mt-0">
         <div className="flex flex-col md:flex-row justify-evenly items-center w-full max-w-7xl mx-auto gap-4 md:gap-0">
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-            {[
-              { icon: phoneIcon, text: "+84 3367 8915" },
-              { icon: mailIcon, text: "ntrang21102005@gmail.com" },
-            ].map((item) => (
-              <div key={item.text} className="flex items-center gap-2">
-                <img src={item.icon} alt="" className="w-5 h-5" />
-                <span className="font-medium text-white text-sm md:text-base">
-                  {item.text}
-                </span>
-              </div>
-            ))}
+          <div className="flex items-center">
+            <img
+              src={phoneIcon}
+              alt="Phone"
+              className="w-5 h-5 absolute left-[218px]"
+            />
+            <span className="font-medium text-white text-sm md:text-base absolute left-[240px]">
+              +84 3367 8915
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <img src={locationIcon} alt="" className="w-5 h-5" />
-            <span className="font-medium text-white text-sm md:text-base">
+          <div className="flex items-center">
+            <img
+              src={mailIcon}
+              alt="Mail"
+              className="w-5 h-5 absolute left-[390px]"
+            />
+            <span className="font-medium text-white text-sm md:text-base absolute left-[418px]">
+              ntrang21102005@gmail.com
+            </span>
+          </div>
+          <div className="flex items-center">
+            <img
+              src={locationIcon}
+              alt=""
+              className="w-5 h-5 absolute right-[470px]"
+            />
+            <span className="font-medium text-white text-sm md:text-base absolute right-[220px]">
               12 Hoàng Hoa Thám, Q.3, TP.HCM
             </span>
           </div>
         </div>
       </div>
-
       {/* Sun icon with lower z-index */}
       <img
         src={sunIcon}
         alt=""
-        className="hidden md:block absolute left-[35%] top-[15%] h-32 md:h-48 z-0 pointer-events-none"
+        className="hidden md:block absolute w-[170px] h-[181px] left-[35%] top-[9%] z-0 pointer-events-none"
       />
-
       {/* Main navigation bar with higher z-index */}
-      <div className="relative z-20 bg-white rounded-full shadow-lg flex items-center justify-around px-4 md:px-8 my-4 md:mx-auto w-full max-w-4xl md:max-w-6xl mt-2 md:my-10 h-16 md:h-20">
-        <div className="flex items-center">
+      <div className="relative z-20 bg-white rounded-full shadow-lg flex items-center top-[-40px] justify-around px-4 md:px-8 my-4 md:mx-auto w-full max-w-4xl md:max-w-6xl mt-2 md:my-10 h-16 md:h-20">
+        <div className="flex items-center ">
           <img src={logoBlack} alt="Flyora" className="w-22 md:w-26 h-auto" />
         </div>
 
@@ -264,7 +275,6 @@ function Header() {
           </div>
         </div>
       </div>
-
       {/* Mobile nav with proper z-index */}
       {showNav && (
         <nav className="md:hidden bg-white shadow-lg mx-4 rounded-md py-4 relative z-40">
@@ -285,24 +295,38 @@ function Header() {
           ))}
         </nav>
       )}
-
       {/* Content section with lower z-index */}
       <div className="relative px-4 md:px-20 pt-4 md:pt-10 z-10">
         <div className="max-w-2xl mx-auto md:ml-20 md:mx-0">
           <img
+            className="w-[1000px] h-[500px] right-[-50px] absolute top-0 z-0"
+            alt="Group"
+            src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/group-9-2.png"
+          />
+          <img
             src={logoChim}
             alt="Flyora"
-            className=" mx-auto md:mx-0 mb-4 md:mb-0"
+            className="w-[362px] h-[172px] mx-auto md:mx-0 mb-4 md:mb-0"
           />
+
+          {/* <img
+                  className="absolute w-[108px] h-[113px] top-1.5 left-0.5 rotate-[-170.39deg]"
+                  alt="Group"
+                  src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/group-10.png"
+                />
+              </div>
+              <div className="text-[32px] text-[#fd7e14] font-bold [font-family:'Inter',Helvetica]">
+                Flyora Shop
+              </div> */}
+
           <div className="flex items-center justify-start gap-4 md:gap-6">
-            {/* Ảnh chú chim bên trái */}
+            {/*chim anime/}
             {/* <img
               src={bird}
               alt="Bird"
               className="w-auto h-[80px] md:h-[96px] object-contain"
             /> */}
 
-            {/* Khối văn bản */}
             <div>
               <p className="text-white text-sm md:text-base mb-1">
                 Thế giới sản phẩm cho những chú chim cưng của bạn!
@@ -314,14 +338,14 @@ function Header() {
           </div>
         </div>
       </div>
-
       <img
-        src={bird}
         alt="Bird"
-        className="hidden md:block absolute w-[180px] h-auto top-[310px] right-[60px] z-0 opacity-90 pointer-events-none"
+        src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/img-4.png"
+        className="hidden md:block absolute w-[120px] h-auto top-[150px] right-[550px] z-0 opacity-90 blur-[1px] pointer-events-none"
+        //"hidden md:block absolute left-[35%] top-[15%] h-32 md:h-48 z-0 pointer-events-none"
+        //"absolute w-[135px] h-[194px] top-[77px] left-1/2 -translate-x-1/2 opacity-10 blur-sm z-0"
       />
 
-      {/* Star icons with pointer-events-none and low z-index
       {starIcons.map((star, index) => (
         <img
           key={`${star.src}-${index}`}
@@ -329,7 +353,7 @@ function Header() {
           alt=""
           src={star.src}
         />
-      ))} */}
+      ))}
     </header>
   );
 }

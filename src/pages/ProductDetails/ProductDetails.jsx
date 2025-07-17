@@ -13,6 +13,7 @@ import { Separator } from "components/ui/Separator";
 import { Table, TableBody, TableCell, TableRow } from "components/ui/Table";
 import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuthCart } from "context/AuthCartContext";
 import {
   Carousel,
   CarouselContent,
@@ -21,7 +22,6 @@ import {
   CarouselNext,
 } from "components/ui/Carousel";
 import { Link } from "react-router-dom";
-import { useAuthCart } from "context/AuthCartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -30,13 +30,19 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { isLoggedIn, addToCart } = useAuthCart();
+  const { isLoggedIn, addToCart, user } = useAuthCart();
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
 
-  const customerId = Number(localStorage.getItem("linkedId"));
+  const customerId =
+    user?.linkedId || Number(localStorage.getItem("linkedId")) || null;
+
+  // console.log("isLoggedIn:", isLoggedIn);
+  // console.log("user:", user);
+  // console.log("customerId:", customerId);
+  // console.log("user = ", user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -171,15 +177,6 @@ const ProductDetails = () => {
                     <h1 className="font-bold text-[#4b4a4a] text-3xl">
                       {product.name}
                     </h1>
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-[#ffd400] text-lg">
-                        Sale
-                      </span>
-                      <StarIcon className="w-6 h-6 fill-[#ffd400]" />
-                      <span className="font-medium text-[#ffd400] text-lg">
-                        (4)
-                      </span>
-                    </div>
                   </div>
                   <div className="mt-6 space-y-3 font-medium text-black text-lg">
                     <p>{product.description}</p>
@@ -259,7 +256,7 @@ const ProductDetails = () => {
                       toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
                       return;
                     }
-                    addToCart(product.id); // ✅ đúng format
+                    addToCart(product.id);
                     toast.success("Đã thêm vào giỏ hàng! 🎉");
                   }}
                   className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
