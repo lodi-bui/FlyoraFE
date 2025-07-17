@@ -154,7 +154,7 @@ const DashBoard = () => {
                 <thead className="bg-gray-50 text-center">
                   <tr>
                     <th className="w-[50px] px-2 py-3 text-sm font-medium text-gray-700">
-                      #
+                      Rank#
                     </th>
                     <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
                       Product ID

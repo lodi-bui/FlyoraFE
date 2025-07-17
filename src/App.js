@@ -75,7 +75,7 @@ function App() {
 
         <Route path="/shopowner" element={<DashBoard />} />
         <Route path="/shopowner/dashboard" element={<DashBoard />} />
-        <Route path="/shopowner/products" element={<DashBoard />} />
+        <Route path="/shopowner/products" element={<ProductManagement />} />
 
 
 
