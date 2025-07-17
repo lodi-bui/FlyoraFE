@@ -15,6 +15,8 @@ import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "components/ui/Carousel";
 import { Link } from "react-router-dom";
+import { useAuthCart } from "context/AuthCartContext";
+
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -29,6 +31,7 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([]);
 
   const customerId = Number(localStorage.getItem("linkedId"));
+  const { isLoggedIn, addToCart } = useAuthCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +62,7 @@ const ProductDetails = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [customerId, id]);
 
   const handleSubmitReview = async () => {
     if (!customerId) {
@@ -115,16 +118,32 @@ const ProductDetails = () => {
   };
 
   const productDetails = [
-    { label: "Name", value: product?.name, bgColor: "bg-neutral-200" },
-    { label: "Type", value: translateCategory(product?.category), bgColor: "bg-white" },
-    { label: "Indication", value: product?.birdType, bgColor: "bg-neutral-200" },
-    { label: "Stock", value: product?.stock, bgColor: "bg-white" },
-    { label: "Description", value: product?.description, bgColor: "bg-neutral-200" },
+
+    { label: "Tên", value: product?.name, bgColor: "bg-neutral-200" },
+    {
+      label: "Loại",
+      value: translateCategory(product?.category),
+      bgColor: "bg-white",
+    },
+    {
+      label: "Chỉ định",
+      value: product?.birdType,
+      bgColor: "bg-neutral-200",
+    },
+    { label: "Tồn kho", value: product?.stock, bgColor: "bg-white" },
+    {
+      label: "Mô tả",
+      value: product?.description,
+      bgColor: "bg-neutral-200",
+    },
   ];
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
-  if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
-  if (!product) return <div className="text-center py-20">Product not found.</div>;
+  if (error)
+    return <div className="text-center py-20 text-red-500">{error}</div>;
+  if (!product)
+    return <div className="text-center py-20">Sản phẩm không tồn tại.</div>;
+
 
   return (
     <>
@@ -165,13 +184,19 @@ const ProductDetails = () => {
           <Card className="shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6 space-y-6">
               <div>
-                <h3 className="font-medium text-[#807e7e] text-xl mb-3">Size:</h3>
-                <div className="flex gap-3">
-                  <div className="flex-1 p-3 rounded-xl border border-[#1286ce] bg-[#ecf9ff] shadow-md flex items-center justify-center">
+
+                <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
+                  Kích thước:
+                </h3>
+                <div className="flex gap-2">
+                  <div className="flex-1 p-2 rounded-[8px] border border-[#1286ce] bg-[#ecf9ff] shadow-md">
                     <div className="flex flex-col items-center">
-                      <span className="font-semibold text-[#535353] text-lg">Default</span>
-                      <span className="font-medium text-[#12a140] text-base">
-                        {product.price} VND
+                      <span className="font-semibold text-[#535353] text-[16px]">
+                        Mặc định
+                      </span>
+                      <span className="font-medium text-[#12a140] text-[14px]">
+                        {product.price.toLocaleString()} VNĐ
+
                       </span>
                     </div>
                   </div>
@@ -179,7 +204,7 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="font-bold text-[#494444] text-3xl">{product.price} VND</p>
+                <p className="font-bold text-[#494444] text-3xl">{product.price.toLocaleString()} VND</p>
                 <Badge className="bg-[#12a140] text-white text-lg h-14 px-6 rounded-xl flex items-center justify-center">
                   Sale
                 </Badge>
@@ -206,22 +231,58 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              <div className="flex gap-6 mt-6">
-                <Button className="w-1/2 bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-xl h-14 rounded-xl">
-                  Add to Cart
-                </Button>
-                <Button className="w-1/2 bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-xl h-14 rounded-xl">
-                  Buy
-                </Button>
+
+              <Separator />
+
+              {/* Add to Cart and Buy Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (!isLoggedIn) {
+                      toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
+                      return;
+                    }
+                    addToCart(product.id); // ✅ đúng format
+                    toast.success("Đã thêm vào giỏ hàng! 🎉");
+                  }}
+                  className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                >
+                  Thêm vào giỏ hàng
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      toast.error("Bạn cần đăng nhập để mua hàng!");
+                      return;
+                    }
+
+                    // Ghi sản phẩm hiện tại vào localStorage.cart
+                    const cartItem = [{ id: product.id, qty: 1 }];
+                    localStorage.setItem("cart", JSON.stringify(cartItem));
+
+                    // Chuyển sang trang checkout
+                    window.location.href = "/checkout";
+                  }}
+                  className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                >
+                  Mua ngay
+                </button>
+
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Details */}
-        <div className="mt-12">
-          <h2 className="font-semibold text-[#494444] text-3xl mb-6">Details</h2>
-          <Table className="border border-gray-200 rounded-xl overflow-hidden">
+
+        <div className="mt-10">
+          <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
+            Chi tiết
+          </h2>
+          <Table>
+
             <TableBody>
               {productDetails.map((detail, index) => (
                 <TableRow key={index} className={detail.bgColor}>
@@ -239,8 +300,12 @@ const ProductDetails = () => {
 
         {/* Other Products */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-4xl mb-8">Other Products</h2>
-          <Carousel className="max-w-6xl mx-auto">
+
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
+            Sản phẩm khác
+          </h2>
+          <Carousel>
+
             <CarouselContent>
               {relatedProducts.map((item) => (
                 <CarouselItem key={item.id} className="basis-1/2 md:basis-1/4">
@@ -265,7 +330,11 @@ const ProductDetails = () => {
 
         {/* Reviews */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-4xl mb-8">Reviews</h2>
+
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
+            Đánh giá
+          </h2>
+
 
           {/* Review Form */}
           <div className="mb-8 space-y-6">

@@ -7,24 +7,18 @@ const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
 
   const handleChange = (value) => {
     setPriceRange(value);
+    // Không gọi onChange ở đây
+  };
+
+  const handleApply = () => {
     if (onChange) {
-      onChange(value);
+      onChange(priceRange);
     }
   };
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Filter by Price</h2>
-
-      {/* <div className="flex justify-between mb-3">
-        <span className="text-sm text-gray-700">
-          ₫{priceRange[0].toLocaleString()}
-        </span>
-        <span className="text-sm text-gray-700">
-          ₫{priceRange[1].toLocaleString()}
-        </span>
-      </div> */}
-
+      <h2 className="text-xl font-bold mb-4">Lọc theo giá</h2>
       <Slider
         range
         min={min}
@@ -40,17 +34,16 @@ const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
         ]}
         railStyle={{ backgroundColor: "#e5e7eb" }}
       />
-
       <div className="flex justify-between items-center mt-4">
         <p className="text-sm">
-          Price: <strong>₫{priceRange[0].toLocaleString()}</strong> -{" "}
-          <strong>₫{priceRange[1].toLocaleString()}</strong>
+          Giá: <strong>{priceRange[0].toLocaleString()}₫</strong> -{" "}
+          <strong>{priceRange[1].toLocaleString()}₫</strong>
         </p>
         <button
-          onClick={() => onChange(priceRange)}
+          onClick={handleApply}
           className="bg-black text-white px-4 py-1 rounded hover:bg-gray-800"
         >
-          Apply
+          Áp dụng
         </button>
       </div>
     </div>
