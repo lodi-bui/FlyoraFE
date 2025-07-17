@@ -6,7 +6,7 @@ import { Input } from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
-import { useAuthCart } from "context/AuthCartContext";
+import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const Login = () => {
         localStorage.setItem("token", token);
 
         // Lưu thông tin vào context
-        login({ userId, name, linkedId, role });
+        login({ userId, name, linkedId, role, token });
         setShowSuccess(true);
 
         // Lưu thông tin người dùng vào context

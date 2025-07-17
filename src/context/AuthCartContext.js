@@ -33,6 +33,8 @@ export const AuthCartProvider = ({ children }) => {
     setUser(userData);
     setIsLoggedIn(true);
     localStorage.setItem("user", JSON.stringify(userData)); // Lưu user
+    localStorage.setItem("linkedId", userData.linkedId); // Lưu linkedId
+    localStorage.setItem("token", userData.token); // Lưu token
     updateCartCountFromLocalStorage(); // Cập nhật cartCount từ localStorage
   };
   const logout = () => {

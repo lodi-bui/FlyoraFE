@@ -82,15 +82,16 @@ const CheckoutPage = () => {
 
   // Khi nhấn Đặt Hàng
   const handleSubmit = async () => {
-    
     try {
       const requiredFields = ["name", "phone", "email", "address", "city"];
-    const emptyFields = requiredFields.filter((field) => !shipping[field]?.trim());
+      const emptyFields = requiredFields.filter(
+        (field) => !shipping[field]?.trim()
+      );
 
-    if (emptyFields.length > 0) {
-      alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
-      return;
-    }
+      if (emptyFields.length > 0) {
+        alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
+        return;
+      }
       // Lấy cart từ localStorage
       const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -107,7 +108,9 @@ const CheckoutPage = () => {
       }
 
       // Lấy customerId từ localStorage (hoặc context nếu có)
-      const customerId = parseInt(localStorage.getItem("linkedId"));
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const customerId = storedUser?.linkedId;
+
       if (!customerId) {
         alert("Bạn chưa đăng nhập!");
         return;

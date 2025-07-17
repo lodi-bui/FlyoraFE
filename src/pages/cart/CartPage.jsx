@@ -5,14 +5,14 @@ import CartItem from "./CartItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MdRadioButtonUnchecked, MdRadioButtonChecked } from "react-icons/md";
 import { getCart } from "../../api/Cart";
-import { useAuthCart } from "../../context/AuthCartContext"; // ✅ Sử dụng context
+import { useAuthCart } from "../../context/AuthCartContext";
 
 const CartPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { updateCartCountFromLocalStorage } = useAuthCart(); // ✅
+  const { updateCartCountFromLocalStorage } = useAuthCart();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -31,7 +31,7 @@ const CartPage = () => {
 
         if (localCart.length === 0) {
           setItems([]);
-          updateCartCountFromLocalStorage(); // ✅ cập nhật nếu cart rỗng
+          updateCartCountFromLocalStorage(); //  cập nhật nếu cart rỗng
           setLoading(false);
           return;
         }
@@ -54,7 +54,7 @@ const CartPage = () => {
         });
 
         setItems(merged);
-        updateCartCountFromLocalStorage(); // ✅ cập nhật khi load lại
+        updateCartCountFromLocalStorage(); // cập nhật khi load lại
       } catch (err) {
         console.error("Lỗi khi fetch giỏ hàng:", err);
       } finally {
@@ -71,7 +71,7 @@ const CartPage = () => {
       .map(({ id, qty }) => ({ id, qty }));
 
     localStorage.setItem("cart", JSON.stringify(simplified));
-    updateCartCountFromLocalStorage(); // ✅ cập nhật sau khi ghi
+    updateCartCountFromLocalStorage(); // cập nhật sau khi ghi
   };
 
   const toggleSelect = (id) => {

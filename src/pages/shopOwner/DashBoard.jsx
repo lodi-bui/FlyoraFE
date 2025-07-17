@@ -17,7 +17,7 @@ const formatCurrency = (amount) => {
   });
 };
 
-const ProductManager = () => {
+const DashBoard = () => {
   const navigate = useNavigate();
   const { logout } = useAuthCart();
   const [products, setProducts] = useState([]);
@@ -278,4 +278,4 @@ const ProductManager = () => {
   );
 };
 
-export default ProductManager;
+export default DashBoard;
