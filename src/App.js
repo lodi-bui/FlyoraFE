@@ -27,7 +27,7 @@ import DashBoard from './pages/shopOwner/DashBoard';
 import UserManagement from './pages/admin/userMgm/UserManagement';
 import ContentPage from './pages/admin/content/ContentPage';
 import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage';
-
+// import EditProduct from "pages/manager/product/EditProduct";
 
 import ProductManagement from 'pages/manager/product/ProductManagement';
 import AddProduct from 'pages/manager/product/AddProduct';
@@ -93,7 +93,7 @@ function App() {
         <Route path="/shopowner/add-product" element={<AddProduct />} />
         {/* <Route path="/manager-page/dashboard" element={<ProductManagement />} /> */}
 
-        <Route path="/shopowner/edit-product/:id" element={<EditProduct />} />
+        {/* <Route path="/shopowner/edit-product/:id" element={<EditProduct />} /> */}
       </Routes>
 
 

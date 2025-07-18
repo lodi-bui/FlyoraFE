@@ -8,13 +8,14 @@ import { useAuthCart } from "context/AuthCartContext"; //  Dùng context để l
 
 const ITEMS_PER_PAGE = 8;
 
+
 const UserActivityLog = () => {
   const { user } = useAuthCart(); //  Lấy user từ context
   const requesterId = user?.linkedId; //  Lấy linkedId từ user
-  const { user } = useAuthCart();
-  const requesterId = localStorage.getItem("linkedId");
 
-
+  const [logs, setLogs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     if (!requesterId) return; //  Đảm bảo requesterId có giá trị
 

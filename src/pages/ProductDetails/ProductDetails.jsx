@@ -46,7 +46,6 @@ const ProductDetails = () => {
   // console.log("customerId:", customerId);
   // console.log("user = ", user);
 
-  const { isLoggedIn, addToCart } = useAuthCart();
 
 
   useEffect(() => {
@@ -167,7 +166,7 @@ const ProductDetails = () => {
       <div className="container mx-auto px-6 py-8 bg-gray-50 min-h-screen">
         {/* Product Info */}
 
-        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
           <Card className="col-span-2 shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6">
@@ -197,7 +196,7 @@ const ProductDetails = () => {
 
           <Card className="shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6 space-y-6">
-              <div>
+              {/* <div>
 
 
                 <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
@@ -217,18 +216,18 @@ const ProductDetails = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
 
                 <p className="font-bold text-[#494444] text-3xl">{product.price.toLocaleString()} VND</p>
                 <Badge className="bg-[#12a140] text-white text-lg h-14 px-6 rounded-xl flex items-center justify-center">
                   Sale
                 </Badge>
-              </div>
+              </div> */}
               <div className="w-full border-b border-gray-200 my-8"></div>
 
-              <div className="mt-6">
+              {/* <div className="mt-6">
                 <h2 className="font-medium text-[#807e7e] text-2xl mb-4">Khuyến mãi</h2>
                 <div className="space-y-4">
                   {promotions.length > 0 ? (
@@ -248,7 +247,7 @@ const ProductDetails = () => {
                     <p className="text-base text-gray-600 text-center">Không có khuyến mãi nào.</p>
                   )}
                 </div>
-              </div>
+              </div> */}
 
 
               <Separator />
@@ -299,7 +298,7 @@ const ProductDetails = () => {
         </div>
 
 
-        <div className="mt-10">
+        {/* <div className="mt-10">
           <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
             Chi tiết
           </h2>
@@ -318,7 +317,7 @@ const ProductDetails = () => {
               ))}
             </TableBody>
           </Table>
-        </div> */}
+        </div>  */}
         <div className="flex justify-center items-center mt-8 mb-12">
           <Card className="w-3/4 shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6">
