@@ -161,6 +161,14 @@ const CartPage = () => {
                 alert("Bạn cần thêm sản phẩm vào giỏ hàng!");
                 return;
               }
+
+              // Ghi lại selectedItems vào localStorage để CheckoutPage chỉ dùng những sản phẩm đó
+              const selectedCart = selectedItems.map(({ id, qty }) => ({
+                id,
+                qty,
+              }));
+              localStorage.setItem("cart", JSON.stringify(selectedCart));
+
               navigate("/checkout");
             }}
             className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg shadow-md"
