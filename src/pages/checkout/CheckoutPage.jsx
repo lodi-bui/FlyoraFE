@@ -85,6 +85,7 @@ const CheckoutPage = () => {
 
   // Khi nhấn Đặt Hàng
   const handleSubmit = async () => {
+    
     try {
       const requiredFields = [
         "name",
@@ -104,6 +105,7 @@ const CheckoutPage = () => {
         alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
         return;
       }
+
       // Lấy cart từ localStorage
       const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
 

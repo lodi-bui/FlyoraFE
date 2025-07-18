@@ -5,17 +5,19 @@ import { getUserActivityLogs } from "api/UserActivityLog";
 import toast from "react-hot-toast";
 import { useAuthCart } from "context/AuthCartContext"; //  Dùng context để lấy user
 
+
 const ITEMS_PER_PAGE = 8;
 
 const UserActivityLog = () => {
   const { user } = useAuthCart(); //  Lấy user từ context
   const requesterId = user?.linkedId; //  Lấy linkedId từ user
-  const [logs, setLogs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const { user } = useAuthCart();
+  const requesterId = localStorage.getItem("linkedId");
+
 
   useEffect(() => {
     if (!requesterId) return; //  Đảm bảo requesterId có giá trị
+
 
     const fetchLogs = async () => {
       try {
@@ -26,6 +28,7 @@ const UserActivityLog = () => {
         console.error(error);
       }
     };
+
 
     fetchLogs();
   }, [requesterId]);
@@ -93,6 +96,7 @@ const UserActivityLog = () => {
                 <div>
                   <div className="text-sm font-medium text-gray-900">
                     {user?.username || "Admin"}
+
                   </div>
                   <div className="text-xs text-gray-500">Super Admin</div>
                 </div>

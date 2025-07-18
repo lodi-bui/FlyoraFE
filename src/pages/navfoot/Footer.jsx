@@ -71,12 +71,13 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full overflow-hidden [background:linear-gradient(336deg,rgba(8,54,34,1)_0%,rgba(18,171,60,1)_100%)]">
+    <footer className="relative w-full overflow-hidden bg-primary-orange px-[200px]" >
       <div className="relative w-full py-6 pb-2 z-10">
         {/* Decorative images with adjusted z-index */}
         <img
           className="absolute w-[135px] h-[194px] top-[77px] left-1/2 -translate-x-1/2 opacity-10 blur-1 z-0"
           alt="Bird"
+
           src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/img-4.png"
         />
         <img
@@ -98,7 +99,7 @@ const Footer = () => {
           className="absolute w-[83px] h-[92px] top-[252px] right-[3px] z-0"
           alt="Star"
           src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-17-1.svg"
-        />
+        /> */}
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8">
