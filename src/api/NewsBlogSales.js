@@ -13,6 +13,7 @@ const getNewsBlogSalesPosts = async () => {
   }
 };
 
+
 const createNewsBlogSalesPost = async (
   requesterId,
   {
@@ -31,5 +32,6 @@ const createNewsBlogSalesPost = async (
     throw error;
   }
 };
+
 
 export { getNewsBlogSalesPosts, createNewsBlogSalesPost };

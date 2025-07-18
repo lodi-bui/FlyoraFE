@@ -6,7 +6,7 @@ import { Input } from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
-import { useAuthCart } from "context/AuthCartContext";
+import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,16 +43,15 @@ const Login = () => {
       // }
 
       if (res.status === 200) {
-
         const { userId, name, linkedId, role, token } = res.data;
 
-      // Lưu token vào localStorage
-      localStorage.setItem("token", token);
+        // Lưu token vào localStorage
+        localStorage.setItem("token", token);
 
-      // Lưu thông tin vào context
-      login({ userId, name, linkedId, role });
+        // Lưu thông tin vào context
+        login({ userId, name, linkedId, role, token });
         setShowSuccess(true);
-        
+
         // Lưu thông tin người dùng vào context
         // login({
         //   userId: res.data.userId,
@@ -64,6 +63,7 @@ const Login = () => {
         setTimeout(() => {
           setShowSuccess(false);
           console.log("Đăng nhập thành công:", res.data);
+
           if(role === "Admin"){
             navigate("/admin-page");
           } else if(role === "ShopOwner"){

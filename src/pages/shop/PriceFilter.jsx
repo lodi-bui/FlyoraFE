@@ -19,6 +19,7 @@ const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Lọc theo giá</h2>
+
       <Slider
         range
         min={min}

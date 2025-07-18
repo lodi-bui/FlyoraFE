@@ -1,32 +1,24 @@
-// src/pages/cart/CartPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import Header from "../navfoot/Header";
 import Footer from "../navfoot/Footer";
 import CartItem from "./CartItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MdRadioButtonUnchecked, MdRadioButtonChecked } from "react-icons/md";
-import { useLocation } from "react-router-dom";
 import { getCart } from "../../api/Cart";
+import { useAuthCart } from "../../context/AuthCartContext";
 
 const CartPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [setEmptyCart] = useState(false);
-
-  // ✅ Load từ localStorage và fetch thông tin sản phẩm từ API
-  const location = useLocation();
-
-  // ✅ Sử dụng useLocation để theo dõi thay đổi URL
-  // ✅ Khi URL thay đổi, sẽ tự động gọi lại hàm fetchCartItems để cập nhật giỏ hàng
+  const { updateCartCountFromLocalStorage } = useAuthCart();
 
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
       try {
         const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        // ✅ Lọc bỏ item không hợp lệ (id undefined/null hoặc không có qty)
 
         const localCart = rawCart.filter(
           (item) =>
@@ -39,6 +31,7 @@ const CartPage = () => {
 
         if (localCart.length === 0) {
           setItems([]);
+          updateCartCountFromLocalStorage(); //  cập nhật nếu cart rỗng
           setLoading(false);
           return;
         }
@@ -61,6 +54,7 @@ const CartPage = () => {
         });
 
         setItems(merged);
+        updateCartCountFromLocalStorage(); // cập nhật khi load lại
       } catch (err) {
         console.error("Lỗi khi fetch giỏ hàng:", err);
       } finally {
@@ -77,6 +71,7 @@ const CartPage = () => {
       .map(({ id, qty }) => ({ id, qty }));
 
     localStorage.setItem("cart", JSON.stringify(simplified));
+    updateCartCountFromLocalStorage(); // cập nhật sau khi ghi
   };
 
   const toggleSelect = (id) => {
@@ -87,8 +82,7 @@ const CartPage = () => {
 
   const changeQty = (id, newQty) => {
     if (!Number.isInteger(newQty) || newQty < 1) {
-      removeItem(id); // Nếu số lượng không hợp lệ thì xóa luôn
-
+      removeItem(id); // đã gọi sync và update bên trong
     } else {
       const updated = items.map((it) =>
         it.id === id ? { ...it, qty: newQty } : it
@@ -117,25 +111,6 @@ const CartPage = () => {
     () => selectedItems.reduce((sum, it) => sum + it.price * it.qty, 0),
     [selectedItems]
   );
-
-  // const handleCheckout = async () => {
-  //   try {
-  //     const payload = selectedItems.map((item) => ({
-  //       productId: item.id,
-  //       quantity: item.qty,
-  //     }));
-
-  //     await axios.post(
-  //       "https://flyora-backend.onrender.com/api/v1/checkout",
-  //       payload
-  //     );
-
-  //     navigate("/checkout");
-  //   } catch (err) {
-  //     console.error("Checkout error:", err);
-  //     alert("Thanh toán thất bại!");
-  //   }
-  // };
 
   if (loading) return <p className="text-center py-20">Đang tải giỏ hàng...</p>;
 
@@ -181,12 +156,19 @@ const CartPage = () => {
           </p>
 
           <button
-            // onClick={handleCheckout}
             onClick={() => {
               if (selectedItems.length === 0) {
                 alert("Bạn cần thêm sản phẩm vào giỏ hàng!");
                 return;
               }
+
+              // Ghi lại selectedItems vào localStorage để CheckoutPage chỉ dùng những sản phẩm đó
+              const selectedCart = selectedItems.map(({ id, qty }) => ({
+                id,
+                qty,
+              }));
+              localStorage.setItem("cart", JSON.stringify(selectedCart));
+
               navigate("/checkout");
             }}
             className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg shadow-md"

@@ -42,9 +42,7 @@ const OrderHistory = () => {
         <div className="text-center text-red-500 font-medium">{error}</div>
       )}
       {!loading && !error && orders.length === 0 && (
-        <div className="text-center text-gray-500">
-          You have no orders yet.
-        </div>
+        <div className="text-center text-gray-500">You have no orders yet.</div>
       )}
       {!loading && !error && orders.length > 0 && (
         <div className="space-y-6">

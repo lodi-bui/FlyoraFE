@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Search, Plus } from "lucide-react";
 import Sidebar from "../sidebar/Sidebar";
 import { createNewsBlogSalesPost } from "api/NewsBlogSales";
+
 import toast from "react-hot-toast";
 const ContentPage = () => {
     const [url, setUrl] = useState("");
@@ -22,6 +23,7 @@ const ContentPage = () => {
         } catch (error) {
             console.error("Error creating post:", error.response?.data || error.message);
             toast.error(`Failed to create news/blog post: ${error.response?.data?.message || error.message}`);
+
         }
     };
 
@@ -73,6 +75,7 @@ const ContentPage = () => {
                             <div className="flex items-center space-x-2">
                                 <label className="block text-lg font-medium text-gray-700 w-10">URL</label>
                                 <input
+
                                     type="text"
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
@@ -84,12 +87,14 @@ const ContentPage = () => {
                             <div className="flex items-center space-x-2">
                                 <label className="block text-lg font-medium text-gray-700 w-10">Title</label>
                                 <input
+
                                     type="text"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Enter here"
                                     className="flex-1 p-3 border border-gray-300 rounded-lg bg-gray-200 text-gray-500 focus:outline-none"
                                     required
+
                                 />
                             </div>
                             <div className="text-right">

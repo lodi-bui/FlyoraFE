@@ -13,6 +13,7 @@ import { Separator } from "components/ui/Separator";
 import { Table, TableBody, TableCell, TableRow } from "components/ui/Table";
 import { StarIcon } from "lucide-react";
 import toast from "react-hot-toast";
+
 import {
   Carousel,
   CarouselContent,
@@ -30,13 +31,23 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { isLoggedIn, addToCart, user } = useAuthCart();
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
 
-  const customerId = Number(localStorage.getItem("linkedId"));
+
+  const customerId =
+    user?.linkedId || Number(localStorage.getItem("linkedId")) || null;
+
+  // console.log("isLoggedIn:", isLoggedIn);
+  // console.log("user:", user);
+  // console.log("customerId:", customerId);
+  // console.log("user = ", user);
+
   const { isLoggedIn, addToCart } = useAuthCart();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -155,7 +166,9 @@ const ProductDetails = () => {
       <Header />
       <div className="container mx-auto px-6 py-8 bg-gray-50 min-h-screen">
         {/* Product Info */}
+
         {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
           <Card className="col-span-2 shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-8">
@@ -171,6 +184,7 @@ const ProductDetails = () => {
                     <h1 className="font-bold text-[#4b4a4a] text-3xl">
                       {product.name}
                     </h1>
+
                     
                   </div>
                   <div className="mt-6 space-y-3 font-medium text-black text-lg">
@@ -185,6 +199,7 @@ const ProductDetails = () => {
             <CardContent className="p-6 space-y-6">
               <div>
 
+
                 <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
                   Kích thước:
                 </h3>
@@ -197,6 +212,7 @@ const ProductDetails = () => {
                       <span className="font-medium text-[#12a140] text-[14px]">
                         {product.price.toLocaleString()} VNĐ
 
+
                       </span>
                     </div>
                   </div>
@@ -204,12 +220,14 @@ const ProductDetails = () => {
               </div>
 
               <div className="flex justify-between items-center">
+
                 <p className="font-bold text-[#494444] text-3xl">{product.price.toLocaleString()} VND</p>
                 <Badge className="bg-[#12a140] text-white text-lg h-14 px-6 rounded-xl flex items-center justify-center">
                   Sale
                 </Badge>
               </div>
               <div className="w-full border-b border-gray-200 my-8"></div>
+
               <div className="mt-6">
                 <h2 className="font-medium text-[#807e7e] text-2xl mb-4">Khuyến mãi</h2>
                 <div className="space-y-4">
@@ -220,11 +238,13 @@ const ProductDetails = () => {
                         className="p-4 bg-gradient-to-r from-[#f0fff4] to-[#e6fffa] rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                       >
                         <p className="text-lg font-semibold text-[#494444]">
+
                           Mã khuyến mãi: <span className="text-[#12a140]">{promo.code}</span> - Giảm giá: <span className="text-[#12a140]">{promo.discount} VND</span>
                         </p>
                       </div>
                     ))
                   ) : (
+
                     <p className="text-base text-gray-600 text-center">Không có khuyến mãi nào.</p>
                   )}
                 </div>
@@ -233,6 +253,7 @@ const ProductDetails = () => {
 
               <Separator />
 
+              {/* Add to Cart and Buy Buttons */}
               <div className="flex gap-4">
                 <button
                   onClick={(e) => {
@@ -241,7 +262,9 @@ const ProductDetails = () => {
                       toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
                       return;
                     }
+
                     addToCart(product.id); // ✅ đúng format
+
                     toast.success("Đã thêm vào giỏ hàng! 🎉");
                   }}
                   className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
@@ -268,10 +291,13 @@ const ProductDetails = () => {
                   Mua ngay
                 </button>
 
+
+
               </div>
             </CardContent>
           </Card>
         </div>
+
 
         <div className="mt-10">
           <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
@@ -427,7 +453,9 @@ const ProductDetails = () => {
                         {item.name}
                       </h3>
                       <p className="text-base text-gray-600">
+
                         {item.price.toLocaleString("vi-VN")} VND
+
                       </p>
                     </Card>
                   </Link>

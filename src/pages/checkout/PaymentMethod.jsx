@@ -6,6 +6,18 @@ const PaymentMethod = ({ method, onChange }) => (
   <div className="bg-white p-6 rounded-lg shadow">
     <h2 className="text-xl font-semibold mb-4">Phương thức thanh toán</h2>
     <div className="space-y-4">
+      <label className="flex items-center border p-4 rounded-lg cursor-pointer">
+        <input
+          type="radio"
+          name="payment"
+          value="vnpay"
+          checked={method === "vnpay"}
+          onChange={onChange}
+          className="mr-3"
+        />
+        <img src={Vnpay} alt="" className="w-8 h-8 mr-3" />
+        <span>Thanh toán VNPay – QR</span>
+      </label>
       <label className="flex items-start border p-4 rounded-lg cursor-pointer">
         <input
           type="radio"
@@ -23,19 +35,6 @@ const PaymentMethod = ({ method, onChange }) => (
             toán. Hotline: <span className="text-red-500">053786348</span>
           </p>
         </div>
-      </label>
-
-      <label className="flex items-center border p-4 rounded-lg cursor-pointer">
-        <input
-          type="radio"
-          name="payment"
-          value="vnpay"
-          checked={method === "vnpay"}
-          onChange={onChange}
-          className="mr-3"
-        />
-        <img src={Vnpay} alt="" className="w-8 h-8 mr-3" />
-        <span>Thanh toán VNPay – QR</span>
       </label>
     </div>
   </div>

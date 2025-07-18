@@ -65,6 +65,7 @@ const DashBoard = () => {
   }, []);
 
   return (
+
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <div className="w-64 bg-green-600 text-white flex flex-col sticky top-0 h-screen overflow-y-auto">
@@ -79,6 +80,7 @@ const DashBoard = () => {
         </div>
 
         {/* Navigation */}
+
         <nav className="mt-8 flex-1">
           <div className="px-4 mb-2">
             <span className="text-sm font-medium text-green-200">Main</span>
@@ -144,6 +146,7 @@ const DashBoard = () => {
             {/* Top Products Header */}
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900">
+
                 Danh sách sản phẩm bán chạy
               </h2>
             </div>
@@ -154,6 +157,7 @@ const DashBoard = () => {
                 <thead className="bg-gray-50 text-center">
                   <tr>
                     <th className="w-[50px] px-2 py-3 text-sm font-medium text-gray-700">
+
                       Top
                     </th>
                     <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
@@ -230,11 +234,13 @@ const DashBoard = () => {
               </table>
               <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
                 <span className="text-sm text-gray-500">
+
                   Trang {currentPage} trên {totalPages}
                 </span>
                 <div className="flex items-center space-x-1">
                   <button
                     className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+
                       currentPage === 1 
                         ? "text-gray-300 cursor-not-allowed"
                         : "text-gray-500 hover:bg-gray-100"
