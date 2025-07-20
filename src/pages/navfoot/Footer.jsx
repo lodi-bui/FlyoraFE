@@ -168,15 +168,15 @@ const Footer = () => {
             ))}
 
             {/* Store info */}
-            <div className="col-span-1 sm:col-span-2 lg:col-span-3 z-10">
-              <h3 className="font-['Poppins',Helvetica] font-semibold text-white text-sm sm:text-base mb-3 sm:mb-5">
+            <div className="col-span-1 sm:col-span-2 lg:col-span-3 z-10 ml-[70px]">
+              <h3 className="font-['Poppins',Helvetica] font-semibold text-white text-sm sm:text-base mb-3 sm:mb-5 text-right]">
                 {footerData.store.title}
               </h3>
               <div className="flex flex-col gap-3 sm:gap-5">
-                <p className="font-['Poppins',Helvetica] font-medium text-white text-sm sm:text-base leading-5 max-w-[180px] sm:max-w-[200px]">
+                <p className="font-['Poppins',Helvetica] font-medium text-white text-sm sm:text-base leading-5 max-w-[120px] sm:max-w-[200px] whitespace-nowrap">
                   {footerData.store.address}
                 </p>
-                <div className="flex flex-col gap-1 sm:gap-2">
+                <div className="flex flex-col gap-1 sm:gap-5">
                   <p className="font-['Poppins',Helvetica] font-medium text-white text-sm sm:text-base leading-5 whitespace-nowrap">
                     {footerData.store.phone}
                   </p>

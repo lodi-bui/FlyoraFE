@@ -64,9 +64,9 @@ const Login = () => {
           setShowSuccess(false);
           console.log("Đăng nhập thành công:", res.data);
 
-          if(role === "Admin"){
+          if (role === "Admin") {
             navigate("/admin-page");
-          } else if(role === "ShopOwner"){
+          } else if (role === "ShopOwner") {
             navigate("/shopowner");
           } else {
             navigate("/");
@@ -171,16 +171,16 @@ const Login = () => {
         <div className="text-white">
           <div className="flex items-center mb-6">
             <img
-              className="w-20 h-20 mr-4 rotate-0" // Xoay chim lên trên (không xoay hoặc dùng rotate-0)
+              className="w-[7vw] h-[7vw] mr-4 rotate-0" // Xoay chim lên trên (không xoay hoặc dùng rotate-0)
               src="https://c.animaapp.com/mbzzgsmyZQHMQ6/img/group-10.png"
               alt="Logo"
             />
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-[45px] font-bold">
               <span className="text-orange-500">Flyora</span>{" "}
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-5xl font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
+          <h2 className="text-[40px] font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
           <p className="text-xl mb-8">A bird store with everything you need</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
