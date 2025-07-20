@@ -16,7 +16,8 @@ const News = () => {
   useEffect(() => {
     setLoading(true);
     setError("");
-    fetch("https://flyora-backend.onrender.com/api/v1/news") // ← Thay link API thật ở đây
+
+    fetch("https://flyora-backend.onrender.com/api/v1/news")
       .then((res) => res.json())
       .then((data) => setNewsList(Array.isArray(data) ? data : []))
       .catch(() => setError("Không tải được danh sách bài viết"))
