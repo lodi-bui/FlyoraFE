@@ -129,7 +129,7 @@ const ProductManagement = () => {
               </h2>
               <button
                 className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-                onClick={() => navigate("/manager-page/add-product")}
+                onClick={() => navigate("/shopowner/add-product")}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Thêm mới

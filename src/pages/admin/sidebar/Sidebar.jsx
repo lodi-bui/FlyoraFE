@@ -47,10 +47,10 @@ const Sidebar = () => {
                 </a>
               </li>
               <li>
-                <a href="/admin-page/settings" className={`flex items-center px-4 py-3 rounded-lg ${location.pathname === '/admin-page/settings' ? 'bg-green-700 text-white' : 'text-green-100 hover:bg-green-500 transition-colors'}`}>
+                <a href="/admin-page/user-activity-log" className={`flex items-center px-4 py-3 rounded-lg ${location.pathname === '/admin-page/settings' ? 'bg-green-700 text-white' : 'text-green-100 hover:bg-green-500 transition-colors'}`}>
                   <Settings className="w-5 h-5 mr-3" />
-                  <span>Manage System</span>
-                  <ChevronDown className="w-4 h-4 ml-auto" />
+                  <span>User Activity</span>
+                  {/* <ChevronDown className="w-4 h-4 ml-auto" /> */}
                 </a>
               </li>
             </>
