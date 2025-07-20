@@ -28,12 +28,31 @@ const ProductFilterPage = () => {
   const [minPrice, setMinPrice] = useState(15000);
   const [maxPrice, setMaxPrice] = useState(300000);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  
+    const ITEMS_PER_PAGE = 12;
+    const totalPages = Math.ceil(product.length / ITEMS_PER_PAGE);
+    const paginatedProducts = product.slice(
+      (currentPage - 1) * ITEMS_PER_PAGE,
+      currentPage * ITEMS_PER_PAGE
+    );
+  
+    const handlePrevPage = () => {
+      if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+  
+    const handleNextPage = () => {
+      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
   const tagsList = ["Chào Mào", "Vẹt Xích", "Yến Phụng", "Chích Chòe"];
 
   const params = new URLSearchParams(location.search);
   const tagFromUrl = params.get("tag");
   const categoryId = params.get("categoryId");
   const search = params.get("search");
+
+  
 
   // Lấy danh sách categories
   useEffect(() => {
@@ -57,17 +76,17 @@ const ProductFilterPage = () => {
 
       try {
         const payload = {
+          name: search || "",
           categoryId: categoryId ? parseInt(categoryId) : null,
           birdTypeId: tagFromUrl ? birdTypeMap[tagFromUrl] : null,
           minPrice: minPrice,
           maxPrice: maxPrice,
-          name: search || "",
-          page: 0,
-          size: 100,
         };
+        console.log("Sending payload:", payload);
 
         const response = await getProductsByCategory(payload);
-        setProduct(response.content || []);
+        setProduct(response);
+
       } catch (err) {
         console.error(err);
         setError("Failed to load products.");
@@ -114,6 +133,12 @@ const ProductFilterPage = () => {
     addToCart(id);
     toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [product, totalPages]);
 
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
@@ -227,49 +252,94 @@ const ProductFilterPage = () => {
                   Không tìm thấy sản phẩm nào.
                 </div>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                  {product.map((p) => (
-                    <NavLink
-                      to={`/product/${p.id}`}
-                      state={{ product: p }}
-                      key={p.id}
-                      className="block h-full"
-                    >
-                      <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
-                        <img
-                          src={p.imageUrl}
-                          alt={p.name}
-                          className="w-full h-[200px] object-cover rounded-xl"
-                        />
-                        <div className="mt-4 flex items-center justify-between">
-                          <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
-                            {p.name}
-                          </h3>
-                          <div className="flex gap-3 shrink-0">
-                            <button
-                              type="button"
-                              tabIndex={-1}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleAddToCart(p.id);
-                              }}
-                              className="hover:scale-110 transition-transform"
-                            >
-                              <img
-                                src={cartIcon}
-                                alt="cart"
-                                className="w-5 h-5"
-                              />
-                            </button>
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {paginatedProducts.map((p) => (
+                      <NavLink
+                        to={`/product/${p.id}`}
+                        state={{ product: p }}
+                        key={p.id}
+                        className="block h-full"
+                      >
+                        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition flex flex-col h-full">
+                          <img
+                            src={p.imageUrl}
+                            alt={p.name}
+                            className="w-full h-[200px] object-cover rounded-xl"
+                          />
+                          <div className="mt-4 flex items-center justify-between">
+                            <h3 className="font-semibold text-[16px] leading-5 max-w-[70%] truncate">
+                              {p.name}
+                            </h3>
+                            <div className="flex gap-3 shrink-0">
+                              <button
+                                type="button"
+                                tabIndex={-1}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleAddToCart(p.id);
+                                }}
+                                className="hover:scale-110 transition-transform"
+                              >
+                                <img
+                                  src={cartIcon}
+                                  alt="cart"
+                                  className="w-5 h-5"
+                                />
+                              </button>
+                            </div>
                           </div>
+                          <p className="text-gray-600 text-[15px] mt-1">
+                            {p.price.toLocaleString()} VNĐ
+                          </p>
                         </div>
-                        <p className="text-gray-600 text-[15px] mt-1">
-                          {p.price.toLocaleString()} VNĐ
-                        </p>
-                      </div>
-                    </NavLink>
-                  ))}
-                </div>
+                      </NavLink>
+                    ))}
+                  </div>
+                  {/* Pagination */}
+                  <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
+                    <span className="text-sm text-gray-500">
+                      Trang {currentPage} trên {totalPages}
+                    </span>
+                    <div className="flex items-center space-x-1">
+                      <button
+                        className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                          currentPage === 1
+                            ? "text-gray-300 cursor-not-allowed"
+                            : "text-gray-500 hover:bg-gray-100"
+                        }`}
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 1}
+                      >
+                        ←
+                      </button>
+                      {[...Array(totalPages)].map((_, i) => (
+                        <button
+                          key={i}
+                          className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                            currentPage === i + 1
+                              ? "bg-red-500 text-white"
+                              : "text-gray-500 hover:bg-gray-100"
+                          }`}
+                          onClick={() => setCurrentPage(i + 1)}
+                        >
+                          {i + 1}
+                        </button>
+                      ))}
+                      <button
+                        className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                          currentPage === totalPages
+                            ? "text-gray-300 cursor-not-allowed"
+                            : "text-gray-500 hover:bg-gray-100"
+                        }`}
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                      >
+                        →
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
             </>
           )}
