@@ -146,7 +146,7 @@ const ProductFilterPage = () => {
           <div>
             <PriceFilter
               min={15000}
-              max={300000}
+              max={400000}
               onChange={(range) => {
                 const [minPrice, maxPrice] = range;
                 setMinPrice(minPrice);
