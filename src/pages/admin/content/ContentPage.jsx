@@ -51,36 +51,9 @@ const ContentPage = () => {
                 Update News
               </h1>
             </div>
-
-            {/* Search */}
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search here"
-                  className="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-              </div>
-              {/* User Profile */}
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt="User"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-900">
-                    Johndoe
-                  </div>
-                  <div className="text-xs text-gray-500">Super Admin</div>
-                </div>
-              </div>
-            </div>
           </div>
         </header>
+        
         {/* Content */}
         <main className="flex-1 p-4 flex justify-center items-center">
           <div className="bg-white rounded-[20px] shadow p-6 w-full max-w-lg">

@@ -201,17 +201,7 @@ const UserManagement = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
       <div className="w-64 bg-green-600 text-white">
-        <div className="flex items-center p-6 border-b border-green-500">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-              <span className="text-green-600 font-bold text-sm">F</span>
-            </div>
-            <span className="text-xl font-bold">Flyora</span>
-          </div>
-        </div>
-
         {/* Sidebar */}
         <Sidebar />
       </div>

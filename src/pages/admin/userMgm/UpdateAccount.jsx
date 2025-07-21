@@ -22,8 +22,14 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
   const [user, setUser] = useState({ ...userData });
 
   useEffect(() => {
-    setUser({ ...userData }); // load lại data mỗi lần userData thay đổi
-  }, [userData]);
+  setUser({
+    ...userData,
+    shopOwnerId: 2,
+    isActive: true,
+    isApproved: true,
+  });
+}, [userData]);
+
 
   const handleUpdate = async () => {
     try {
@@ -54,7 +60,6 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
             { label: "Phone", key: "phone" },
             { label: "Name", key: "name" },
             { label: "Other Info", key: "otherInfo" },
-            { label: "Shop Owner ID", key: "shopOwnerId", type: "number" },
           ].map(({ label, key, type }) => (
             <div key={key}>
               <label className="block text-sm font-medium text-gray-700">
@@ -94,7 +99,7 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <label className="flex items-center">
+            {/* <label className="flex items-center">
               <input
                 type="checkbox"
                 checked={user.isActive}
@@ -113,7 +118,7 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
                 }
               />
               <span className="ml-2">Approved</span>
-            </label>
+            </label> */}
           </div>
 
           <div className="mt-6 flex justify-end space-x-3">

@@ -1,6 +1,6 @@
 import React from "react";
 import { FaTruck } from "react-icons/fa";
-import Vnpay from "../../icons/vnpay.png"; // Assuming you have this image in your icons folder
+import Payos from "../../icons/payos.png"; // Assuming you have this image in your icons folder
 
 const PaymentMethod = ({ method, onChange }) => (
   <div className="bg-white p-6 rounded-lg shadow">
@@ -10,13 +10,13 @@ const PaymentMethod = ({ method, onChange }) => (
         <input
           type="radio"
           name="payment"
-          value="vnpay"
-          checked={method === "vnpay"}
+          value="payos"
+          checked={method === "payos"}
           onChange={onChange}
           className="mr-3"
         />
-        <img src={Vnpay} alt="" className="w-8 h-8 mr-3" />
-        <span>Thanh toán VNPay – QR</span>
+        <img src={Payos} alt="" className="w-8 h-8 mr-3" />
+        <span>Thanh toán QR - PayOS</span>
       </label>
       <label className="flex items-start border p-4 rounded-lg cursor-pointer">
         <input
