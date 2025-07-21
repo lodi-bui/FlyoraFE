@@ -22,7 +22,7 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
   const [user, setUser] = useState({ ...userData });
 
   useEffect(() => {
-    setUser({ ...userData }); // load lại data mỗi lần userData thay đổi
+    setUser({ ...userData });
   }, [userData]);
 
   const handleUpdate = async () => {
@@ -35,11 +35,19 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
 
       await updateAccount(user.id, requesterId, updatedUser);
       toast.success("Cập nhật tài khoản thành công!");
-      onUpdateSuccess(); // reload danh sách
-      onClose(); // đóng popup
+      onUpdateSuccess();
+      onClose();
     } catch (error) {
       toast.error("Cập nhật tài khoản thất bại!");
     }
+  };
+
+  const handleInputChange = (key, value) => {
+    if (key === "shopOwnerId") {
+      const number = parseInt(value);
+      if (isNaN(number) || number < 0) return;
+    }
+    setUser({ ...user, [key]: value });
   };
 
   return (
@@ -64,9 +72,8 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
                 type={type || "text"}
                 className="w-full border rounded px-3 py-2"
                 value={user[key] || ""}
-                onChange={(e) =>
-                  setUser({ ...user, [key]: e.target.value })
-                }
+                onChange={(e) => handleInputChange(key, e.target.value)}
+                {...(key === "shopOwnerId" ? { min: 0 } : {})}
               />
             </div>
           ))}
