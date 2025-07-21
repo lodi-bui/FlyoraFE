@@ -87,7 +87,7 @@ const OrderDetails = () => {
               <h4 className="text-base md:text-lg font-semibold text-gray-900">
                 {item.productName}
               </h4>
-              <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+              <p className="text-sm text-gray-500">Số lượng: {item.quantity}</p>
             </div>
             <div className="text-right">
               <p className="text-lg font-bold text-gray-900">
@@ -105,31 +105,31 @@ const OrderDetails = () => {
         </h3>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">Subtotal</span>
+            <span className="text-gray-600">Tổng tiền hàng</span>
             <span className="text-gray-900 font-medium">
               {subtotal.toLocaleString()} VND
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Shipping</span>
+            <span className="text-gray-600">Phí vận chuyển</span>
             <span className="text-gray-900 font-medium">
               {shippingCharge.toLocaleString()} VND
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Taxes</span>
+            <span className="text-gray-600">Thuế</span>
             <span className="text-gray-900 font-medium">
               {taxes.toLocaleString()} VND
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Discount</span>
+            <span className="text-gray-600">Giảm giá</span>
             <span className="text-gray-900 font-medium">
               {discount.toLocaleString()} VND
             </span>
           </div>
           <div className="flex justify-between border-t pt-3 mt-3 font-semibold text-base">
-            <span className="text-gray-900">Total</span>
+            <span className="text-gray-900">Thành tiền</span>
             <span className="text-gray-900 text-lg font-bold">
               {total.toLocaleString()} VND
             </span>
