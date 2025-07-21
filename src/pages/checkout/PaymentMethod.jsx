@@ -16,7 +16,7 @@ const PaymentMethod = ({ method, onChange }) => (
           className="mr-3"
         />
         <img src={Vnpay} alt="" className="w-8 h-8 mr-3" />
-        <span>Thanh toán VNPay – QR</span>
+        <span>Thanh toán online QR</span>
       </label>
       <label className="flex items-start border p-4 rounded-lg cursor-pointer">
         <input
