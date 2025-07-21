@@ -66,7 +66,7 @@ const OrderHistory = () => {
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-1">
-                      Mã Đơn Hàng #{order.orderId}
+                      Mã Đơn Hàng: #{order.orderId}
                     </h2>
                     <p className="text-sm text-gray-600">
                       Thời gian:{" "}
