@@ -6,7 +6,7 @@ import { Input } from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
-import { useAuthCart } from "context/AuthCartContext";
+import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,16 +43,15 @@ const Login = () => {
       // }
 
       if (res.status === 200) {
-
         const { userId, name, linkedId, role, token } = res.data;
 
-      // Lưu token vào localStorage
-      localStorage.setItem("token", token);
+        // Lưu token vào localStorage
+        localStorage.setItem("token", token);
 
-      // Lưu thông tin vào context
-      login({ userId, name, linkedId, role });
+        // Lưu thông tin vào context
+        login({ userId, name, linkedId, role, token });
         setShowSuccess(true);
-        
+
         // Lưu thông tin người dùng vào context
         // login({
         //   userId: res.data.userId,
@@ -64,9 +63,10 @@ const Login = () => {
         setTimeout(() => {
           setShowSuccess(false);
           console.log("Đăng nhập thành công:", res.data);
-          if(role === "Admin"){
+
+          if (role === "Admin") {
             navigate("/admin-page");
-          } else if(role === "ShopOwner"){
+          } else if (role === "ShopOwner") {
             navigate("/shopowner");
           } else {
             navigate("/");
@@ -171,22 +171,22 @@ const Login = () => {
         <div className="text-white">
           <div className="flex items-center mb-6">
             <img
-              className="w-20 h-20 mr-4 rotate-0" // Xoay chim lên trên (không xoay hoặc dùng rotate-0)
+              className="w-[7vw] h-[7vw] mr-4 rotate-0" // Xoay chim lên trên (không xoay hoặc dùng rotate-0)
               src="https://c.animaapp.com/mbzzgsmyZQHMQ6/img/group-10.png"
               alt="Logo"
             />
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-[45px] font-bold">
               <span className="text-orange-500">Flyora</span>{" "}
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-5xl font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
-          <p className="text-xl mb-8">A bird store with everything you need</p>
+          <h2 className="text-[40px] font-bold mb-6">CHÀO MỪNG ĐẾN VỚI FLYORA SHOP</h2>
+          <p className="text-xl mb-8">Cửa hàng chim với mọi thứ bạn cần</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
             onClick={() => navigate("/")}
           >
-            Explore Us
+            Khám Phá Chúng Tôi
           </Button>
         </div>
 
@@ -196,7 +196,7 @@ const Login = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label className="block font-medium mb-1 text-gray-700">
-                  User Name
+                  Tên người dùng
                 </label>
                 <Input
                   name="username"
@@ -210,7 +210,7 @@ const Login = () => {
               </div>
               <div>
                 <label className="block font-medium mb-1 text-gray-700">
-                  Password
+                  Mật khẩu
                 </label>
                 <Input
                   name="password"
@@ -235,13 +235,13 @@ const Login = () => {
                 disabled={loading}
                 className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors duration-200 hover:bg-orange-600 hover:text-white"
               >
-                {loading ? "Đang đăng nhập..." : "Login"}
+                {loading ? "Đang đăng nhập..." : "Đăng nhập"}
               </Button>
 
               <div className="text-center text-sm">
-                Don’t have an account?{" "}
+                Chưa có tài khoản?{" "}
                 <Link to="/register" className="text-blue-600 font-medium">
-                  Create a new one
+                  Tạo tài khoản mới
                 </Link>
               </div>
 

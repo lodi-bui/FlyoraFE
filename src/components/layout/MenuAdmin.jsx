@@ -16,31 +16,31 @@ const MenuAdmin = () => {
           to="/users"
           className="flex items-center gap-2 p-2 rounded hover:bg-green-600"
         >
-          <FaUser /> Users
+          <FaUser /> Người dùng
         </NavLink>
         <NavLink
           to="/contents"
           className="flex items-center gap-2 p-2 rounded hover:bg-green-600"
         >
-          <FaFileAlt /> Contents
+          <FaFileAlt /> Nội dung
         </NavLink>
 
         <div className="bg-green-600 rounded p-2">
           <div className="flex items-center gap-2">
-            <FaCogs /> Manage System <FaChevronDown className="ml-auto" />
+            <FaCogs /> Quản lý hệ thống <FaChevronDown className="ml-auto" />
           </div>
           <div className="mt-2 ml-6 space-y-1">
             <NavLink
               to="/user-log"
               className="block text-white hover:underline"
             >
-              User Activity Log
+              Nhật ký hoạt động người dùng
             </NavLink>
             <NavLink
               to="/system-log"
               className="block text-white hover:underline"
             >
-              System Log
+              Nhật ký hệ thống
             </NavLink>
           </div>
         </div>
@@ -49,7 +49,7 @@ const MenuAdmin = () => {
           to="/logout"
           className="flex items-center gap-2 p-2 rounded hover:bg-green-600"
         >
-          <FaSignOutAlt /> Logout
+          <FaSignOutAlt /> Đăng xuất
         </NavLink>
       </nav>
     </aside>

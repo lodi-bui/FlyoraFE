@@ -13,7 +13,7 @@ function FloatingContact() {
     <div className="fixed bottom-6 right-6 z-50">
       {open && (
         <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-4 w-[260px] relative">
-                                  <button
+          <button
             onClick={() => setOpen(false)}
             className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
           >
@@ -43,19 +43,16 @@ function FloatingContact() {
           </ul>
         </div>
       )}
-
-      <button
-        onClick={() => setOpen(!open)}
-        className={`w-[70px] h-[70px] flex items-center justify-center rounded-full border-4 border-white bg-black shadow-2xl transition-transform duration-200 ${
-          open ? "scale-90" : "scale-100"
-        }`}
-      >
-        {open ? (
-          <FaTimes size={26} className="text-white" />
-        ) : (
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          className={`w-[70px] h-[70px] flex items-center justify-center rounded-full border-4 border-white bg-black shadow-2xl transition-transform duration-200 ${
+            open ? "scale-90" : "scale-100"
+          }`}
+        >
           <FaFacebookMessenger size={28} className="text-white" />
-        )}
-      </button>
+        </button>
+      )}
     </div>
   );
 }

@@ -67,8 +67,8 @@ const NewsBlogSalesSection = () => {
   );
 
   return (
+    <section className="py-10 px-6 bg-white text-center">
 
-    <section className="py-10 px-6 bg-white">
       <SectionTitle title="Tin tức & Blog & Khuyến mãi" />
 
       <div className="relative mt-6 justify-center">

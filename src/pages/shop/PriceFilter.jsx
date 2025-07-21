@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
+const PriceFilter = ({ min = 15000, max = 400000, onChange }) => {
   const [priceRange, setPriceRange] = useState([min, max]);
 
   const handleChange = (value) => {
@@ -19,6 +19,7 @@ const PriceFilter = ({ min = 15000, max = 300000, onChange }) => {
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Lọc theo giá</h2>
+
       <Slider
         range
         min={min}
