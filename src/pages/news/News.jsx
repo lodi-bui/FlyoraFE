@@ -16,7 +16,8 @@ const News = () => {
   useEffect(() => {
     setLoading(true);
     setError("");
-    fetch("https://your-api/news") // ← Thay link API thật ở đây
+
+    fetch("https://flyora-backend.onrender.com/api/v1/news")
       .then((res) => res.json())
       .then((data) => setNewsList(Array.isArray(data) ? data : []))
       .catch(() => setError("Không tải được danh sách bài viết"))
@@ -64,21 +65,22 @@ const News = () => {
                     rel="noopener noreferrer"
                     className="block group"
                   >
-                    {news.image ? (
+                    <div className="flex flex-col h-full">
                       <img
-                        src={news.image}
+                        src={news.imageUrl}
                         alt={news.title}
-                        className="w-full aspect-square object-cover rounded bg-gray-100"
+                        className="w-full h-72 object-cover rounded bg-gray-100"
                       />
-                    ) : (
+                    </div>
+                    {/* ) : ( */}
                       <div className="w-full aspect-square bg-gray-200 rounded" />
-                    )}
+                    {/* )} */}
                     <div className="mt-4">
                       <h3 className="font-medium underline underline-offset-2 group-hover:underline text-lg leading-snug text-black hover:underline cursor-pointer">
                         {news.title}
                       </h3>
                       <div className="mt-2 text-gray-400 text-[15px]">
-                        {formatDateVN(news.date)}
+                        {formatDateVN(news.createdAt)}
                       </div>
                     </div>
                   </a>

@@ -32,4 +32,5 @@ const createNewsBlogSalesPost = async (
   }
 };
 
+
 export { getNewsBlogSalesPosts, createNewsBlogSalesPost };

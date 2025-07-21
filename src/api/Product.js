@@ -44,8 +44,8 @@ export async function getProductsByCategory(params = {}) {
     birdTypeId: params.birdTypeId || null,
     minPrice: params.minPrice || null,
     maxPrice: params.maxPrice || null,
-    page: params.page || 0,
-    size: params.size || 12,
+    // page: params.page || 0,
+    // size: params.size || 12,
   };
 
   try {

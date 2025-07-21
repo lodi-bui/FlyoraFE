@@ -1,11 +1,22 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { Search, Plus, Edit2, Trash2, Settings, LogOut, Users, FileText, ChevronDown } from 'lucide-react';
-import { useAuthCart } from '../../../context/AuthCartContext';
-import Sidebar from '../sidebar/Sidebar';
+import {
+  Search,
+  Plus,
+  Edit2,
+  Trash2,
+  Settings,
+  LogOut,
+  Users,
+  FileText,
+  ChevronDown,
+} from "lucide-react";
+import { useAuthCart } from "context/AuthCartContext";
+import Sidebar from "../sidebar/Sidebar";
+
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { UserAccounts } from "api/UserManagement";
 import { addNewAccount } from "api/AddNewAccount";
 import AddAccount from "./AddAccount";
@@ -16,11 +27,14 @@ import { deactivateAccount } from "api/DeactivateAccount";
 
 const ITEMS_PER_PAGE = 6;
 
-const UserManagement = () => {
-  const { logout } = useAuthCart();
-  const navigate = useNavigate();
+//
+// // const { logout } = useAuthCart();
+// // const navigate = useNavigate();
 
-  const requesterId = localStorage.getItem("linkedId");
+// const requesterId = localStorage.getItem("linkedId");
+const UserManagement = () => {
+  const { user } = useAuthCart(); // ✅ lấy user từ context
+  const requesterId = user?.linkedId; // ✅ sử dụng linkedId từ context
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -146,6 +160,8 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
+    if (!requesterId) return; // ✅ không gọi API nếu chưa có requesterId
+
     const fetchUsers = async () => {
       try {
         const res = await UserAccounts(requesterId);
@@ -155,6 +171,7 @@ const UserManagement = () => {
         console.error(error);
       }
     };
+
     fetchUsers();
   }, [requesterId]);
 
@@ -185,18 +202,44 @@ const UserManagement = () => {
   };
 
   return (
-    <>
-      <div className="flex h-screen bg-gray-50">
+
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className="w-64 bg-green-600 text-white">
+        <div className="flex items-center p-6 border-b border-green-500">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+              <span className="text-green-600 font-bold text-sm">F</span>
+            </div>
+            <span className="text-xl font-bold">Flyora</span>
+          </div>
+        </div>
+
         {/* Sidebar */}
         <Sidebar />
+      </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col">
-          <header className="bg-white shadow-sm border-b border-gray-200">
-            <div className="flex items-center justify-between px-6 py-4">
-              <h1 className="text-xl font-semibold text-gray-900">
-                User Management
-              </h1>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="flex items-center justify-between px-6 py-4">
+            <h1 className="text-xl font-semibold text-gray-900">
+              User Management
+            </h1>
+          </div>
+        </header>
+
+        <main className="flex-1 p-6">
+          <div className="bg-white rounded-lg shadow">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Users</h2>
+              <button
+                onClick={() => setIsPopupOpen(true)}
+                className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add New
+              </button>
             </div>
           </header>
 
@@ -395,7 +438,66 @@ const UserManagement = () => {
           </div>
         )}
       </div>
-    </>
+
+      {/* Add User Popup */}
+      {isPopupOpen && (
+        <AddAccount
+          newUser={newUser}
+          setNewUser={setNewUser}
+          onCreate={handleCreateUser}
+          onClose={() => setIsPopupOpen(false)}
+        />
+      )}
+
+      {isEditPopupOpen && selectedUser && (
+        <UpdateAccount
+          userData={selectedUser}
+          onClose={() => {
+            setIsEditPopupOpen(false);
+            setSelectedUser(null);
+          }}
+          onUpdateSuccess={async () => {
+            const updated = await UserAccounts(requesterId);
+            setUsers(Array.isArray(updated) ? updated : [updated]);
+          }}
+        />
+      )}
+
+      {isConfirmModalOpen && targetUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-[400px]">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800">
+              Xác nhận thay đổi trạng thái
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Bạn có chắc chắn muốn{" "}
+              <span className="font-medium text-red-600">
+                {targetUser.active ? "vô hiệu hóa" : "kích hoạt"}
+              </span>{" "}
+              tài khoản{" "}
+              <span className="font-semibold">{targetUser.username}</span>?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => {
+                  setIsConfirmModalOpen(false);
+                  setTargetUser(null);
+                }}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={confirmToggleStatus}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

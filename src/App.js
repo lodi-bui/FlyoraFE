@@ -29,7 +29,6 @@ import ContentPage from "./pages/admin/content/ContentPage";
 import ProductManagement from "./pages/shopOwner/product/ProductManagement";
 import AddProduct from "pages/shopOwner/product/AddProduct";
 import EditProduct from "pages/shopOwner/product/EditProduct";
-
 function App() {
   return (
     <div className="max-w-screen-[1440px] mx-auto">
@@ -41,7 +40,6 @@ function App() {
         <Route path="/shop" element={<ShopPage />} />
 
         <Route path="/cart" element={<CartPage />} />
-
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -71,19 +69,27 @@ function App() {
         <Route path="/admin-page/users" element={<UserManagement />} />
         <Route path="/admin-page/contents" element={<ContentPage />} />
         <Route path="/admin-page/settings" element={<UserManagement />} />
+        <Route path="/admin-page/user-activity-log" element={<UserActivityLogPage />} />
+
+        {/* User Routes */}
 
         <Route path="/shopowner" element={<ProductManagement />} />
         <Route path="/shopowner/dashboard" element={<DashBoard />} />
+        <Route path="/shopowner/products" element={<ProductManagement />} />
+
+
+        <Route path="/shopowner" element={<ProductManagement />} />
         {/* <Route path="/shopowner/products" element={<DashBoard />} /> */}
 
         {/* Manager Routes */}
-        <Route path="/shopowner/products" element={<ProductManagement />} />
+
         {/* <Route path="/manager-page/product" element={<ProductManagement />} /> */}
         <Route path="/shopowner/add-product" element={<AddProduct />} />
         {/* <Route path="/manager-page/dashboard" element={<ProductManagement />} /> */}
 
         <Route path="/shopowner/edit-product/:id" element={<EditProduct />} />
       </Routes>
+
 
       <Chatbotbox />
     </div>
