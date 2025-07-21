@@ -4,7 +4,7 @@ import flower from "../../icons/flower.png";
 import { useNavigate } from "react-router-dom";
 
 const FlashSaleBanner = () => {
-  const [timeLeft, setTimeLeft] = useState(82800); // 23:00:00 = 23*60*60 = 82800s
+  const [timeLeft, setTimeLeft] = useState(86400); // 23:00:00 = 23*60*60 = 82800s
   const navigate = useNavigate();
 
   useEffect(() => {
