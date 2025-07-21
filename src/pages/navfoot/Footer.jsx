@@ -9,32 +9,28 @@ const Footer = () => {
 
   const footerData = {
     company: {
-      description:
-        "Sed viverra eget fames sit varius. Pellentesque mattis libero viverra dictumst ornare sed justo convallis vitae",
+      description: "Flyora – Nâng niu đàn chim Việt. Hãy đến với chúng tôi!",
     },
     navigation: [
       {
-        title: "Shop",
-        links: [{ name: "About Us" }, { name: "News" }, { name: "Blog" }],
-      },
-      {
-        title: "Policy",
+        title: "Hỗ trợ",
         links: [
-          { name: "Inspection Policy" },
-          { name: "Privacy Policy" },
-          { name: "Delivery Policy" },
+          { name: "Về chúng tôi" },
+          { name: "Tin tức" },
+          { name: "Liên hệ" },
         ],
       },
       {
-        title: "Customer Service",
+        title: "Chính sách",
         links: [
-          { name: "Contact Us" },
-          // { name: "F.A.Q" }
+          { name: "Chính sách đổi trả" },
+          { name: "Chính sách bảo hành" },
+          { name: "Chính sách giao hàng" },
         ],
       },
     ],
     store: {
-      title: "Store",
+      title: "Cửa hàng",
       address: "12 Hoang Hoa Tham, Quan 3, TP.HCM",
       phone: "+775 378-6348",
       email: "ntrang21102005@gmail.com",
@@ -42,21 +38,23 @@ const Footer = () => {
   };
 
   const hrefMap = {
-    "About Us": { path: "/about-us", sectionId: "about-us" },
-    Blog: { path: "/blog", sectionId: "blog" },
-    News: { path: "/news", sectionId: "news" },
-    "Inspection Policy": {
+    "Về chúng tôi": { path: "/about-us", sectionId: "about-us" },
+    "Tin tức": { path: "/news", sectionId: "news" },
+    "Chính sách đổi trả": {
       path: "/inspectionPolicy",
       sectionId: "inspectionPolicy",
     },
-    "Privacy Policy": { path: "/privacyPolicy", sectionId: "privacyPolicy" },
-    "Delivery Policy": {
+    "Chính sách bảo hành": {
+      path: "/privacyPolicy",
+      sectionId: "privacyPolicy",
+    },
+    "Chính sách giao hàng": {
       path: "/deliveryPolicy",
       sectionId: "deliveryPolicy",
     },
 
     // "F.A.Q": { path: "/faq", sectionId: "faq" },
-    "Contact Us": { path: "/contact-us", sectionId: "contact-us" },
+    "Liên hệ": { path: "/contact-us", sectionId: "contact-us" },
   };
 
   const handleLinkClick = (hrefObj) => {
@@ -77,8 +75,8 @@ const Footer = () => {
       <div className="relative w-full py-6 pb-2 z-10">
         {/* Decorative images with adjusted z-index */}
         <img
-          className="absolute w-[135px] h-[194px] top-[77px] left-1/2 -translate-x-1/2 opacity-10 blur-sm z-0"
-          alt="Decorative bird"
+          className="absolute w-[135px] h-[194px] top-[77px] left-1/2 -translate-x-1/2 opacity-10 blur-1 z-0"
+          alt="Bird"
           src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/img-4.png"
         />
         <img
@@ -170,15 +168,15 @@ const Footer = () => {
             ))}
 
             {/* Store info */}
-            <div className="col-span-1 sm:col-span-2 lg:col-span-3 z-10">
-              <h3 className="font-['Poppins',Helvetica] font-semibold text-white text-sm sm:text-base mb-3 sm:mb-5">
+            <div className="col-span-1 sm:col-span-2 lg:col-span-3 z-10 ml-[70px]">
+              <h3 className="font-['Poppins',Helvetica] font-semibold text-white text-sm sm:text-base mb-3 sm:mb-5 text-right]">
                 {footerData.store.title}
               </h3>
               <div className="flex flex-col gap-3 sm:gap-5">
-                <p className="font-['Poppins',Helvetica] font-medium text-white text-sm sm:text-base leading-5 max-w-[180px] sm:max-w-[200px]">
+                <p className="font-['Poppins',Helvetica] font-medium text-white text-sm sm:text-base leading-5 max-w-[120px] sm:max-w-[200px] whitespace-nowrap">
                   {footerData.store.address}
                 </p>
-                <div className="flex flex-col gap-1 sm:gap-2">
+                <div className="flex flex-col gap-1 sm:gap-5">
                   <p className="font-['Poppins',Helvetica] font-medium text-white text-sm sm:text-base leading-5 whitespace-nowrap">
                     {footerData.store.phone}
                   </p>

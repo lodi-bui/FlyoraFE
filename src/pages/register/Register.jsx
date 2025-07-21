@@ -10,9 +10,8 @@ import { RegisterAPI } from "../../api/register/Register";
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name :"",
+    name: "", // Đã có name
     username: "",
-    name: "",             // ✅ Thêm name
     email: "",
     phone: "",
     password: "",
@@ -38,10 +37,13 @@ const Register = () => {
 
     setLoading(true);
     try {
-
-      await RegisterAPI(form.name, form.password ,form.phone ,form.username, form.email, );
-
-
+      await RegisterAPI(
+        form.username,
+        form.email,
+        form.password,
+        form.phone,
+        form.name
+      );
 
       setShowSuccess(true);
       setTimeout(() => {
@@ -152,12 +154,13 @@ const Register = () => {
               src="https://c.animaapp.com/mc39o30rr6LbxJ/img/group-10.png"
               alt="Logo"
             />
-            <h1 className="text-3xl font-bold">
+
+            <h1 className="text-[50px] font-bold">
               <span className="text-orange-500">Flyora</span>{" "}
-              <span className="text-white">Shop</span>
+              <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-5xl font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
+          <h2 className="text-[40px] font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
           <p className="text-xl mb-8">A bird store with everything you need</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
@@ -173,80 +176,77 @@ const Register = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <Label className="block font-medium mb-1 text-gray-700">
-                  Firstname
+                  Họ và tên
                 </Label>
                 <Input
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="First name"
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="First name"
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
               <div>
                 <Label className="block font-medium mb-1 text-gray-700">
-                  User Name
+                  Tên đăng nhập
                 </Label>
                 <Input
-                    name="username"
-                    value={form.username}
-                    onChange={handleChange}
-                    placeholder="User name"
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
-                />
-              </div>
-
-              <div>
-                <Label className="block font-medium mb-1 text-gray-700">
-                  Email Address
-                </Label>
-                <Input
-
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="E-mail address..."
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
-
+                  name="username"
+                  value={form.username}
+                  onChange={handleChange}
+                  placeholder="User name"
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
               <div>
                 <Label className="block font-medium mb-1 text-gray-700">
-                  Phone Number
+                  Địa chỉ email
                 </Label>
                 <Input
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="Enter your phone number..."
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
-
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="E-mail address..."
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
               <div>
                 <Label className="block font-medium mb-1 text-gray-700">
-                  Password
+                  Số Điện thoại
                 </Label>
                 <Input
-                    name="password"
-                    type="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="Enter your password..."
-                    className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
-                    required
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="Enter your phone number..."
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
                 />
               </div>
 
               <div>
                 <Label className="block font-medium mb-1 text-gray-700">
-                  Confirm Password
+                  Mật Khẩu
+                </Label>
+                <Input
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password..."
+                  className="w-full px-4 py-2 rounded shadow text-gray-700 placeholder:text-gray-400 placeholder:font-normal"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label className="block font-medium mb-1 text-gray-700">
+                  Xác nhận mật khẩu
                 </Label>
                 <Input
                   name="confirmPassword"
@@ -260,9 +260,9 @@ const Register = () => {
               </div>
 
               {error && (
-                  <div className="text-red-500 text-sm font-semibold text-center">
-                    {error}
-                  </div>
+                <div className="text-red-500 text-sm font-semibold text-center">
+                  {error}
+                </div>
               )}
 
               <Button
@@ -274,9 +274,9 @@ const Register = () => {
               </Button>
 
               <div className="text-center text-sm">
-                Already have an account?{" "}
+                Chào mừng đã đến với Flyora?{" "}
                 <a href="/login" className="text-blue-600 font-medium">
-                  Log in
+                  Đăng nhập ngay!
                 </a>
               </div>
             </form>

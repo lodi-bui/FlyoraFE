@@ -95,13 +95,13 @@ const EditProfile = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 py-10 px-4 min-h-screen flex justify-center">
+    <div className="bg-gray-100 py-10 px-4 min-h-1/2 flex justify-center">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl">
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-xl font-semibold">Cập Nhật Hồ Sơ</h2>
         </div>
 
-        <div className="bg-gradient-to-r from-green-500 to-green-800 p-6 flex justify-center">
+        {/* <div className="bg-gradient-to-r from-green-500 to-green-800 p-6 flex justify-center">
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
               {avatar ? (
@@ -129,7 +129,7 @@ const EditProfile = () => {
               onChange={onFileChange}
             />
           </div>
-        </div>
+        </div> */}
 
         <div className="p-6 space-y-4">
           <div className="flex items-center">
