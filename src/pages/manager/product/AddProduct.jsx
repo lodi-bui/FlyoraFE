@@ -30,11 +30,11 @@ const AddProduct = () => {
     // Add API call or state update here later
     console.log('New Product:', product);
     alert('Product added successfully! (Simulated)');
-    navigate('/admin-page/product');
+    navigate('/manager-page/product');
   };
 
   const handleCancel = () => {
-    navigate('/admin-page/product');
+    navigate('/manager-page/product');
   };
 
   return (

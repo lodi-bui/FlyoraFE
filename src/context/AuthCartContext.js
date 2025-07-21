@@ -4,81 +4,86 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthCartContext = createContext();
 
 export const AuthCartProvider = ({ children }) => {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [user, setUser] = useState(null);  // 👉 Thêm user
+  const [user, setUser] = useState(null);
 
-  // ==== Auth ====
-  // const login = (userData) => {
-  //   setIsLoggedIn(true);
-  //   setUser(userData); // Lưu thông tin user bao gồm linkedId
-  // };
-
-  const login = (userData) => {
-  setIsLoggedIn(true);
-  setUser(userData);
-
-  // Lưu linkedId vào localStorage
-  if (userData?.linkedId) {
-    localStorage.setItem("linkedId", userData.linkedId);
-  }
-};
-
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
-
+  // Thêm hàm để đồng bộ cartCount từ localStorage
+  const updateCartCountFromLocalStorage = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+    setCartCount(count);
   };
 
-  // ==== Cart & Wishlist ====
-  // context/AuthCartContext.js
-const addToCart = (productId) => {
-  const current = JSON.parse(localStorage.getItem("cart")) || [];
-  const existing = current.find((item) => item.id === productId);
+ const addToCart = (id) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingItem = cart.find((item) => item.id === id);
 
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    current.push({ id: productId, qty: 1 });
-  }
+    if (existingItem) {
+      existingItem.qty += 1;
+    } else {
+      cart.push({ id, qty: 1 });
+    }
 
-  localStorage.setItem("cart", JSON.stringify(current));
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCountFromLocalStorage();
+  };
 
-  // Cập nhật số lượng sản phẩm trong giỏ
-  const totalQty = current.reduce((sum, item) => sum + item.qty, 0);
-  setCartCount(totalQty);
-};
-useEffect(() => {
-  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-  const totalQty = localCart.reduce((sum, item) => sum + item.qty, 0);
-  setCartCount(totalQty);
-}, []);
+   const login = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+    localStorage.setItem("user", JSON.stringify(userData)); // Lưu user
+    localStorage.setItem("linkedId", userData.linkedId); // Lưu linkedId
+    localStorage.setItem("token", userData.token); // Lưu token
+    updateCartCountFromLocalStorage(); // Cập nhật cartCount từ localStorage
+  };
+  const logout = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+    setCartCount(0); // Reset cartCount khi logout
+    // Xóa thông tin khỏi localStorage
+    localStorage.removeItem("cart");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user"); // ✅ Xóa user
+    localStorage.removeItem("linkedId");
+  };
+  const clearCart = () => {
+    localStorage.removeItem("cart");
+    setCartCount(0);
+  };
 
+ useEffect(() => {
+    updateCartCountFromLocalStorage(); // load cartCount từ localStorage khi khởi tạo
+    // Kiểm tra nếu có user và token trong localStorage để xác định trạng thái đăng nhập
+
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+
+    if (storedUser && storedToken) {
+      setUser(JSON.parse(storedUser));
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <AuthCartContext.Provider
       value={{
         isLoggedIn,
-
-
+        setIsLoggedIn,
+        cartCount,
+        setCartCount,
+        updateCartCountFromLocalStorage, // Export
+        user,
+        setUser,
         login,
         logout,
-        user,             // 👉 Truyền user ra ngoài context
-
-        cartCount,
-        addToCart,
-        // updateQty,
-        // removeFromCart,
-
+        clearCart,
+        addToCart, 
       }}
     >
       {children}
-      
-
     </AuthCartContext.Provider>
   );
 };
-
 
 export const useAuthCart = () => useContext(AuthCartContext);

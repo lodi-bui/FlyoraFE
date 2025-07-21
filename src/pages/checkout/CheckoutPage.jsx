@@ -17,9 +17,12 @@ const CheckoutPage = () => {
     phone: "",
     email: "",
     address: "",
-    city: "",
+    province: "",
+    district: "",
+    ward: "",
     notes: "",
   });
+
   const handleShipChange = (e) =>
     setShipping({ ...shipping, [e.target.name]: e.target.value });
 
@@ -82,7 +85,27 @@ const CheckoutPage = () => {
 
   // Khi nhấn Đặt Hàng
   const handleSubmit = async () => {
+    
     try {
+      const requiredFields = [
+        "name",
+        "phone",
+        "email",
+        "address",
+        "province",
+        "district",
+        "ward",
+      ];
+
+      const emptyFields = requiredFields.filter(
+        (field) => !shipping[field]?.trim()
+      );
+
+      if (emptyFields.length > 0) {
+        alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
+        return;
+      }
+
       // Lấy cart từ localStorage
       const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -99,7 +122,9 @@ const CheckoutPage = () => {
       }
 
       // Lấy customerId từ localStorage (hoặc context nếu có)
-      const customerId = parseInt(localStorage.getItem("linkedId"));
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const customerId = storedUser?.linkedId;
+
       if (!customerId) {
         alert("Bạn chưa đăng nhập!");
         return;
@@ -112,10 +137,18 @@ const CheckoutPage = () => {
       // 2. Nếu phương thức thanh toán là VNPAY
       const paymentMethodId = payment === "vnpay" ? 1 : 2;
       const paymentData = {
-        orderId: newOrderId, // ✅ dùng biến local này, không đụng tới state
+        orderId: newOrderId,
         customerId,
         paymentMethodId,
-        ...(paymentMethodId === 1 ? { amount: total } : {}),
+        ...(paymentMethodId === 1
+          ? { amount: total }
+          : {
+              to_name: shipping.name,
+              to_phone: shipping.phone,
+              to_address: shipping.address,
+              to_ward_code: shipping.ward,
+              to_district_id: parseInt(shipping.district),
+            }),
       };
 
       // 3. Gọi API thanh toán
