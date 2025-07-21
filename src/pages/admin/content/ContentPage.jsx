@@ -48,7 +48,7 @@ const ContentPage = () => {
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center space-x-4">
               <h1 className="text-xl font-semibold text-gray-900">
-                Update News
+                Cập nhật tin tức
               </h1>
             </div>
 
@@ -100,7 +100,7 @@ const ContentPage = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <label className="block text-lg font-medium text-gray-700 w-10">
-                  Title
+                  Tiêu đề
                 </label>
                 <input
                   type="text"
@@ -117,7 +117,7 @@ const ContentPage = () => {
                   className="px-3 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors text-sm flex items-center justify-center ml-[380px]   "
                 >
                   <Plus className="w-4 h-4 mr-1" />
-                  Create
+                  Tạo
                 </button>
               </div>
             </form>

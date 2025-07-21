@@ -102,7 +102,7 @@ const AboutPage = () => {
         <h2 className="text-2xl font-bold mb-4">Theo dõi chúng tôi trên Facebook</h2>
 
         <a
-          href="https://www.facebook.com/"
+          href="https://www.facebook.com/profile.php?id=61578761994581&sk=about"
           target="_blank"
           rel="noopener noreferrer"
         >
