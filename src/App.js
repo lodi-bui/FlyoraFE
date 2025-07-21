@@ -27,6 +27,7 @@ import DashBoard from './pages/shopOwner/DashBoard';
 import UserManagement from './pages/admin/userMgm/UserManagement';
 import ContentPage from './pages/admin/content/ContentPage';
 import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage';
+import PromotionPage from 'pages/promotion/PromotionPage';  
 // import EditProduct from "pages/manager/product/EditProduct";
 
 import ProductManagement from 'pages/manager/product/ProductManagement';
@@ -43,10 +44,10 @@ function App() {
 
         <Route path="/cart" element={<CartPage />} />
 
-
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/promotions" element={<PromotionPage />} />
 
         {/* <Route path="/about" element={<AboutPage />} /> */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}
