@@ -1,36 +1,34 @@
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import ShopPage from "./pages/shop/ShopPage";
+import HomePage from "./pages/home/HomePage";
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
+import CheckoutConfirm from "./pages/checkout/CheckoutConfirm";
+import Chatbotbox from "./components/chatBox/ChatbotBox";
+import InspectionPolicy from "./pages/policy/InspectionPolicy";
+import PrivacyPolicy from "./pages/policy/PrivacyPolicy";
+import DeliveryPolicy from "./pages/policy/DeliveryPolicy";
+import NewsPage from "./pages/news/NewsPage";
 
-import React from 'react';
-import { Routes, Route} from 'react-router-dom';
-import ShopPage from './pages/shop/ShopPage';
-import HomePage from './pages/home/HomePage';
-import Login from './pages/login/Login';
-import Register from './pages/register/Register';
-import CheckoutPage    from './pages/checkout/CheckoutPage';
-import CheckoutConfirm from './pages/checkout/CheckoutConfirm';
-import Chatbotbox from './components/chatBox/ChatbotBox';
-import InspectionPolicy from './pages/policy/InspectionPolicy';
-import PrivacyPolicy from './pages/policy/PrivacyPolicy';
-import DeliveryPolicy from './pages/policy/DeliveryPolicy';
-import NewsPage from './pages/news/NewsPage';
+import CartPage from "./pages/cart/CartPage";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
 
-import CartPage from './pages/cart/CartPage';
-import ProductDetails from './pages/ProductDetails/ProductDetails';
+import OrderHistoryPage from "./pages/order/OrderHistoryPage";
+import OrderDetailsPage from "./pages/order/OrderDetailsPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
-import OrderHistoryPage from './pages/order/OrderHistoryPage';
-import OrderDetailsPage from './pages/order/OrderDetailsPage';
-import ProfilePage from './pages/profile/ProfilePage';
+import AboutUsPage from "pages/aboutUs/AboutUsPage";
+import ContactUsPage from "pages/contactUs/ContactUsPage";
+import DashBoard from "./pages/shopOwner/DashBoard";
 
-import AboutUsPage from 'pages/aboutUs/AboutUsPage';
-import ContactUsPage from 'pages/contactUs/ContactUsPage';
-import DashBoard from './pages/shopOwner/DashBoard';
+import UserManagement from "./pages/admin/userMgm/UserManagement";
+import ContentPage from "./pages/admin/content/ContentPage";
 
-import UserManagement from './pages/admin/userMgm/UserManagement';
-import ContentPage from './pages/admin/content/ContentPage';
-import UserActivityLogPage from 'pages/admin/systemManagement/userLog/UserActivityLogPage';
+import ProductManagement from "./pages/shopOwner/product/ProductManagement";
+import AddProduct from "pages/shopOwner/product/AddProduct";
 import EditProduct from "pages/shopOwner/product/EditProduct";
-
-import ProductManagement from 'pages/shopOwner/product/ProductManagement';
-import AddProduct from 'pages/shopOwner/product/AddProduct';
 function App() {
   return (
     <div className="max-w-screen-[1440px] mx-auto">
@@ -42,8 +40,6 @@ function App() {
         <Route path="/shop" element={<ShopPage />} />
 
         <Route path="/cart" element={<CartPage />} />
-
-
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -77,18 +73,16 @@ function App() {
 
         {/* User Routes */}
 
-        <Route path="/shopowner" element={<DashBoard />} />
+        <Route path="/shopowner" element={<ProductManagement />} />
         <Route path="/shopowner/dashboard" element={<DashBoard />} />
         <Route path="/shopowner/products" element={<ProductManagement />} />
 
 
         <Route path="/shopowner" element={<ProductManagement />} />
-        <Route path="/shopowner/dashboard" element={<DashBoard />} />
         {/* <Route path="/shopowner/products" element={<DashBoard />} /> */}
 
         {/* Manager Routes */}
 
-        <Route path="/shopowner/products" element={<ProductManagement />} />
         {/* <Route path="/manager-page/product" element={<ProductManagement />} /> */}
         <Route path="/shopowner/add-product" element={<AddProduct />} />
         {/* <Route path="/manager-page/dashboard" element={<ProductManagement />} /> */}

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 
 import {
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 import { useAuthCart } from "context/AuthCartContext";
 import Sidebar from "../sidebar/Sidebar";
+
 import toast from "react-hot-toast";
 // import { useNavigate } from "react-router-dom";
 import { UserAccounts } from "api/UserManagement";
@@ -200,6 +202,7 @@ const UserManagement = () => {
   };
 
   return (
+
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <div className="w-64 bg-green-600 text-white">
@@ -238,128 +241,202 @@ const UserManagement = () => {
                 Add New
               </button>
             </div>
+          </header>
 
-            <div className="overflow-x-auto">
-              <table className="w-full table-fixed">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[50px]">
-                      ID
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[120px]">
-                      Username
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[230px]">
-                      Email
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[140px]">
-                      Phone
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[130px]">
-                      Role
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[100px]">
-                      Status
-                    </th>
-                    <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[80px]">
-                      Modify
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {paginatedUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-4 text-sm text-gray-900 text-center">
-                        {user.id}
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-900 text-center">
-                        {user.username}
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-900 text-center truncate">
-                        {user.email}
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-900 text-center">
-                        {user.phone}
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-900 text-center">
-                        {user.role}
-                      </td>
-                      <td
-                        className="px-4 py-4 text-sm text-center cursor-pointer"
-                        onClick={() => openConfirmModal(user)}
-                      >
-                        {getStatusBadge(user.active)}
-                      </td>
-
-                      <td className="px-4 py-4 text-sm text-gray-500 text-center">
-                        <div className="flex justify-center items-center space-x-2">
-                          <button
-                            className="p-1 text-blue-600 hover:text-blue-800"
-                            onClick={() => handleEditUser(user)}
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-
-                          <button
-                            className="p-1 text-red-600 hover:text-red-800"
-                            onClick={() => handleDeleteUser(user.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
-              <span className="text-sm text-gray-500">
-                Page {currentPage} of {totalPages}
-              </span>
-              <div className="flex items-center space-x-1">
+          <main className="flex-1 p-6">
+            <div className="bg-white rounded-lg shadow">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Users</h2>
                 <button
-                  className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
-                    currentPage === 1
-                      ? "text-gray-300 cursor-not-allowed"
-                      : "text-gray-500 hover:bg-gray-100"
-                  }`}
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 1}
+                  onClick={() => setIsPopupOpen(true)}
+                  className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
                 >
-                  ←
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add New
                 </button>
-                {[...Array(totalPages)].map((_, i) => (
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full table-fixed">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[50px]">
+                        ID
+                      </th>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[120px]">
+                        Username
+                      </th>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[230px]">
+                        Email
+                      </th>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[140px]">
+                        Phone
+                      </th>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[130px]">
+                        Role
+                      </th>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[100px]">
+                        Status
+                      </th>
+                      <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center w-[80px]">
+                        Modify
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {paginatedUsers.map((user) => (
+                      <tr key={user.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-4 text-sm text-gray-900 text-center">
+                          {user.id}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900 text-center">
+                          {user.username}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900 text-center truncate">
+                          {user.email}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900 text-center">
+                          {user.phone}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900 text-center">
+                          {user.role}
+                        </td>
+                        <td
+                          className="px-4 py-4 text-sm text-center cursor-pointer"
+                          onClick={() => openConfirmModal(user)}
+                        >
+                          {getStatusBadge(user.active)}
+                        </td>
+
+                        <td className="px-4 py-4 text-sm text-gray-500 text-center">
+                          <div className="flex justify-center items-center space-x-2">
+                            <button
+                              className="p-1 text-blue-600 hover:text-blue-800"
+                              onClick={() => handleEditUser(user)}
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+
+                            <button
+                              className="p-1 text-red-600 hover:text-red-800"
+                              onClick={() => handleDeleteUser(user.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
+                <span className="text-sm text-gray-500">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <div className="flex items-center space-x-1">
                   <button
-                    key={i}
                     className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
-                      currentPage === i + 1
-                        ? "bg-red-500 text-white"
+                      currentPage === 1
+                        ? "text-gray-300 cursor-not-allowed"
                         : "text-gray-500 hover:bg-gray-100"
                     }`}
-                    onClick={() => setCurrentPage(i + 1)}
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
                   >
-                    {i + 1}
+                    ←
                   </button>
-                ))}
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                        currentPage === i + 1
+                          ? "bg-red-500 text-white"
+                          : "text-gray-500 hover:bg-gray-100"
+                      }`}
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                      currentPage === totalPages
+                        ? "text-gray-300 cursor-not-allowed"
+                        : "text-gray-500 hover:bg-gray-100"
+                    }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        {/* Add User Popup */}
+        {isPopupOpen && (
+          <AddAccount
+            newUser={newUser}
+            setNewUser={setNewUser}
+            onCreate={handleCreateUser}
+            onClose={() => setIsPopupOpen(false)}
+          />
+        )}
+
+        {isEditPopupOpen && selectedUser && (
+          <UpdateAccount
+            userData={selectedUser}
+            onClose={() => {
+              setIsEditPopupOpen(false);
+              setSelectedUser(null);
+            }}
+            onUpdateSuccess={async () => {
+              const updated = await UserAccounts(requesterId);
+              setUsers(Array.isArray(updated) ? updated : [updated]);
+            }}
+          />
+        )}
+
+        {isConfirmModalOpen && targetUser && (
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl p-6 w-[400px]">
+              <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                Xác nhận thay đổi trạng thái
+              </h2>
+              <p className="text-sm text-gray-600 mb-6">
+                Bạn có chắc chắn muốn{" "}
+                <span className="font-medium text-red-600">
+                  {targetUser.active ? "vô hiệu hóa" : "kích hoạt"}
+                </span>{" "}
+                tài khoản{" "}
+                <span className="font-semibold">{targetUser.username}</span>?
+              </p>
+              <div className="flex justify-end space-x-3">
                 <button
-                  className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
-                    currentPage === totalPages
-                      ? "text-gray-300 cursor-not-allowed"
-                      : "text-gray-500 hover:bg-gray-100"
-                  }`}
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
+                  onClick={() => {
+                    setIsConfirmModalOpen(false);
+                    setTargetUser(null);
+                  }}
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
                 >
-                  →
+                  Hủy
+                </button>
+                <button
+                  onClick={confirmToggleStatus}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                >
+                  Xác nhận
                 </button>
               </div>
             </div>
           </div>
-        </main>
+        )}
       </div>
 
       {/* Add User Popup */}

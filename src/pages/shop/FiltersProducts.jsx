@@ -45,6 +45,7 @@ const ProductFilterPage = () => {
       if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
 
+
   const tagsList = ["Chào Mào", "Vẹt Xích", "Yến Phụng", "Chích Chòe"];
 
   const params = new URLSearchParams(location.search);
@@ -134,11 +135,13 @@ const ProductFilterPage = () => {
     toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
+
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
   }, [product, totalPages]);
+
 
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
@@ -293,6 +296,7 @@ const ProductFilterPage = () => {
                             {p.price.toLocaleString()} VNĐ
                           </p>
                         </div>
+
                       </NavLink>
                     ))}
                   </div>
@@ -340,6 +344,7 @@ const ProductFilterPage = () => {
                     </div>
                   </div>
                 </>
+
               )}
             </>
           )}

@@ -24,6 +24,7 @@ import {
 import { Link } from "react-router-dom";
 import { useAuthCart } from "context/AuthCartContext";
 
+
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -38,14 +39,8 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([]);
 
 
-  const customerId =
-    user?.linkedId || Number(localStorage.getItem("linkedId")) || null;
-
-  // console.log("isLoggedIn:", isLoggedIn);
-  // console.log("user:", user);
-  // console.log("customerId:", customerId);
-  // console.log("user = ", user);
-
+  const customerId = Number(localStorage.getItem("linkedId"));
+  const { isLoggedIn, addToCart } = useAuthCart();
 
 
   useEffect(() => {
@@ -196,8 +191,6 @@ const ProductDetails = () => {
 
           <Card className="shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6 space-y-6">
-              {/* <div>
-
 
                 <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
                   Kích thước:
@@ -210,8 +203,6 @@ const ProductDetails = () => {
                       </span>
                       <span className="font-medium text-[#12a140] text-[14px]">
                         {product.price.toLocaleString()} VNĐ
-
-
                       </span>
                     </div>
                   </div>
@@ -220,6 +211,9 @@ const ProductDetails = () => {
 
               {/* <div className="flex justify-between items-center">
 
+
+              <div className="flex justify-between items-center">
+>
                 <p className="font-bold text-[#494444] text-3xl">{product.price.toLocaleString()} VND</p>
                 <Badge className="bg-[#12a140] text-white text-lg h-14 px-6 rounded-xl flex items-center justify-center">
                   Sale
@@ -292,13 +286,56 @@ const ProductDetails = () => {
 
 
 
+
+
+              <Separator />
+
+              {/* Add to Cart and Buy Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (!isLoggedIn) {
+                      toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
+                      return;
+                    }
+                    addToCart(product.id); // ✅ đúng format
+                    toast.success("Đã thêm vào giỏ hàng! 🎉");
+                  }}
+                  className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                >
+                  Thêm vào giỏ hàng
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      toast.error("Bạn cần đăng nhập để mua hàng!");
+                      return;
+                    }
+
+                    // Ghi sản phẩm hiện tại vào localStorage.cart
+                    const cartItem = [{ id: product.id, qty: 1 }];
+                    localStorage.setItem("cart", JSON.stringify(cartItem));
+
+                    // Chuyển sang trang checkout
+                    window.location.href = "/checkout";
+                  }}
+                  className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
+                >
+                  Mua ngay
+                </button>
+
               </div>
             </CardContent>
           </Card>
         </div>
 
 
-        {/* <div className="mt-10">
+        {/* Details */}
+
+        <div className="mt-10">
+
           <h2 className="font-semibold text-[#494444] text-[28px] mb-4">
             Chi tiết
           </h2>
@@ -434,10 +471,12 @@ const ProductDetails = () => {
 
         {/* Other Products */}
         <div className="mt-16">
+
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Sản phẩm khác
           </h2>
           <Carousel>
+
             <CarouselContent>
               {relatedProducts.map((item) => (
                 <CarouselItem key={item.id} className="basis-1/2 md:basis-1/4">
@@ -468,9 +507,12 @@ const ProductDetails = () => {
 
         {/* Reviews */}
         <div className="mt-16">
+
           <h2 className="text-center font-bold text-black text-[32px] mb-6">
             Đánh giá
           </h2>
+
+
 
           {/* Review Form */}
           <div className="mb-8 space-y-6">
