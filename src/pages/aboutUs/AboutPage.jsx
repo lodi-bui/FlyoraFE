@@ -11,31 +11,34 @@ const AboutPage = () => {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         {/* Left Column */}
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold">About our store</h2>
+          <h2 className="text-2xl font-bold">Cửa hàng của chúng tôi</h2>
           <p className="text-gray-600">
-            At et vehicula sodales est proin turpis pellentesque sinulla a
-            aliquam amet rhoncus quisque eget sit. Sociis blandit et
-            pellentesque aliquet et quisque tortor lacinia nullam.
+            Chúng tôi chuyên kinh doanh các sản phẩm thức ăn, đồ chơi, đồ nội thất dành cho các loại chim.
+            Phục vụ các sản phẩm cho 4 loài chim chính: Chào Mào, Chích Chòe, Yến Phụng và Vẹt Xích. 
+            Với sự đa dạng về màu sắc và kích thước, chúng tôi mong muốn khách hàng có nhiều sự lựa chọn phù hợp. 
+
           </p>
           <p className="text-gray-600">
-            Mattis conen scelerisque dui libero cras orci in egestas sagittis.
+           Chúng tôi cam kết cung cấp sản phẩm chất lượng cao, an toàn và thân thiện với môi trường.
+          </p>
+          <p className="text-gray-600">
+            Flyora - Phục vụ từ trái tim.
           </p>
           <div>
-            <h3 className="text-xl font-bold text-orange-500">2k+</h3>
-            <p className="text-sm">Happy Clients</p>
+            <h3 className="text-xl font-bold text-orange-500">200+</h3>
+            <p className="text-sm">Khách hàng hài lòng</p>
           </div>
         </div>
 
         {/* Right Column */}
         <div className="space-y-4 mt-11">
           <p className="text-gray-600">
-            Aliquet ultrices risus dolor gravida. Faucibus sodales semper et
-            mauris sapien viverra purus sed tortor. Amat risus blandit nunc odio
-            rutrum.
+            Chúng tôi đã phục vụ hàng trăm khách hàng và nhận được phản hồi tích cực từ cộng đồng yêu chim.
+            Chúng tôi tự hào là một trong những cửa hàng hàng đầu trong lĩnh vực này, cung cấp các sản phẩm chất lượng và dịch vụ tận tâm.
           </p>
           <div>
-            <h3 className="text-xl font-bold text-orange-500">1.8k+</h3>
-            <p className="text-sm">Products</p>
+            <h3 className="text-xl font-bold text-orange-500">50+</h3>
+            <p className="text-sm">Sản phẩm</p>
           </div>
         </div>
       </section>
@@ -48,36 +51,34 @@ const AboutPage = () => {
           className="rounded-xl w-full max-w-sm"
         />
         <div>
-          <h2 className="text-2xl font-bold mb-4">Our Team</h2>
+          <h2 className="text-2xl font-bold mb-4">Đội ngũ của chúng tôi</h2>
           <p className="text-gray-600 mb-2">
-            Nisi nunc vitae integer ridiculus ultrices quam a scelerisque est.
-            Sollicitudin volutpat blandit maecenas amet ac dictum tempor.
+            Chúng tôi là một đội ngũ đam mê và tận tâm với sứ mệnh mang đến những sản phẩm tốt nhất cho thú cưng của bạn.
+            Mỗi thành viên trong đội ngũ đều có kinh nghiệm và kiến thức sâu rộng về các loài chim, đảm bảo rằng chúng tôi có thể cung cấp những sản phẩm phù hợp nhất.  
           </p>
           <p className="text-gray-600">
-            Eu orci consectetur etiam bibendum fermentum sed lobortis fringilla
-            imperdiet.
+            Chúng tôi luôn sẵn sàng lắng nghe và đáp ứng nhu cầu của khách hàng, từ việc tư vấn sản phẩm đến hỗ trợ sau bán hàng.
           </p>
-          <p className="mt-6 italic font-signature">Joshua</p>
+          <p className="mt-6 italic font-signature">Flyora Teams</p>
         </div>
       </section>
 
       {/* Testimonials */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
-          <p className="text-sm font-semibold text-orange-500">Testimonials</p>
-          <h2 className="text-2xl font-bold mb-4">What people say about us</h2>
+          <p className="text-sm font-semibold text-orange-500">Trải nghiệm khách hàng</p>
+          <h2 className="text-2xl font-bold mb-4">Khách hàng nói gì về chúng tôi</h2>
           <div className="flex text-yellow-400 gap-1 mb-2">
             {[...Array(5)].map((_, i) => (
               <FaStar key={i} />
             ))}
           </div>
           <p className="text-gray-600 mb-4">
-            Morbi viverra eleifend in cras orci a leo tellus. Nunc purus
-            adipiscing diam aliquet lorem nunc. Ipsum euismod risus amet eget
-            non. Aliquet et massa eget vitae justo tellus donec ac enim.
+            "Tôi đã mua một số sản phẩm cho chim của mình từ cửa hàng này và tôi rất hài lòng với chất lượng. 
+            Sản phẩm đa dạng và đội ngũ nhân viên rất nhiệt tình, sẵn sàng tư vấn cho tôi những sản phẩm phù hợp nhất."
           </p>
-          <p className="font-semibold">Gerald Ferguson</p>
-          <p className="text-sm text-gray-500">Customer</p>
+          <p className="font-semibold">Lê Nguyễn Vũ Hoàng</p>
+          <p className="text-sm text-gray-500">Khách hàng</p>
           <div className="flex gap-2 mt-4">
             <button className="w-8 h-8 rounded-full border text-xl flex items-center justify-center hover:bg-gray-100">
               &#8249;
@@ -98,16 +99,17 @@ const AboutPage = () => {
 
       {/* Facebook Section */}
       <section className="text-center">
-        <h2 className="text-2xl font-bold mb-4">Follow our Facebook</h2>
+        <h2 className="text-2xl font-bold mb-4">Theo dõi chúng tôi trên Facebook</h2>
 
         <a
-          href="https://www.facebook.com/yourpage"
+          href="https://www.facebook.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <div className="w-full h-64 bg-gray-200 rounded-xl hover:bg-gray-300 transition-colors duration-300 cursor-pointer flex items-center justify-center">
             <span className="text-gray-500">
-              Click to visit our Facebook page
+              <i className="fab fa-facebook-square text-4xl"></i>
+              <p className="mt-2">Theo dõi chúng tôi để cập nhật tin tức và ưu đãi mới nhất!</p>
             </span>
           </div>
         </a>
