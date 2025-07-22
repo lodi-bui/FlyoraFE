@@ -8,6 +8,9 @@ module.exports = {
       colors: {
         'primary-orange': '#FC8A06',
       },
+      fontFamily: {
+      genos: ['Genos', 'sans-serif'],
+    },
     },
   },
   plugins: [

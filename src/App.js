@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import ShopPage from "./pages/shop/ShopPage";
@@ -40,9 +41,11 @@ function App() {
         <Route path="/shop" element={<ShopPage />} />
 
         <Route path="/cart" element={<CartPage />} />
+
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/confirm" element={<CheckoutConfirm />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/promotions" element={<PromotionPage />} />
 
         {/* <Route path="/about" element={<AboutPage />} /> */}
         {/* <Route path="/contact" element={<ContactPage />} /> */}

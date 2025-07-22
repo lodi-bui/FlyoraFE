@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import ShippingInfo from "./ShippingInfo";
 import PaymentMethod from "./PaymentMethod";
-import VnpaySection from "./VnpaySection";
+import PayOnline from "./PayOnline";
 import Header from "../navfoot/Header";
 import Footer from "../navfoot/Footer";
 import { createOrder } from "../../api/Order";
@@ -75,7 +75,7 @@ const CheckoutPage = () => {
   const handlePayChange = (e) => setPayment(e.target.value);
 
   // 4) Show màn QR VNPAY
-  const [showVnpay, setShowVnpay] = useState(false);
+  const [showPayOnline, setShowPayOnline] = useState(false);
 
   // 5) Đặt hàng thành công với COD → redirect confirm
   const [success, setSuccess] = useState(false);
@@ -85,7 +85,6 @@ const CheckoutPage = () => {
 
   // Khi nhấn Đặt Hàng
   const handleSubmit = async () => {
-    
     try {
       const requiredFields = [
         "name",
@@ -135,7 +134,7 @@ const CheckoutPage = () => {
       const newOrderId = orderRes.orderId;
       setOrderId(newOrderId); // Gán vào state
       // 2. Nếu phương thức thanh toán là VNPAY
-      const paymentMethodId = payment === "vnpay" ? 1 : 2;
+      const paymentMethodId = payment === "payonline" ? 1 : 2;
       const paymentData = {
         orderId: newOrderId,
         customerId,
@@ -152,15 +151,14 @@ const CheckoutPage = () => {
       };
 
       // 3. Gọi API thanh toán
-      const payRes = await createPayment(paymentData);
 
       // 4. Xử lý kết quả theo phương thức thanh toán
       if (paymentMethodId === 1) {
-        // VNPAY → redirect sang trang thanh toán
-        const redirectUrl = payRes.url || payRes.paymentUrl;
-        window.location.href = redirectUrl;
+        // PayOnline → chỉ hiển thị màn PayOnline
+        setShowPayOnline(true); // <-- CHỈ hiển thị màn QR code
       } else {
-        // COD → chuyển trang thành công
+        // COD → tạo đơn vận chuyển
+        const payRes = await createPayment(paymentData);
         setSuccess(true);
         localStorage.removeItem("cart");
       }
@@ -183,12 +181,12 @@ const CheckoutPage = () => {
       <Header />
 
       <div className="max-w-6xl mx-auto py-12 px-4 lg:px-0">
-        {/* Nếu đang ở màn VNPAY, chỉ render VnpaySection */}
-        {showVnpay ? (
-          <VnpaySection
+        {/* Nếu đang ở màn VNPAY, chỉ render PayOnline */}
+        {showPayOnline ? (
+          <PayOnline
             total={total}
             orderId={orderId}
-            onCancel={() => setShowVnpay(false)}
+            onCancel={() => setShowPayOnline(false)}
           />
         ) : (
           // Màn form Checkout bình thường
@@ -232,7 +230,7 @@ const CheckoutPage = () => {
                       <div>
                         <p className="font-medium">{it.name}</p>
                         <p className="text-red-500">
-                          {it.price.toLocaleString()}₫
+                          {it.price.toLocaleString()} VND
                         </p>
                       </div>
                     </div>
@@ -247,15 +245,15 @@ const CheckoutPage = () => {
                 <div className="space-y-2 text-gray-700">
                   <div className="flex justify-between">
                     <span>Tổng tiền hàng</span>
-                    <span>{total.toLocaleString()}₫</span>
+                    <span>{total.toLocaleString()} VND</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Phí vận chuyển</span>
-                    <span>–</span>
+                    <span>30,000 VND</span>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <span>Tổng thanh toán</span>
-                    <span>{total.toLocaleString()}₫</span>
+                    <span>{total.toLocaleString()} VND</span>
                   </div>
                 </div>
                 <button

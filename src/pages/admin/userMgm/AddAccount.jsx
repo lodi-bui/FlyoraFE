@@ -18,6 +18,10 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
   const requesterId = localStorage.getItem("linkedId");
 
   const handleInputChange = (field, value) => {
+    if (field === "shopOwnerId") {
+      const number = parseInt(value);
+      if (isNaN(number) || number < 0) return;
+    }
     setNewUser({ ...newUser, [field]: value });
   };
 
@@ -72,7 +76,6 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
             </select>
           </div>
 
-          {/* Other Info - chỉ khi là ShopOwner */}
           {newUser.roleId === 2 && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -89,7 +92,6 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
             </div>
           )}
 
-          {/* Shop Owner ID - chỉ khi là SalesStaff */}
           {newUser.roleId === 3 && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -102,6 +104,7 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
                 onChange={(e) =>
                   handleInputChange("shopOwnerId", e.target.value)
                 }
+                min={0}
               />
             </div>
           )}
@@ -119,9 +122,9 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
             onClick={() => {
               const finalData = {
                 ...newUser,
-                approvedBy: requesterId, // Gán mặc định
+                approvedBy: requesterId,
               };
-              onCreate(finalData); // gọi hàm tạo user
+              onCreate(finalData);
             }}
           >
             Create
