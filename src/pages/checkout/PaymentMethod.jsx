@@ -16,6 +16,7 @@ const PaymentMethod = ({ method, onChange }) => (
         />
         <FaCreditCard className="text-orange-500 w-8 h-8 mr-3" />
         <span>Thanh toán Ngân Hàng – QR</span>
+
       </label>
       <label className="flex items-start border p-4 rounded-lg cursor-pointer">
         <input

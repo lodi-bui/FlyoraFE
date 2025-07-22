@@ -160,13 +160,13 @@ const Register = () => {
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-[40px] font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
-          <p className="text-xl mb-8">A bird store with everything you need</p>
+          <h2 className="text-[40px] font-bold mb-6">CHÀO MỪNG ĐẾN VỚI FLYORA SHOP</h2>
+          <p className="text-xl mb-8">Cửa hàng chim với mọi thứ bạn cần</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
             onClick={() => navigate("/")}
           >
-            Explore Us
+            Khám Phá Chúng Tôi
           </Button>
         </div>
 
@@ -270,7 +270,7 @@ const Register = () => {
                 disabled={loading}
                 className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors hover:bg-orange-600 hover:text-white"
               >
-                {loading ? "Đang đăng ký..." : "Register"}
+                {loading ? "Đang đăng ký..." : "Đăng ký"}
               </Button>
 
               <div className="text-center text-sm">
