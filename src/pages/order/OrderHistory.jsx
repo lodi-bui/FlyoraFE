@@ -33,16 +33,20 @@ const OrderHistory = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 md:px-10 py-10 bg-white">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Order History</h1>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">
+        Lịch sử đơn hàng
+      </h1>
 
       {loading && (
-        <div className="text-center text-gray-500">Loading your orders...</div>
+        <div className="text-center text-gray-500">Đang tải đơn hàng ...</div>
       )}
       {error && (
         <div className="text-center text-red-500 font-medium">{error}</div>
       )}
       {!loading && !error && orders.length === 0 && (
-        <div className="text-center text-gray-500">You have no orders yet.</div>
+        <div className="text-center text-gray-500">
+          Bạn chưa có đơn đặt hàng nào. Hãy đặt hàng nhé!
+        </div>
       )}
       {!loading && !error && orders.length > 0 && (
         <div className="space-y-6">
@@ -62,14 +66,14 @@ const OrderHistory = () => {
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-1">
-                      Order #{order.orderId}
+                      Mã Đơn Hàng: #{order.orderId}
                     </h2>
                     <p className="text-sm text-gray-600">
-                      Date:{" "}
+                      Thời gian:{" "}
                       {new Date(order.orderDate).toLocaleDateString("en-GB")}
                     </p>
                     <p className="text-sm">
-                      Status:{" "}
+                      Trạng thái:{" "}
                       <span
                         className={`${
                           order.status === "Delivered"
@@ -88,7 +92,7 @@ const OrderHistory = () => {
                       state={{ order }}
                       className="text-blue-600 hover:underline font-medium"
                     >
-                      View Details
+                      Chi tiết đơn hàng
                     </NavLink>
                   </div>
                 </div>
@@ -104,21 +108,21 @@ const OrderHistory = () => {
                           {item.productName}
                         </p>
                         <p className="text-sm text-gray-500">
-                          Quantity: {item.quantity}
+                          Số lượng: {item.quantity}
                         </p>
                       </div>
                       <p className="text-sm md:text-base font-semibold text-gray-800">
-                        ₫{item.price.toLocaleString()}
+                        {item.price.toLocaleString()} VND
                       </p>
                     </div>
                   ))}
                 </div>
 
                 <div className="flex justify-end border-t pt-4 mt-4">
-                  <p className="text-base font-semibold">
-                    Total:{" "}
-                    <span className="text-lg text-gray-900">
-                      ₫{total.toLocaleString()}
+                  <p className="text-base font-semibold text-black-500">
+                    Thành tiền:{" "}
+                    <span className="text-lg text-black-500">
+                      {total.toLocaleString()} VND
                     </span>
                   </p>
                 </div>

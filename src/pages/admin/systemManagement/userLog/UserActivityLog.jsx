@@ -1,6 +1,7 @@
 // src/pages/admin/systemManagement/userLog/UserActivityLog.jsx
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
+
 import { getUserActivityLogs } from "api/UserActivityLog";
 import toast from "react-hot-toast";
 import { useAuthCart } from "context/AuthCartContext"; //  Dùng context để lấy user
@@ -19,7 +20,6 @@ const UserActivityLog = () => {
   useEffect(() => {
     if (!requesterId) return; //  Đảm bảo requesterId có giá trị
 
-
     const fetchLogs = async () => {
       try {
         const res = await getUserActivityLogs(requesterId);
@@ -29,7 +29,6 @@ const UserActivityLog = () => {
         console.error(error);
       }
     };
-
 
     fetchLogs();
   }, [requesterId]);
@@ -66,6 +65,7 @@ const UserActivityLog = () => {
   };
 
   return (
+
     <div className="flex-1 flex flex-col bg-gray-50">
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="flex items-center justify-between px-6 py-4">
@@ -101,6 +101,7 @@ const UserActivityLog = () => {
                   <div className="text-xs text-gray-500">Super Admin</div>
                 </div>
               </div> */}
+
           </div>
         </div>
       </header>
@@ -217,9 +218,11 @@ const UserActivityLog = () => {
               </button>
             </div>
           </div>
+
         </div>
       </main>
     </div>
+
   );
 };
 

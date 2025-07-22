@@ -39,38 +39,6 @@ const BackgroundSection = () => {
     },
   ];
 
-  // return (
-  //   <section className="relative w-full h-[306px]">
-  //     <div className="container mx-auto flex justify-center items-end h-full">
-  //       <div className="grid grid-cols-4 gap-8 mb-8 -mt-[60px]">
-  //         {birdCategories.map((bird, index) => (
-  //           <div key={index} className="flex flex-col items-center">
-  //             {/* Dùng Tailwind aspect-square để đạt tỉ lệ 1:1 */}
-  //             <div className="w-[250px] aspect-square overflow-hidden rounded-full mb-4">
-  //               <img
-  //                 src={bird.image}
-  //                 alt={bird.name}
-  //                 className="object-cover w-full h-full"
-  //               />
-  //             </div>
-  //             <a
-  //               href={bird.link}
-  //               rel="noopener noreferrer"
-  //               target="_blank"
-  //               className={` font-bold text-2xl text-center leading-[29px] whitespace-nowrap ${
-  //                 index === 3
-  //                   ? "[font-family:'Times_New_Roman-Bold',Helvetica]"
-  //                   : "font-demo-templatemonster-com-semantic-link-upper"
-  //               }`}
-  //             >
-  //               {bird.name}
-  //             </a>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   </section>
-  // );
   return (
     <section className="py-8 bg-white">
       <div className="px-[200px]">

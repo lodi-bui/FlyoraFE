@@ -2,44 +2,33 @@ import React, { useState } from "react";
 import { Search, Plus } from "lucide-react";
 import Sidebar from "../sidebar/Sidebar";
 import { createNewsBlogSalesPost } from "api/NewsBlogSales";
-
 import toast from "react-hot-toast";
 const ContentPage = () => {
-  const [url, setUrl] = useState("");
-  const [title, setTitle] = useState("");
-  const requesterId = localStorage.getItem("linkedId");
+    const [url, setUrl] = useState("");
+    const [title, setTitle] = useState("");
+    const requesterId = localStorage.getItem("linkedId");
 
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    if (!title.trim() || !url.trim()) {
-      toast.error("Please enter both title and URL.");
-      return;
-    }
-    try {
-      const response = await createNewsBlogSalesPost(requesterId, {
-        title,
-        url,
-      });
-      toast.success("News/Blog post created successfully!");
-      setUrl("");
-      setTitle("");
-    } catch (error) {
-      console.error(
-        "Error creating post:",
-        error.response?.data || error.message
-      );
-      toast.error(
-        `Failed to create news/blog post: ${
-          error.response?.data?.message || error.message
-        }`
-      );
-    }
-  };
+    const handleCreatePost = async (e) => {
+        e.preventDefault();
+        if (!title.trim() || !url.trim()) {
+            toast.error("Please enter both title and URL.");
+            return;
+        }
+        try {
+            const response = await createNewsBlogSalesPost(requesterId, { title, url });
+            toast.success("News/Blog post created successfully!");
+            setUrl("");
+            setTitle("");
+        } catch (error) {
+            console.error("Error creating post:", error.response?.data || error.message);
+            toast.error(`Failed to create news/blog post: ${error.response?.data?.message || error.message}`);
+        }
+    };
 
-  return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <Sidebar />
+    return (
+        <div className="flex min-h-screen">
+            {/* Sidebar */}
+            <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
