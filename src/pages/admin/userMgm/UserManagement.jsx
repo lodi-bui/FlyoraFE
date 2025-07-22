@@ -189,8 +189,13 @@ const UserManagement = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar />
+
+      <div className="w-64 bg-green-600 text-white">
+        {/* Sidebar */}
+        <Sidebar />
+      </div>
+
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow-sm border-b border-gray-200">

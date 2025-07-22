@@ -37,6 +37,18 @@ const ProductDetails = () => {
   const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
 
+
+  const customerId =
+    user?.linkedId || Number(localStorage.getItem("linkedId")) || null;
+
+  // Map category string to categoryId
+  const categoryMap = {
+    FOODS: 1,
+    TOYS: 2,
+    FURNITURE: 3,
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,18 +57,22 @@ const ProductDetails = () => {
         const productRes = await getProductDetail(id);
         setProduct(productRes);
 
+        console.log("productRes:", productRes);
+
         const promotionsRes = await getPromotions(customerId);
         setPromotions(
           promotionsRes.filter((promo) => promo.productId === Number(id))
         );
 
+
+        // Lấy categoryId từ map dựa vào category string
+        const categoryId = categoryMap[productRes.category];
+
         const relatedRes = await getProductsByCategory({
-          categoryId: null,
+          categoryId,
           name: "",
-          page: 0,
-          size: 4,
         });
-        setRelatedProducts(relatedRes.content || []);
+        setRelatedProducts(relatedRes);
 
         const reviewRes = await getReviewsByProductId(id);
         setReviews(reviewRes);
@@ -150,10 +166,13 @@ const ProductDetails = () => {
     <>
       <Header />
       <div className="container mx-auto px-6 py-8 bg-gray-50 min-h-screen">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <Card className="col-span-2 shadow-lg rounded-2xl overflow-hidden">
+
+        <div className="flex justify-center items-center mt-8 mb-12">
+          <Card className="w-3/4 shadow-lg rounded-2xl overflow-hidden">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-8">
+                {/* ẢNH */}
+
                 <div className="flex justify-center w-full md:w-auto">
                   <img
                     className="w-full max-w-[300px] h-auto object-cover rounded-xl"
@@ -161,18 +180,24 @@ const ProductDetails = () => {
                     src={product.imageUrl}
                   />
                 </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h1 className="font-bold text-[#4b4a4a] text-3xl">
+
+
+                {/* THÔNG TIN CHI TIẾT */}
+                <div className="flex-1 space-y-6">
+                  {/* TÊN + MÔ TẢ */}
+                  <div>
+                    <h1 className="font-bold text-[#4b4a4a] text-3xl mb-4">
                       {product.name}
                     </h1>
+                    <h1 className="font-medium text-[#12a140] text-2xl">
+                      {product.price.toLocaleString()} VND
+                    </h1>
                   </div>
-                  <div className="mt-6 space-y-3 font-medium text-black text-lg">
-                    <p>{product.description || "Chưa có mô tả"}</p>
-                  </div>
-                  <div className="mt-6">
-                    <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
-                      Giá:
+
+                  {/* CHI TIẾT SẢN PHẨM */}
+                  <div>
+                    <h3 className="font-semibold text-[#494444] text-xl mb-2">
+                      Chi tiết sản phẩm
                     </h3>
                     <div className="flex gap-2">
                       <div className="flex-1 p-2 rounded-[8px] border border-[#1286ce] bg-[#ecf9ff] shadow-md">
