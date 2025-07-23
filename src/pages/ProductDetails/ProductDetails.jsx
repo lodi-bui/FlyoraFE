@@ -31,7 +31,6 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { isLoggedIn, addToCart, user } = useAuthCart(); // Single destructuring
-  const customerId = Number(localStorage.getItem("linkedId"));
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
