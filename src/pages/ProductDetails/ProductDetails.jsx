@@ -370,7 +370,7 @@ const ProductDetails = () => {
             {reviews.map((review, index) => (
               <div key={index} className="p-6 bg-white rounded-xl shadow-md">
                 <h4 className="font-bold text-black text-2xl mb-3">
-                  {review.name || `Người dùng ${review.customerId}`}
+                  {review.customerName || `Người dùng ${review.customerId}`}
                 </h4>
                 <div className="flex mb-3">
                   {[...Array(5)].map((_, i) => (
