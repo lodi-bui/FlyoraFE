@@ -7,42 +7,40 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import logo from "../../icons/logo_white.png";
 
 const MenuAdmin = () => {
   return (
     <aside className="w-64 min-h-screen bg-gradient-to-b from-[#12AB3C] to-[#083622] text-white p-4">
-      <img src={logo} alt="Flyora Logo" className="h-10 mb-8" />
       <nav className="space-y-2">
         <NavLink
           to="/users"
           className="flex items-center gap-2 p-2 rounded hover:bg-green-600"
         >
-          <FaUser /> Users
+          <FaUser /> Người dùng
         </NavLink>
         <NavLink
           to="/contents"
           className="flex items-center gap-2 p-2 rounded hover:bg-green-600"
         >
-          <FaFileAlt /> Contents
+          <FaFileAlt /> Nội dung
         </NavLink>
 
         <div className="bg-green-600 rounded p-2">
           <div className="flex items-center gap-2">
-            <FaCogs /> Manage System <FaChevronDown className="ml-auto" />
+            <FaCogs /> Quản lý hệ thống <FaChevronDown className="ml-auto" />
           </div>
           <div className="mt-2 ml-6 space-y-1">
             <NavLink
               to="/user-log"
               className="block text-white hover:underline"
             >
-              User Activity Log
+              Nhật ký hoạt động người dùng
             </NavLink>
             <NavLink
               to="/system-log"
               className="block text-white hover:underline"
             >
-              System Log
+              Nhật ký hệ thống
             </NavLink>
           </div>
         </div>
@@ -51,7 +49,7 @@ const MenuAdmin = () => {
           to="/logout"
           className="flex items-center gap-2 p-2 rounded hover:bg-green-600"
         >
-          <FaSignOutAlt /> Logout
+          <FaSignOutAlt /> Đăng xuất
         </NavLink>
       </nav>
     </aside>

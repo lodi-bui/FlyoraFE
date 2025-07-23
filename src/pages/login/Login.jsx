@@ -66,7 +66,7 @@ const Login = () => {
 
           if (role === "Admin") {
             navigate("/admin-page");
-          } else if (role === "ShopOwner") {
+          } else if (role === "ShopOwner" || role === "SalesStaff") {
             navigate("/shopowner");
           } else {
             navigate("/");
@@ -180,13 +180,13 @@ const Login = () => {
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-[40px] font-bold mb-6">WELCOME TO FLYORA SHOP</h2>
-          <p className="text-xl mb-8">A bird store with everything you need</p>
+          <h2 className="text-[40px] font-bold mb-6">CHÀO MỪNG ĐẾN VỚI FLYORA SHOP</h2>
+          <p className="text-xl mb-8">Cửa hàng chim với mọi thứ bạn cần</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
             onClick={() => navigate("/")}
           >
-            Explore Us
+            Khám Phá Chúng Tôi
           </Button>
         </div>
 
@@ -196,7 +196,7 @@ const Login = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label className="block font-medium mb-1 text-gray-700">
-                  User Name
+                  Tên người dùng
                 </label>
                 <Input
                   name="username"
@@ -210,7 +210,7 @@ const Login = () => {
               </div>
               <div>
                 <label className="block font-medium mb-1 text-gray-700">
-                  Password
+                  Mật khẩu
                 </label>
                 <Input
                   name="password"
@@ -235,13 +235,13 @@ const Login = () => {
                 disabled={loading}
                 className="w-full bg-orange-500 text-black font-semibold py-2 rounded shadow transition-colors duration-200 hover:bg-orange-600 hover:text-white"
               >
-                {loading ? "Đang đăng nhập..." : "Login"}
+                {loading ? "Đang đăng nhập..." : "Đăng nhập"}
               </Button>
 
               <div className="text-center text-sm">
-                Don’t have an account?{" "}
+                Chưa có tài khoản?{" "}
                 <Link to="/register" className="text-blue-600 font-medium">
-                  Create a new one
+                  Tạo tài khoản mới
                 </Link>
               </div>
 

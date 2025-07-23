@@ -229,14 +229,14 @@ function Header() {
                       onClick={() => setShowMenu(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
-                      Login
+                      Đăng nhập
                     </NavLink>
                     <NavLink
                       to="/register"
                       onClick={() => setShowMenu(false)}
                       className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
                     >
-                      Register
+                      Đăng ký
                     </NavLink>
                   </>
                 ) : (

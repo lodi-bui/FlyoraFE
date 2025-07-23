@@ -10,6 +10,6 @@ const OrderDetailsPage = () => {
       <Footer />
     </>
   );
-}
+};
 
 export default OrderDetailsPage;

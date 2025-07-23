@@ -13,7 +13,6 @@ const getNewsBlogSalesPosts = async () => {
   }
 };
 
-
 const createNewsBlogSalesPost = async (
   requesterId,
   {
