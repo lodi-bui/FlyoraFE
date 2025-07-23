@@ -23,6 +23,8 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import AboutUsPage from "pages/aboutUs/AboutUsPage";
 import ContactUsPage from "pages/contactUs/ContactUsPage";
 import DashBoard from "./pages/shopOwner/DashBoard";
+import UserActivityLogPage from "./pages/admin/systemManagement/userLog/UserActivityLogPage";
+import PromotionPage from "pages/promotion/PromotionPage";
 
 import UserManagement from "./pages/admin/userMgm/UserManagement";
 import ContentPage from "./pages/admin/content/ContentPage";

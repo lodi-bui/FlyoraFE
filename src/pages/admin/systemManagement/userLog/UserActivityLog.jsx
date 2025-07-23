@@ -6,9 +6,7 @@ import { getUserActivityLogs } from "api/UserActivityLog";
 import toast from "react-hot-toast";
 import { useAuthCart } from "context/AuthCartContext"; //  Dùng context để lấy user
 
-
 const ITEMS_PER_PAGE = 8;
-
 
 const UserActivityLog = () => {
   const { user } = useAuthCart(); //  Lấy user từ context
@@ -105,7 +103,6 @@ const UserActivityLog = () => {
                   <div className="text-xs text-gray-500">Super Admin</div>
                 </div>
               </div> */}
-
             </div>
           </div>
         </header>
@@ -157,7 +154,17 @@ const UserActivityLog = () => {
                         {log.action}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {log.timestamp}
+                        {new Date(log.timestamp)
+                          .toLocaleString("vi-VN", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: false,
+                          })
+                          .replace(", ", "")}
                       </td>
                     </tr>
                   ))}

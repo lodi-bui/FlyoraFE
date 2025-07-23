@@ -72,7 +72,7 @@ const DeliveryPolicy = () => (
           Tất cả các đơn hàng đều được đóng gói sẵn sàng trước khi vận chuyển,
           được niêm phong bởi{" "}
           <a
-            href="https://flyora.vn"
+            href="https://flyora-frontend.vercel.app/"
             className="text-blue-600 underline font-medium"
             target="_blank"
             rel="noopener noreferrer"
@@ -82,7 +82,7 @@ const DeliveryPolicy = () => (
           .<br />
           Bên{" "}
           <a
-            href="https://flyora.vn"
+            href="https://flyora-frontend.vercel.app/"
             className="text-blue-600 underline font-medium"
             target="_blank"
             rel="noopener noreferrer"
@@ -101,7 +101,7 @@ const DeliveryPolicy = () => (
         <p className="mt-2">
           Để đảm bảo an toàn cho hàng hóa,{" "}
           <a
-            href="https://flyora.vn"
+            href="https://flyora-frontend.vercel.app/"
             className="text-blue-600 underline font-medium"
             target="_blank"
             rel="noopener noreferrer"

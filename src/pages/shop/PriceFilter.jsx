@@ -37,8 +37,8 @@ const PriceFilter = ({ min = 15000, max = 400000, onChange }) => {
       />
       <div className="flex justify-between items-center mt-4">
         <p className="text-sm">
-          Giá: <strong>{priceRange[0].toLocaleString()}₫</strong> -{" "}
-          <strong>{priceRange[1].toLocaleString()}₫</strong>
+          Giá: <strong>{priceRange[0].toLocaleString()} VNĐ</strong> -{" "}
+          <strong>{priceRange[1].toLocaleString()} VNĐ</strong>
         </p>
         <button
           onClick={handleApply}
