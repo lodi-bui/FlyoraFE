@@ -5,7 +5,7 @@ const formatDateVN = (isoDate) => {
   return `${d.getDate()} tháng ${d.getMonth() + 1} năm ${d.getFullYear()}`;
 };
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 6;
 
 const News = () => {
   const [newsList, setNewsList] = useState([]);
@@ -82,7 +82,7 @@ const News = () => {
                         : "_self"
                     }
                     rel="noopener noreferrer"
-                    className="block group"
+                    className="block group w-[450px] h-[450px] mx-auto"
                   >
                     <img
                       src={news.image}
