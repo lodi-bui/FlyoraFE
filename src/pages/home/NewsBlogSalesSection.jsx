@@ -42,13 +42,13 @@ const NewsBlogSalesSection = () => {
       href={post.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="bg-white rounded-xl shadow-md hover:shadow-lg transition flex-shrink-0 overflow-hidden block w-[280px] h-[240px]"
+      className="bg-white rounded-xl hover:shadow-[12px] hover:-translate-y-1 hover:scale-[1.05] transition-all duration-300 ease-in-out flex-shrink-0 overflow-hidden block w-[275px] min-h-[250px]"
     >
       <div className="flex flex-col h-full">
         <img
           src={post.image}
           alt={post.title}
-          className="w-full h-[140px] object-cover flex-shrink-0"
+          className="w-full h-[150px] object-cover flex-shrink-0"
         />
         <div className="p-3 flex-grow flex flex-col justify-between">
           <h3 className="text-base font-semibold leading-tight line-clamp-2 flex-grow">
@@ -68,8 +68,7 @@ const NewsBlogSalesSection = () => {
 
   return (
     <section className="py-10 px-6 bg-white text-center">
-
-      <SectionTitle title="Tin tức & Blog & Khuyến mãi" />
+      <SectionTitle title="Tin tức phổ biến" />
 
       <div className="relative mt-6 justify-center">
         <Carousel className="w-full">
@@ -86,7 +85,6 @@ const NewsBlogSalesSection = () => {
           <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
           <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 bg-white border border-gray-300 hover:bg-gray-50 h-8 w-8" />
         </Carousel>
-
       </div>
     </section>
   );

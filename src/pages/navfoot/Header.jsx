@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import phoneIcon from "../../icons/phone.png";
 import mailIcon from "../../icons/mail.png";
@@ -20,6 +20,7 @@ function Header() {
   const [showNav, setNav] = useState(false);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
 
   const customerId = localStorage.getItem("linkedId"); // Lấy linkedId từ localStorage
   // Nếu không có linkedId, có thể đặt là null hoặc một giá trị mặc định
@@ -30,7 +31,7 @@ function Header() {
     { name: "Sản phẩm", href: "/shop" },
     { name: "Khuyến mãi", href: "/promotions" },
     { name: "Tin tức", href: "/news" },
-    { name: "Liên hệ", href: "/contact-us" },
+    // { name: "Liên hệ", href: "/contact-us" },
   ];
 
   const handleProtectedClick = (action) => {
@@ -42,9 +43,19 @@ function Header() {
     }
   };
 
+  // giữ giá trị search
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const keyword = params.get("search") || "";
+    setSearchQuery(keyword); // Cập nhật lại input mỗi khi URL thay đổi
+  }, [location.search]);
+
   const handleSearch = () => {
-    if (searchQuery.trim() !== "") {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    const query = searchQuery.trim();
+    if (query) {
+      navigate(`/shop?search=${encodeURIComponent(query)}`);
+    } else {
+      navigate("/shop"); // Xóa query -> load tất cả sản phẩm
     }
   };
 
@@ -338,6 +349,7 @@ function Header() {
           </div>
         </div>
       </div>
+
       <img
         alt="Bird"
         src="https://c.animaapp.com/mbqa0l7wK0NJ0W/img/img-4.png"

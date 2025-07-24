@@ -171,7 +171,7 @@ const ProductDetails = () => {
 
                 <div className="flex justify-center w-full md:w-auto">
                   <img
-                    className="w-full max-w-[300px] h-auto object-cover rounded-xl"
+                    className="w-full max-w-[300px] h-[300px] object-cover rounded-xl"
                     alt={product.name}
                     src={product.imageUrl}
                   />
@@ -190,7 +190,7 @@ const ProductDetails = () => {
                   </div>
 
                   {/* CHI TIẾT SẢN PHẨM */}
-                  <div>
+                  {/* <div>
                     <h3 className="font-semibold text-[#494444] text-xl mb-2">
                       Chi tiết sản phẩm
                     </h3>
@@ -206,7 +206,35 @@ const ProductDetails = () => {
                         </div>
                       </div>
                     </div>
+                  </div> */}
+
+                  <div className="mt-4">
+                    <h3 className="font-medium text-[#807e7e] text-2xl mb-4">
+                      Thông tin chi tiết
+                    </h3>
+                    <div className="border border-gray-300 rounded-xl overflow-hidden">
+                      <Table>
+                        <TableBody>
+                          {productDetails.map((detail, index) => (
+                            <TableRow
+                              key={index}
+                              className={
+                                index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                              }
+                            >
+                              <TableCell className="font-semibold text-[#494444] text-lg p-4 w-[180px]">
+                                {detail.label}
+                              </TableCell>
+                              <TableCell className="font-normal text-[#494444] text-lg p-4">
+                                {detail.value}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   </div>
+
                   <div className="mt-6">
                     <h2 className="font-medium text-[#807e7e] text-2xl mb-4">
                       Khuyến mãi
@@ -242,7 +270,7 @@ const ProductDetails = () => {
                       <h2 className="font-medium text-[#807e7e] text-2xl">
                         Số lượng
                       </h2>
-                      <div className="inline-flex items-center border border-gray-300 rounded-lg px-3 py-2 absolute left-[720px]">
+                      <div className="inline-flex items-center border border-gray-300 rounded-lg px-3 py-2 absolute left-[1050px]">
                         <button
                           onClick={() =>
                             setQuantity((prev) => Math.max(1, prev - 1))
@@ -302,15 +330,18 @@ const ProductDetails = () => {
             </CardContent>
           </Card>
 
-          <Card className="shadow-lg rounded-2xl overflow-hidden">
-            <CardContent className="p-6 space-y-6">
-              <h3 className="font-medium text-[#807e7e] text-[18px] mb-2">
-                Thông tin chi tiết
-              </h3>
+          {/* <div className="mt-6">
+            <h3 className="font-medium text-[#807e7e] text-2xl mb-4">
+              Thông tin chi tiết
+            </h3>
+            <div className="border border-gray-300 rounded-xl overflow-hidden">
               <Table>
                 <TableBody>
                   {productDetails.map((detail, index) => (
-                    <TableRow key={index} className={detail.bgColor}>
+                    <TableRow
+                      key={index}
+                      className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                    >
                       <TableCell className="font-semibold text-[#494444] text-lg p-4 w-[180px]">
                         {detail.label}
                       </TableCell>
@@ -321,8 +352,8 @@ const ProductDetails = () => {
                   ))}
                 </TableBody>
               </Table>
-            </CardContent>
-          </Card>
+            </div>
+          </div> */}
         </div>
 
         {/* Other Products */}
