@@ -36,6 +36,7 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   // Map category string to categoryId
   const categoryMap = {
@@ -144,7 +145,7 @@ const ProductDetails = () => {
       value: product?.birdType?.name || product?.birdType || "N/A",
       bgColor: "bg-neutral-200",
     },
-    { label: "Tồn kho", value: product?.stock || 0, bgColor: "bg-white" },
+    { label: "Số lượng", value: product?.stock || 0, bgColor: "bg-white" },
     {
       label: "Mô tả",
       value: product?.description || "Chưa có mô tả",
@@ -236,6 +237,33 @@ const ProductDetails = () => {
                       )}
                     </div>
                   </div>
+                  <div className="mt-6">
+                    <div className="flex items-center gap-4">
+                      <h2 className="font-medium text-[#807e7e] text-2xl">
+                        Số lượng
+                      </h2>
+                      <div className="inline-flex items-center border border-gray-300 rounded-lg px-3 py-2 absolute left-[720px]">
+                        <button
+                          onClick={() =>
+                            setQuantity((prev) => Math.max(1, prev - 1))
+                          }
+                          className="text-xl font-bold px-2 text-gray-700 hover:text-green-600"
+                        >
+                          −
+                        </button>
+                        <span className="mx-4 w-6 text-center text-lg font-medium">
+                          {quantity}
+                        </span>
+                        <button
+                          onClick={() => setQuantity((prev) => prev + 1)}
+                          className="text-xl font-bold px-2 text-gray-700 hover:text-green-600"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                   <Separator className="my-6" />
                   <div className="flex gap-4">
                     <button
@@ -247,8 +275,8 @@ const ProductDetails = () => {
                           );
                           return;
                         }
-                        addToCart(product.id);
-                        toast.success("Đã thêm vào giỏ hàng! 🎉");
+                        addToCart(product.id, quantity);
+                        toast.success("Đã thêm vào giỏ hàng!");
                       }}
                       className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
                     >
@@ -260,7 +288,7 @@ const ProductDetails = () => {
                           toast.error("Bạn cần đăng nhập để mua hàng!");
                           return;
                         }
-                        const cartItem = [{ id: product.id, qty: 1 }];
+                        const cartItem = [{ id: product.id, qty: quantity }];
                         localStorage.setItem("cart", JSON.stringify(cartItem));
                         window.location.href = "/checkout";
                       }}

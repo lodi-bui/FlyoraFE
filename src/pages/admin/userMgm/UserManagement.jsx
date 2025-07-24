@@ -145,6 +145,7 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
+    if (!user) return; // đợi user được load xong
     if (!requesterId) {
       toast.error("Vui lòng đăng nhập để quản lý người dùng");
       return;
@@ -155,7 +156,9 @@ const UserManagement = () => {
         const res = await UserAccounts(requesterId);
         setUsers(Array.isArray(res) ? res : [res]);
       } catch (error) {
-        toast.error("Không thể tải danh sách người dùng");
+        toast.error(
+          "Không thể tải trang, bạn không có quyền truy cập. Hãy rời khỏi và đăng nhập lại."
+        );
         console.error(error);
       }
     };

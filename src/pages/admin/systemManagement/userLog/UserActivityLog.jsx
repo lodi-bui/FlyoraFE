@@ -16,14 +16,19 @@ const UserActivityLog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
-    if (!requesterId) return; //  Đảm bảo requesterId có giá trị
+    if (!user) return; // đợi user được load xong
+    if (!requesterId) {
+      //  Đảm bảo requesterId có giá trị
+      toast.error("Vui lòng đăng nhập để quản lý hoạt động người dùng");
+      return;
+    }
 
     const fetchLogs = async () => {
       try {
         const res = await getUserActivityLogs(requesterId);
         setLogs(Array.isArray(res) ? res : [res]);
       } catch (error) {
-        toast.error("Không thể tải log.");
+        toast.error("Không thể tải log. Bạn không có quyền truy cập.");
         console.error(error);
       }
     };
