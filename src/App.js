@@ -25,15 +25,14 @@ import AboutUsPage from "pages/aboutUs/AboutUsPage";
 
 import DashBoard from "./pages/shopOwner/DashBoard";
 import UserActivityLogPage from "./pages/admin/systemManagement/userLog/UserActivityLogPage";
-import PromotionPage from "pages/promotion/PromotionPage";
 
 import UserManagement from "./pages/admin/userMgm/UserManagement";
 import ContentPage from "./pages/admin/content/ContentPage";
-import UserActivityLogPage from "pages/admin/systemManagement/userLog/UserActivityLogPage";
 
 import ProductManagement from "./pages/shopOwner/product/ProductManagement";
 import AddProduct from "pages/shopOwner/product/AddProduct";
 import EditProduct from "pages/shopOwner/product/EditProduct";
+
 function App() {
   return (
     <div className="max-w-screen-[1440px] mx-auto">
