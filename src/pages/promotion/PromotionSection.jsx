@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FlashSaleBanner from "./FlashSaleBanner";
-import {
-  Tag,
-  Gift,
-  Percent,
-  Copy,
-  Check,
-  Truck,
-  Clock,
-  Info,
-  ShieldCheck,
-} from "lucide-react";
+import { Percent, Copy, Check, Truck, Clock } from "lucide-react";
 
 const vouchers = [
   {
@@ -255,12 +245,12 @@ const PromotionsSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (sec) => {
-    const h = String(Math.floor(sec / 3600)).padStart(2, "0");
-    const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
-    const s = String(sec % 60).padStart(2, "0");
-    return `${h}:${m}:${s}`;
-  };
+  // const formatTime = (sec) => {
+  //   const h = String(Math.floor(sec / 3600)).padStart(2, "0");
+  //   const m = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
+  //   const s = String(sec % 60).padStart(2, "0");
+  //   return `${h}:${m}:${s}`;
+  // };
 
   return (
     <main className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">

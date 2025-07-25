@@ -15,19 +15,20 @@ export const AuthCartProvider = ({ children }) => {
     setCartCount(count);
   };
 
- const addToCart = (id) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingItem = cart.find((item) => item.id === id);
+const addToCart = (id, quantity = 1) => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const existingItem = cart.find((item) => item.id === id);
 
-    if (existingItem) {
-      existingItem.qty += 1;
-    } else {
-      cart.push({ id, qty: 1 });
-    }
+  if (existingItem) {
+    existingItem.qty += quantity;
+  } else {
+    cart.push({ id, qty: quantity });
+  }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCountFromLocalStorage();
-  };
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCountFromLocalStorage();
+};
+
 
    const login = (userData) => {
     setUser(userData);

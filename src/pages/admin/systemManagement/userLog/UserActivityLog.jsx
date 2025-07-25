@@ -6,9 +6,7 @@ import { getUserActivityLogs } from "api/UserActivityLog";
 import toast from "react-hot-toast";
 import { useAuthCart } from "context/AuthCartContext"; //  Dùng context để lấy user
 
-
 const ITEMS_PER_PAGE = 8;
-
 
 const UserActivityLog = () => {
   const { user } = useAuthCart(); //  Lấy user từ context
@@ -18,14 +16,19 @@ const UserActivityLog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
-    if (!requesterId) return; //  Đảm bảo requesterId có giá trị
+    if (!user) return; // đợi user được load xong
+    if (!requesterId) {
+      //  Đảm bảo requesterId có giá trị
+      toast.error("Vui lòng đăng nhập để quản lý hoạt động người dùng");
+      return;
+    }
 
     const fetchLogs = async () => {
       try {
         const res = await getUserActivityLogs(requesterId);
         setLogs(Array.isArray(res) ? res : [res]);
       } catch (error) {
-        toast.error("Không thể tải log.");
+        toast.error("Không thể tải log. Bạn không có quyền truy cập.");
         console.error(error);
       }
     };
@@ -101,7 +104,7 @@ const UserActivityLog = () => {
                   <div className="text-xs text-gray-500">Super Admin</div>
                 </div>
               </div> */}
-
+            </div>
           </div>
         </div>
       </header>
@@ -155,10 +158,41 @@ const UserActivityLog = () => {
                       {log.timestamp}
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {paginatedLogs.map((log, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {log.accountId}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {log.username}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {log.action}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {new Date(log.timestamp)
+                          .toLocaleString("vi-VN", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: false,
+                          })
+                          .replace(", ", "")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
 
           {/* Pagination */}
           <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">

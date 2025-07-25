@@ -143,17 +143,19 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
-    if (!requesterId) {
-      toast.error("Vui lòng đăng nhập để quản lý người dùng");
-      return;
-    }
+if (!user || !requesterId) {
+    toast.error("Vui lòng đăng nhập để quản lý người dùng");
+    return;
+  }
 
     const fetchUsers = async () => {
       try {
         const res = await UserAccounts(requesterId);
         setUsers(Array.isArray(res) ? res : [res]);
       } catch (error) {
-        toast.error("Không thể tải danh sách người dùng");
+        toast.error(
+          "Không thể tải trang, bạn không có quyền truy cập. Hãy rời khỏi và đăng nhập lại."
+        );
         console.error(error);
       }
     };
@@ -189,7 +191,6 @@ const UserManagement = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-
       <div className="w-64 bg-green-600 text-white">
         {/* Sidebar */}
         <Sidebar />

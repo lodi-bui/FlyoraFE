@@ -8,7 +8,7 @@ const policyList = [
         Kiểm hàng là thực hiện các công việc kiểm tra và so sánh các sản
         phẩm/hàng hóa nhận được trong kiện hàng{" "}
         <a
-          href="https://flyora.vn"
+          href="https://flyora-frontend.vercel.app/"
           className="text-blue-600 underline"
           target="_blank"
           rel="noopener noreferrer"
@@ -84,7 +84,7 @@ const policyList = [
         <br />
         Trường hợp{" "}
         <a
-          href="https://flyora.vn"
+          href="https://flyora-frontend.vercel.app/"
           className="text-blue-600 underline font-medium"
           target="_blank"
           rel="noopener noreferrer"
@@ -95,7 +95,7 @@ const policyList = [
         không thanh toán. Trong trường hợp đơn hàng đã thanh toán, khách hàng có
         thể yêu cầu gửi lại đơn mới hay không,{" "}
         <a
-          href="https://flyora.vn"
+          href="https://flyora-frontend.vercel.app/"
           className="text-blue-600 underline font-medium"
           target="_blank"
           rel="noopener noreferrer"

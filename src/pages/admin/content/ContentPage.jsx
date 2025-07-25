@@ -42,7 +42,6 @@ const ContentPage = () => {
             </div>
           </div>
         </header>
-        
         {/* Content */}
         <main className="flex-1 p-4 flex justify-center items-center">
           <div className="bg-white rounded-[20px] shadow p-6 w-full max-w-lg">

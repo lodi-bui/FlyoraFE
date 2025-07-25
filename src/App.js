@@ -7,7 +7,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import CheckoutConfirm from "./pages/checkout/CheckoutConfirm";
-import Chatbotbox from "./components/chatBox/ChatbotBox";
+
 import InspectionPolicy from "./pages/policy/InspectionPolicy";
 import PrivacyPolicy from "./pages/policy/PrivacyPolicy";
 import DeliveryPolicy from "./pages/policy/DeliveryPolicy";
@@ -22,8 +22,10 @@ import OrderDetailsPage from "./pages/order/OrderDetailsPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 
 import AboutUsPage from "pages/aboutUs/AboutUsPage";
-import ContactUsPage from "pages/contactUs/ContactUsPage";
+
 import DashBoard from "./pages/shopOwner/DashBoard";
+import UserActivityLogPage from "./pages/admin/systemManagement/userLog/UserActivityLogPage";
+import PromotionPage from "pages/promotion/PromotionPage";
 
 import UserManagement from "./pages/admin/userMgm/UserManagement";
 import ContentPage from "./pages/admin/content/ContentPage";
@@ -67,7 +69,7 @@ function App() {
         <Route path="/filter" element={<ShopPage />} />
 
         <Route path="/about-us" element={<AboutUsPage />} />
-        <Route path="/contact-us" element={<ContactUsPage />} />
+   
 
         {/* Admin Routes */}
         <Route path="/admin-page" element={<UserManagement />} />
@@ -96,7 +98,6 @@ function App() {
       </Routes>
 
 
-      <Chatbotbox />
     </div>
   );
 }

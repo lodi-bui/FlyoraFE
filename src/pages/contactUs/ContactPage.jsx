@@ -66,7 +66,7 @@ const ContactPage = () => {
         >
           <img
             src={map} // phải đảm bảo biến `map` đã import đúng
-            alt="Map image"
+            alt="Map"
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
         </a>
