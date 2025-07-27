@@ -34,20 +34,17 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
     });
   };
 
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[500px] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-lg font-semibold mb-4">Add New User</h2>
+        <h2 className="text-lg font-semibold mb-4">Thêm nười dùng mới</h2>
         <div className="space-y-4">
           {[
-            ["Username", "text", "username"],
-            ["Password", "password", "password"],
+            ["Tên người dùng", "text", "username"],
+            ["Mật khẩu", "password", "password"],
             ["Email", "email", "email"],
-            ["Phone", "text", "phone"],
-            ["Name", "text", "name"],
-
-
+            ["Số điện thoại", "text", "phone"],
+            ["Họ và Tên", "text", "name"],
           ].map(([label, type, field]) => (
             <div key={field}>
               <label className="block text-sm font-medium text-gray-700">
@@ -64,7 +61,7 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Role
+              Vai trò
             </label>
             <select
               className="w-full border rounded px-3 py-2"
@@ -79,19 +76,16 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
             </select>
           </div>
 
-
           {newUser.roleId === 2 && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Other Info (chỉ dành cho ShopOwner)
+                Thông tin khác (chỉ dành cho ShopOwner)
               </label>
               <input
                 type="text"
                 className="w-full border rounded px-3 py-2"
                 value={newUser.otherInfo || ""}
-                onChange={(e) =>
-                  handleInputChange("otherInfo", e.target.value)
-                }
+                onChange={(e) => handleInputChange("otherInfo", e.target.value)}
               />
             </div>
           )}
@@ -119,7 +113,7 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
             className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
             onClick={onClose}
           >
-            Cancel
+            Đóng
           </button>
           <button
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
@@ -131,9 +125,8 @@ const AddAccount = ({ newUser, setNewUser, onCreate, onClose }) => {
               onCreate(finalData);
             }}
           >
-            Create
+            Tạo mới
           </button>
-
         </div>
       </div>
     </div>

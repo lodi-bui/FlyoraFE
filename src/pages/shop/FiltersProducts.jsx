@@ -7,7 +7,7 @@ import { getProductsByCategory } from "../../api/Product";
 import { getCategories } from "../../api/Categories";
 import PriceFilter from "./PriceFilter";
 
-// ✅ Mapping tags to birdTypeId
+// Mapping tags to birdTypeId
 const birdTypeMap = {
   "Chào Mào": 1,
   "Vẹt Xích": 2,
@@ -29,22 +29,21 @@ const ProductFilterPage = () => {
   const [maxPrice, setMaxPrice] = useState(300000);
 
   const [currentPage, setCurrentPage] = useState(1);
-  
-    const ITEMS_PER_PAGE = 12;
-    const totalPages = Math.ceil(product.length / ITEMS_PER_PAGE);
-    const paginatedProducts = product.slice(
-      (currentPage - 1) * ITEMS_PER_PAGE,
-      currentPage * ITEMS_PER_PAGE
-    );
-  
-    const handlePrevPage = () => {
-      if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-  
-    const handleNextPage = () => {
-      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
 
+  const ITEMS_PER_PAGE = 12;
+  const totalPages = Math.ceil(product.length / ITEMS_PER_PAGE);
+  const paginatedProducts = product.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   const tagsList = ["Chào Mào", "Vẹt Xích", "Yến Phụng", "Chích Chòe"];
 
@@ -52,8 +51,6 @@ const ProductFilterPage = () => {
   const tagFromUrl = params.get("tag");
   const categoryId = params.get("categoryId");
   const search = params.get("search");
-
-  
 
   // Lấy danh sách categories
   useEffect(() => {
@@ -87,7 +84,6 @@ const ProductFilterPage = () => {
 
         const response = await getProductsByCategory(payload);
         setProduct(response);
-
       } catch (err) {
         console.error(err);
         setError("Failed to load products.");
@@ -99,7 +95,7 @@ const ProductFilterPage = () => {
     fetchProducts();
   }, [categoryId, search, tagFromUrl, minPrice, maxPrice]);
 
-  // ✅ Click vào category
+  // Click vào category
   const handleCategoryClick = (id) => {
     const isSelected = categoryId === String(id);
     const newParams = new URLSearchParams(location.search);
@@ -113,7 +109,7 @@ const ProductFilterPage = () => {
     navigate(`/shop?${newParams.toString()}`);
   };
 
-  // ✅ Click vào tag
+  // Click vào tag
   const handleTagClick = (tag) => {
     const newParams = new URLSearchParams(location.search);
 
@@ -135,13 +131,11 @@ const ProductFilterPage = () => {
     toast.success("Đã thêm vào giỏ hàng! 🎉");
   };
 
-
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
   }, [product, totalPages]);
-
 
   return (
     <div className="min-h-screen bg-white text-black py-10 px-4 md:px-12">
@@ -296,7 +290,6 @@ const ProductFilterPage = () => {
                             {p.price.toLocaleString()} VNĐ
                           </p>
                         </div>
-
                       </NavLink>
                     ))}
                   </div>
@@ -344,7 +337,6 @@ const ProductFilterPage = () => {
                     </div>
                   </div>
                 </>
-
               )}
             </>
           )}

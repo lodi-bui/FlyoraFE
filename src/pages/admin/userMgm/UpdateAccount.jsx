@@ -22,10 +22,8 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
   const [user, setUser] = useState({ ...userData });
 
   useEffect(() => {
-
     setUser({ ...userData });
   }, [userData]);
-
 
   const handleUpdate = async () => {
     try {
@@ -33,13 +31,18 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
         ...user,
         roleName: getRoleNameById(user.roleId),
         approvedBy: requesterId,
+        isActive: user.isActive ?? true, // đảm bảo có giá trị
+        isApproved: user.isApproved ?? true, // mặc định true nếu undefined
       };
+
+      console.log("Dữ liệu gửi đi:", updatedUser);
 
       await updateAccount(user.id, requesterId, updatedUser);
       toast.success("Cập nhật tài khoản thành công!");
       onUpdateSuccess();
       onClose();
     } catch (error) {
+      console.error("Lỗi cập nhật:", error.response?.data || error.message);
       toast.error("Cập nhật tài khoản thất bại!");
     }
   };
@@ -55,15 +58,15 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-[500px] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-lg font-semibold mb-4">Update User</h2>
+        <h2 className="text-lg font-semibold mb-4">Cập nhật thông tin</h2>
         <div className="space-y-4">
           {[
-            { label: "Username", key: "username" },
-            { label: "Password", key: "password", type: "password" },
+            { label: "Tên đăng nhập", key: "username" },
+            { label: "Mật khẩu", key: "password", type: "password" },
             { label: "Email", key: "email", type: "email" },
-            { label: "Phone", key: "phone" },
-            { label: "Name", key: "name" },
-            { label: "Other Info", key: "otherInfo" },
+            { label: "Số điện thoại", key: "phone" },
+            { label: "Họ và tên", key: "name" },
+            { label: "Thông tin khác", key: "otherInfo" },
           ].map(({ label, key, type }) => (
             <div key={key}>
               <label className="block text-sm font-medium text-gray-700">
@@ -81,7 +84,7 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Role
+              Vai trò
             </label>
             <select
               className="w-full border rounded px-3 py-2"
@@ -129,13 +132,13 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
               className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
               onClick={onClose}
             >
-              Cancel
+              Đóng
             </button>
             <button
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               onClick={handleUpdate}
             >
-              Update
+              Cập nhật
             </button>
           </div>
         </div>

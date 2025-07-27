@@ -26,25 +26,28 @@ const ITEMS_PER_PAGE = 6;
 
 const UserManagement = () => {
   const { user } = useAuthCart();
-  const requesterId = user?.linkedId;
+  const requesterId = JSON.parse(localStorage.getItem("user"))?.linkedId;
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [newUser, setNewUser] = useState({
+
+  const defaultNewUser = {
     username: "",
     password: "",
     email: "",
     phone: "",
-    isActive: true,
-    isApproved: true,
+    name: "",
     roleId: 4,
     roleName: "Customer",
-    approvedBy: 0,
-    name: "",
+    approvedBy: null,
+    isActive: true,
+    isApproved: true,
     otherInfo: "",
-    shopOwnerId: 2,
-  });
+    shopOwnerId: null,
+  };
+
+  const [newUser, setNewUser] = useState(defaultNewUser);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -101,7 +104,9 @@ const UserManagement = () => {
   };
 
   const handleDeleteUser = async (userId) => {
-    const confirmDelete = window.confirm("Bạn có chắc muốn xóa người dùng này?");
+    const confirmDelete = window.confirm(
+      "Bạn có chắc muốn xóa người dùng này?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -143,10 +148,10 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
-if (!user || !requesterId) {
-    toast.error("Vui lòng đăng nhập để quản lý người dùng");
-    return;
-  }
+    if (!user || !requesterId) {
+      toast.error("Vui lòng đăng nhập để quản lý người dùng");
+      return;
+    }
 
     const fetchUsers = async () => {
       try {
@@ -196,24 +201,23 @@ if (!user || !requesterId) {
         <Sidebar />
       </div>
 
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between px-6 py-4">
             <h1 className="text-xl font-semibold text-gray-900">
-              User Management
+              Quản lý người dùng
             </h1>
-            <div className="flex items-center space-x-4">
+            <div className=" absolute right-[450px] items-center space-x-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Search here"
+                  placeholder="Tim kiếm người dùng..."
                   className="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
-              <div className="flex items-center space-x-3">
+              {/* <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -227,7 +231,7 @@ if (!user || !requesterId) {
                   </div>
                   <div className="text-xs text-gray-500">Super Admin</div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </header>
@@ -235,16 +239,20 @@ if (!user || !requesterId) {
         <main className="flex-1 p-6">
           <div className="bg-white rounded-lg shadow">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Users</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Thông tin người dùng
+              </h2>
               <button
-                onClick={() => setIsPopupOpen(true)}
+                onClick={() => {
+                  setNewUser(defaultNewUser); // Reset lại về form trống
+                  setIsPopupOpen(true);
+                }}
                 className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add New
+                Thêm mới
               </button>
             </div>
-
             <div className="overflow-x-auto">
               <table className="w-full table-fixed">
                 <thead className="bg-gray-50">
@@ -253,22 +261,22 @@ if (!user || !requesterId) {
                       ID
                     </th>
                     <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center">
-                      Username
+                      Tên người dùng
                     </th>
                     <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center">
                       Email
                     </th>
                     <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center">
-                      Phone
+                      Số điện thoại
                     </th>
                     <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center">
-                      Role
+                      Vai trò
                     </th>
                     <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center">
-                      Status
+                      Trạng thái
                     </th>
                     <th className="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-center">
-                      Modify
+                      Thay đổi
                     </th>
                   </tr>
                 </thead>
@@ -320,7 +328,7 @@ if (!user || !requesterId) {
 
             <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
               <span className="text-sm text-gray-500">
-                Page {currentPage} of {totalPages}
+                Trang {currentPage} trên {totalPages}
               </span>
               <div className="flex items-center space-x-1">
                 <button

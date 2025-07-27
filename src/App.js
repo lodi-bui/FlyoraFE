@@ -24,7 +24,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import AboutUsPage from "pages/aboutUs/AboutUsPage";
 
 import DashBoard from "./pages/shopOwner/DashBoard";
-import UserActivityLogPage from "./pages/admin/systemManagement/userLog/UserActivityLogPage";
+import UserActivityLogPage from "./pages/admin/userLog/UserActivityLogPage";
 
 import UserManagement from "./pages/admin/userMgm/UserManagement";
 import ContentPage from "./pages/admin/content/ContentPage";
