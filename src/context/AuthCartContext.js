@@ -8,55 +8,54 @@ export const AuthCartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState(null);
 
-  // Thêm hàm để đồng bộ cartCount từ localStorage
+  // Đồng bộ cartCount từ localStorage: chỉ tính số lượng mặt hàng khác nhau
   const updateCartCountFromLocalStorage = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+    const count = cart.length; // Đếm số item, không tính tổng qty
     setCartCount(count);
   };
 
-const addToCart = (id, quantity = 1) => {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const existingItem = cart.find((item) => item.id === id);
+  const addToCart = (id, quantity = 1) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingItem = cart.find((item) => item.id === id);
 
-  if (existingItem) {
-    existingItem.qty += quantity;
-  } else {
-    cart.push({ id, qty: quantity });
-  }
+    if (existingItem) {
+      existingItem.qty += quantity;
+    } else {
+      cart.push({ id, qty: quantity });
+    }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartCountFromLocalStorage();
-};
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCountFromLocalStorage();
+  };
 
-
-   const login = (userData) => {
+  const login = (userData) => {
     setUser(userData);
     setIsLoggedIn(true);
-    localStorage.setItem("user", JSON.stringify(userData)); // Lưu user
-    localStorage.setItem("linkedId", userData.linkedId); // Lưu linkedId
-    localStorage.setItem("token", userData.token); // Lưu token
-    localStorage.setItem("role", userData.role); // Lưu role
-    updateCartCountFromLocalStorage(); // Cập nhật cartCount từ localStorage
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("linkedId", userData.linkedId);
+    localStorage.setItem("token", userData.token);
+    localStorage.setItem("role", userData.role);
+    updateCartCountFromLocalStorage();
   };
+
   const logout = () => {
     setUser(null);
     setIsLoggedIn(false);
-    setCartCount(0); // Reset cartCount khi logout
-    // Xóa thông tin khỏi localStorage
+    setCartCount(0);
     localStorage.removeItem("cart");
     localStorage.removeItem("token");
-    localStorage.removeItem("user"); // ✅ Xóa user
+    localStorage.removeItem("user");
     localStorage.removeItem("linkedId");
   };
+
   const clearCart = () => {
     localStorage.removeItem("cart");
     setCartCount(0);
   };
 
- useEffect(() => {
-    updateCartCountFromLocalStorage(); // load cartCount từ localStorage khi khởi tạo
-    // Kiểm tra nếu có user và token trong localStorage để xác định trạng thái đăng nhập
+  useEffect(() => {
+    updateCartCountFromLocalStorage();
 
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
@@ -74,13 +73,13 @@ const addToCart = (id, quantity = 1) => {
         setIsLoggedIn,
         cartCount,
         setCartCount,
-        updateCartCountFromLocalStorage, // Export
+        updateCartCountFromLocalStorage,
         user,
         setUser,
         login,
         logout,
         clearCart,
-        addToCart, 
+        addToCart,
       }}
     >
       {children}

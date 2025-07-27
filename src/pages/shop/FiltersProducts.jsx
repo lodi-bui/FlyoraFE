@@ -66,7 +66,7 @@ const ProductFilterPage = () => {
     fetchCategories();
   }, []);
 
-  // ✅ Fetch products có lọc theo tags và price
+  // Fetch products có lọc theo tags và price
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -307,9 +307,7 @@ const ProductFilterPage = () => {
                         }`}
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
-                      >
-                        ←
-                      </button>
+                      ></button>
                       {[...Array(totalPages)].map((_, i) => (
                         <button
                           key={i}
@@ -331,9 +329,7 @@ const ProductFilterPage = () => {
                         }`}
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
-                      >
-                        →
-                      </button>
+                      ></button>
                     </div>
                   </div>
                 </>

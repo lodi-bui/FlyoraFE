@@ -148,25 +148,38 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
-    if (!user || !requesterId) {
-      toast.error("Vui lòng đăng nhập để quản lý người dùng");
+    if (!user) return; // Đợi user load xong
+
+    const requesterId = user?.linkedId;
+    const roleId = user?.roleId;
+
+    // Kiểm tra đăng nhập
+    if (!requesterId) {
+      toast.error("Vui lòng đăng nhập để truy cập trang này");
+      navigate("/");
       return;
     }
 
+    // Kiểm tra quyền truy cập (chỉ cho Admin roleId = 1)
+    if (roleId !== 1 && roleId !== "1") {
+      toast.error("Bạn không có quyền truy cập trang quản lý người dùng");
+      navigate("/"); // hoặc navigate("/unauthorized")
+      return;
+    }
+
+    // Fetch user accounts
     const fetchUsers = async () => {
       try {
         const res = await UserAccounts(requesterId);
         setUsers(Array.isArray(res) ? res : [res]);
       } catch (error) {
-        toast.error(
-          "Không thể tải trang, bạn không có quyền truy cập. Hãy rời khỏi và đăng nhập lại."
-        );
+        toast.error("Không thể tải danh sách người dùng");
         console.error(error);
       }
     };
 
     fetchUsers();
-  }, [requesterId]);
+  }, [user, navigate]);
 
   const getStatusBadge = (status) => {
     return status ? (

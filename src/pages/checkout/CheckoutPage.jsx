@@ -1,4 +1,3 @@
-// src/pages/checkout/CheckoutPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import ShippingInfo from "./ShippingInfo";
@@ -8,10 +7,10 @@ import Header from "../navfoot/Header";
 import Footer from "../navfoot/Footer";
 import { createOrder } from "../../api/Order";
 import { createPayment } from "../../api/Payment";
-import { getCart } from "../../api/Cart"; // Sửa nếu file là cart.js
+import { getCart } from "../../api/Cart";
+import { ShippingFee } from "../../api/ShippingFee";
 
 const CheckoutPage = () => {
-  // 1) Thông tin giao hàng
   const [shipping, setShipping] = useState({
     name: "",
     phone: "",
@@ -26,24 +25,15 @@ const CheckoutPage = () => {
   const handleShipChange = (e) =>
     setShipping({ ...shipping, [e.target.name]: e.target.value });
 
-  // 2) Giỏ hàng
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchCart = async () => {
       const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      // Nếu giỏ hàng trống thì không làm gì
-      if (rawCart.length === 0) {
-        setItems([]);
-        return;
-      }
+      if (rawCart.length === 0) return;
 
       try {
-        // Gọi API lấy thông tin chi tiết sản phẩm từ productId và quantity
         const productData = await getCart(rawCart);
-
-        // Gộp lại thông tin qty từ local với dữ liệu chi tiết từ API
         const merged = productData.map((prod) => {
           const match = rawCart.find(
             (c) => c.id === prod.id || c.id === prod.productId
@@ -56,13 +46,11 @@ const CheckoutPage = () => {
             qty: match ? match.qty : 1,
           };
         });
-
         setItems(merged);
       } catch (err) {
         console.error("Lỗi khi gọi getCart:", err);
       }
     };
-
     fetchCart();
   }, []);
 
@@ -71,21 +59,89 @@ const CheckoutPage = () => {
     [items]
   );
 
-  // 3) Phương thức thanh toán
+  const [shippingFee, setShippingFee] = useState(0);
+
+  useEffect(() => {
+    const fetchShippingFee = async () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const requesterId = storedUser?.linkedId;
+
+      const districtId = parseInt(shipping.district);
+      const wardCode =
+        typeof shipping.ward === "string" ? shipping.ward.trim() : "";
+
+      const weight = items.reduce((sum, item) => sum + item.qty * 300, 0); // ví dụ 300g/sp
+      const insurance_value = total;
+      const height = 10;
+      const length = 30;
+      const width = 20;
+      const service_id = 53320; // hoặc id hợp lệ bạn có
+
+      // ✅ Kiểm tra toàn bộ dữ liệu
+      const isValid =
+        requesterId &&
+        districtId > 0 &&
+        wardCode &&
+        weight > 0 &&
+        height > 0 &&
+        length > 0 &&
+        width > 0 &&
+        insurance_value > 0 &&
+        service_id > 0;
+
+      if (!isValid) {
+        console.warn("❌ Payload không hợp lệ, không gọi API", {
+          requesterId,
+          districtId,
+          wardCode,
+          weight,
+          height,
+          length,
+          width,
+          insurance_value,
+          service_id,
+        });
+        return;
+      }
+
+      const payload = {
+        to_district_id: districtId,
+        to_ward_code: wardCode,
+        weight,
+        height,
+        length,
+        width,
+        insurance_value,
+        service_id,
+      };
+
+      console.log("📦 Payload tính phí GHN:", payload);
+
+      try {
+        const res = await ShippingFee(requesterId, payload);
+        const fee = res.total || res.fee || 30000;
+        setShippingFee(fee);
+        console.log("✅ Phí vận chuyển:", fee);
+      } catch (err) {
+        console.error("❌ Lỗi khi tính phí vận chuyển:", err);
+        if (err.response?.data) {
+          console.error("💥 Phản hồi lỗi từ server:", err.response.data);
+        }
+        setShippingFee(30000); // fallback
+      }
+    };
+
+    fetchShippingFee();
+  }, [shipping.district, shipping.ward, items, total]);
+
   const [payment, setPayment] = useState("cod");
   const handlePayChange = (e) => setPayment(e.target.value);
 
-  // 4) Show màn QR VNPAY
   const [showPayOnline, setShowPayOnline] = useState(false);
-
-  // 5) Đặt hàng thành công với COD → redirect confirm
   const [success, setSuccess] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [payUrl, setPayUrl] = useState(null);
 
-  // Mã đơn mô phỏng, về sau lấy từ backend trả về
-
-  // Khi nhấn Đặt Hàng
   const handleSubmit = async () => {
     try {
       const requiredFields = [
@@ -107,9 +163,7 @@ const CheckoutPage = () => {
         return;
       }
 
-      // Lấy cart từ localStorage
       const rawCart = JSON.parse(localStorage.getItem("cart")) || [];
-
       const itemsToSend = rawCart
         .filter((item) => item.qty && item.qty > 0)
         .map((item) => ({
@@ -122,7 +176,6 @@ const CheckoutPage = () => {
         return;
       }
 
-      // Lấy customerId từ localStorage (hoặc context nếu có)
       const storedUser = JSON.parse(localStorage.getItem("user"));
       const customerId = storedUser?.linkedId;
 
@@ -131,18 +184,17 @@ const CheckoutPage = () => {
         return;
       }
 
-      // 1. Gọi API tạo đơn hàng
       const orderRes = await createOrder(customerId, itemsToSend);
       const newOrderId = orderRes.orderId;
-      setOrderId(newOrderId); // Gán vào state
-      // 2. Nếu phương thức thanh toán là VNPAY
+      setOrderId(newOrderId);
+
       const paymentMethodId = payment === "payonline" ? 1 : 2;
       const paymentData = {
         orderId: newOrderId,
         customerId,
         paymentMethodId,
         ...(paymentMethodId === 1
-          ? { amount: total }
+          ? { amount: total + shippingFee }
           : {
               to_name: shipping.name,
               to_phone: shipping.phone,
@@ -152,35 +204,17 @@ const CheckoutPage = () => {
             }),
       };
 
-      // 3. Gọi API thanh toán
-
-      // 4. Xử lý kết quả theo phương thức thanh toán
-      // if (paymentMethodId === 1) {
-      //   // PayOnline → chỉ hiển thị màn PayOnline
-      //   setShowPayOnline(true); // <-- CHỈ hiển thị màn QR code
-      // } else {
-      //   // COD → tạo đơn vận chuyển
-      //   const payRes = await createPayment(paymentData);
-      //   setSuccess(true);
-      //   localStorage.removeItem("cart");
-      // }
-      // ...
-
       if (paymentMethodId === 1) {
         const payRes = await createPayment(paymentData);
-
         const payUrl = payRes?.paymentUrl || payRes?.payUrl || payRes?.url;
 
         if (!payUrl) throw new Error("Không nhận được link thanh toán từ API.");
 
         setShowPayOnline(true);
-        setOrderId(newOrderId); // vẫn set để truyền cho PayOnline
-        localStorage.removeItem("cart");
-
-        // Truyền thêm payUrl qua state
+        setOrderId(newOrderId);
         setPayUrl(payUrl);
+        localStorage.removeItem("cart");
       } else {
-        // COD → tạo đơn vận chuyển
         const payRes = await createPayment(paymentData);
         setSuccess(true);
         localStorage.removeItem("cart");
@@ -188,13 +222,12 @@ const CheckoutPage = () => {
     } catch (err) {
       console.error("Lỗi đặt hàng:", err);
       if (err.response) {
-        console.error("Server trả về:", err.response.data); // <-- Quan trọng!
+        console.error("Server trả về:", err.response.data);
       }
       alert("Đặt hàng thất bại. Vui lòng thử lại.");
     }
   };
 
-  // Nếu COD thành công thì chuyển confirm
   if (success) {
     return <Navigate to="/checkout/confirm" replace state={{ orderId }} />;
   }
@@ -207,15 +240,10 @@ const CheckoutPage = () => {
         {showPayOnline ? (
           <PayOnline payUrl={payUrl} onCancel={() => setShowPayOnline(false)} />
         ) : (
-          // Màn form Checkout bình thường
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-x-[38px]">
-            {/* ─── Cột trái: Shipping, Payment, Notes ─── */}
             <div className="space-y-8">
               <ShippingInfo data={shipping} onChange={handleShipChange} />
-
               <PaymentMethod method={payment} onChange={handlePayChange} />
-
-              {/* Chỉ hiển thị ghi chú khi không phải VNPAY */}
               <div className="bg-white p-6 rounded-lg shadow">
                 <h2 className="text-xl font-semibold mb-4">Ghi chú đơn hàng</h2>
                 <textarea
@@ -229,9 +257,7 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {/* ─── Cột phải: Cart summary & Order summary + nút Đặt ─── */}
             <div className="space-y-6">
-              {/* Giỏ hàng */}
               <div className="bg-white p-6 rounded-lg shadow">
                 <h2 className="text-lg font-semibold mb-4">Giỏ hàng</h2>
                 {items.map((it) => (
@@ -257,7 +283,6 @@ const CheckoutPage = () => {
                 ))}
               </div>
 
-              {/* Tóm tắt đơn hàng + nút Đặt Hàng */}
               <div className="bg-white p-6 rounded-lg shadow">
                 <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
                 <div className="space-y-2 text-gray-700">
@@ -267,11 +292,11 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between">
                     <span>Phí vận chuyển</span>
-                    <span>30,000 VND</span>
+                    <span>{shippingFee.toLocaleString()} VND</span>
                   </div>
                   <div className="flex justify-between font-semibold">
                     <span>Tổng thanh toán</span>
-                    <span>{total.toLocaleString()} VND</span>
+                    <span>{(total + shippingFee).toLocaleString()} VND</span>
                   </div>
                 </div>
                 <button

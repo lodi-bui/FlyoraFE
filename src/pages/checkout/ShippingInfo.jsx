@@ -17,6 +17,8 @@ const ShippingInfo = ({ data, onChange }) => {
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
+        console.log("storedUser:", storedUser);
+        console.log("requesterId:", requesterId);
         const res = await getProvinces(requesterId);
         setProvinces(res);
       } catch (err) {
@@ -57,8 +59,9 @@ const ShippingInfo = ({ data, onChange }) => {
     const fetchWards = async () => {
       try {
         const res = await getWards(requesterId, district);
+        console.log("✅ Wards:", res); // ← log ra danh sách để kiểm tra
         setWards(res);
-        onChange({ target: { name: "ward", value: "" } }); // reset ward
+        onChange({ target: { name: "ward", value: "" } });
       } catch (err) {
         console.error("Lỗi tải phường/xã:", err);
       }
