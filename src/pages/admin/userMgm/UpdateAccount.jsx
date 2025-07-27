@@ -22,10 +22,8 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
   const [user, setUser] = useState({ ...userData });
 
   useEffect(() => {
-
     setUser({ ...userData });
   }, [userData]);
-
 
   const handleUpdate = async () => {
     try {
@@ -33,13 +31,18 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
         ...user,
         roleName: getRoleNameById(user.roleId),
         approvedBy: requesterId,
+        isActive: user.isActive ?? true, // đảm bảo có giá trị
+        isApproved: user.isApproved ?? true, // mặc định true nếu undefined
       };
+
+      console.log("Dữ liệu gửi đi:", updatedUser);
 
       await updateAccount(user.id, requesterId, updatedUser);
       toast.success("Cập nhật tài khoản thành công!");
       onUpdateSuccess();
       onClose();
     } catch (error) {
+      console.error("Lỗi cập nhật:", error.response?.data || error.message);
       toast.error("Cập nhật tài khoản thất bại!");
     }
   };
@@ -129,13 +132,13 @@ const UpdateAccount = ({ userData, onClose, onUpdateSuccess }) => {
               className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
               onClick={onClose}
             >
-              Cancel
+              Đóng
             </button>
             <button
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               onClick={handleUpdate}
             >
-              Update
+              Cập nhật
             </button>
           </div>
         </div>

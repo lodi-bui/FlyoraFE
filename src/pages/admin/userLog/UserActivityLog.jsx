@@ -174,7 +174,7 @@ const UserActivityLog = () => {
           {/* Pagination */}
           <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
             <span className="text-sm text-gray-500">
-              Page {currentPage} of {totalPages}
+              Trang {currentPage} trên {totalPages}
             </span>
             <div className="flex items-center space-x-1">
               <button
@@ -185,9 +185,7 @@ const UserActivityLog = () => {
                 }`}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-              >
-                ←
-              </button>
+              ></button>
 
               {generatePagination().map((page, i) =>
                 page === "..." ? (
@@ -222,9 +220,7 @@ const UserActivityLog = () => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
-              >
-                →
-              </button>
+              ></button>
             </div>
           </div>
         </div>

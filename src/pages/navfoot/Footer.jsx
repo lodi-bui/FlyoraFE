@@ -14,11 +14,7 @@ const Footer = () => {
     navigation: [
       {
         title: "Hỗ trợ",
-        links: [
-          { name: "Về chúng tôi" },
-          { name: "Tin tức" },
-          { name: "Liên hệ" },
-        ],
+        links: [{ name: "Về chúng tôi" }, { name: "Tin tức" }],
       },
       {
         title: "Chính sách",
@@ -52,9 +48,6 @@ const Footer = () => {
       path: "/deliveryPolicy",
       sectionId: "deliveryPolicy",
     },
-
-    // "F.A.Q": { path: "/faq", sectionId: "faq" },
-    "Liên hệ": { path: "/contact-us", sectionId: "contact-us" },
   };
 
   const handleLinkClick = (hrefObj) => {

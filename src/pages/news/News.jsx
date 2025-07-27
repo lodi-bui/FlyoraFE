@@ -103,36 +103,42 @@ const News = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center gap-2 mt-10">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 border rounded disabled:opacity-30"
-              >
-                ← Prev
-              </button>
-              {[...Array(totalPages)].map((_, i) => (
+            <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
+              {/* Dòng chữ phía trên */}
+              <span className="text-sm text-gray-500">
+                Trang {currentPage} trên {totalPages}
+              </span>
+
+              {/* Các nút nằm hàng ngang phía dưới */}
+              <div className="flex items-center gap-2">
                 <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`px-3 py-1 border rounded ${
-                    currentPage === i + 1
-                      ? "bg-red-500 text-white"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-              <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(totalPages, p + 1))
-                }
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 border rounded disabled:opacity-30"
-              >
-                Next →
-              </button>
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="h-8 w-8 flex items-center justify-center border rounded disabled:opacity-30"
+                ></button>
+
+                {[...Array(totalPages)].map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`h-8 w-8 flex items-center justify-center border rounded text-sm font-medium ${
+                      currentPage === i + 1
+                        ? "bg-red-500 text-white"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="h-8 w-8 flex items-center justify-center border rounded disabled:opacity-30"
+                ></button>
+              </div>
             </div>
           </>
         )}
