@@ -4,75 +4,67 @@ import { Percent, Copy, Check, Truck, Clock } from "lucide-react";
 
 const vouchers = [
   {
-    id: "PRODUCT10",
-    title: "Giảm 10% sản phẩm",
+    id: "SALE10",
+    title: "Giảm 10.000 VND",
     typeLabel: "Sản phẩm",
-    percent: 10,
     color: "orange",
     gradient: "from-orange-500 via-orange-400 to-orange-500",
     ring: "ring-orange-300/60",
     iconBg: "bg-orange-500/10",
     iconColor: "text-orange-500",
-    description: "Tối đa 200.000₫ cho đơn từ 300.000₫.",
-    minOrder: 300000,
-    maxDiscount: 200000,
+    minOrder: 10000,
+    maxDiscount: 100000,
     expire: "2025-08-31T23:59:59+07:00",
     usesLeft: 120,
     usesTotal: 500,
   },
 
   {
-    id: "PRODUCT15",
-    title: "Giảm 15% sản phẩm",
+    id: "SALE20",
+    title: "Giảm 20.000 VND",
     typeLabel: "Sản phẩm",
-    percent: 15,
     color: "orange",
     gradient: "from-orange-500 via-orange-400 to-orange-500",
     ring: "ring-orange-300/60",
     iconBg: "bg-orange-500/10",
     iconColor: "text-orange-500",
-    description: "Tối đa 300.000₫ cho đơn từ 500.000₫.",
-    minOrder: 500000,
-    maxDiscount: 300000,
+    minOrder: 100000,
+    maxDiscount: 150000,
     expire: "2025-09-15T23:59:59+07:00",
     usesLeft: 80,
     usesTotal: 400,
   },
 
   {
-    id: "SHIP15",
-    title: "Giảm 15% phí giao hàng",
-    typeLabel: "Vận chuyển",
-    percent: 15,
-    color: "green",
-    gradient: "from-green-500 via-green-400 to-green-500",
-    ring: "ring-green-300/60",
-    iconBg: "bg-green-500/10",
-    iconColor: "text-green-600",
-    description: "Giảm tối đa 30.000₫. Cho đơn từ 99.000₫.",
-    minOrder: 99000,
-    maxDiscount: 30000,
-    expire: "2025-09-31T23:59:59+07:00",
-    usesLeft: 57,
-    usesTotal: 200,
+    id: "SALE50",
+    title: "Giảm 50.000 VND",
+    typeLabel: "Sản phẩm",
+    color: "orange",
+    gradient: "from-orange-500 via-orange-400 to-orange-500",
+    ring: "ring-orange-300/60",
+    iconBg: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    minOrder: 150000,
+    maxDiscount: 200000,
+    expire: "2025-09-15T23:59:59+07:00",
+    usesLeft: 80,
+    usesTotal: 400,
   },
 
   {
-    id: "SHIP25",
-    title: "Giảm 25% phí giao hàng",
-    typeLabel: "Vận chuyển",
-    percent: 25,
-    color: "green",
-    gradient: "from-green-500 via-green-400 to-green-500",
-    ring: "ring-green-300/60",
-    iconBg: "bg-green-500/10",
-    iconColor: "text-green-600",
-    description: "Giảm tối đa 50.000₫. Cho đơn từ 150.000₫.",
-    minOrder: 150000,
-    maxDiscount: 50000,
-    expire: "2025-08-31T23:59:59+07:00",
-    usesLeft: 100,
-    usesTotal: 300,
+    id: "SALE70",
+    title: "Giảm 70.000 VND",
+    typeLabel: "Sản phẩm",
+    color: "orange",
+    gradient: "from-orange-500 via-orange-400 to-orange-500",
+    ring: "ring-orange-300/60",
+    iconBg: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    minOrder: 200000,
+    maxDiscount: 300000,
+    expire: "2025-09-15T23:59:59+07:00",
+    usesLeft: 80,
+    usesTotal: 400,
   },
 ];
 
@@ -177,7 +169,7 @@ const VoucherCard = ({ v }) => (
           <div>
             <h3 className="text-base font-semibold text-neutral-800 flex items-center gap-2">
               {v.title}
-              <Pill
+              {/* <Pill
                 className={
                   v.color === "orange"
                     ? "bg-orange-100 text-orange-700 ring-orange-300/60"
@@ -185,7 +177,7 @@ const VoucherCard = ({ v }) => (
                 }
               >
                 {v.percent}% OFF
-              </Pill>
+              </Pill> */}
             </h3>
             <p className="mt-1 text-[13px] text-neutral-500">{v.description}</p>
           </div>
