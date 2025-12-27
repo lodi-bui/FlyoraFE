@@ -1,12 +1,15 @@
 import axios from "axios";
-import {useAuth} from "../context/index.jsx";
 
-const instance = axios.create({
-    baseURL: process.env.API_URL
+const axiosClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: false
 });
 
-instance.interceptors.request.use(function (config) {
-    let token = window.localStorage.getItem('accessToken')
+axiosClient.interceptors.request.use(function (config) {
+    let token = window.localStorage.getItem('token')
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -15,20 +18,21 @@ instance.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-instance.interceptors.response.use(function (response) {
-    return response.data;
-}, function (error) {
-    return error.response.data;
-});
-instance.interceptors.response.use(
-    response => response,
+axiosClient.interceptors.response.use(
+    response => {
+        console.log('Response received:', response);
+        return response;
+    },
     error => {
+        console.error('Axios error:', error);
+        console.error('Error response:', error.response);
+        console.error('Error config:', error.config);
+        
         if (error.response?.status === 401 || error.response?.status === 403) {
-            const { logout } = useAuth();
-            logout();
+            window.localStorage.removeItem('token');
             window.location.href = '/login';
         }
         return Promise.reject(error);
     }
 );
-export default instance
+export default axiosClient
