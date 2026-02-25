@@ -8,6 +8,6 @@ export const LoginAPI = async (username, password) => {
     password
   });
 
-  return res;
+  return res.data;
 };
 

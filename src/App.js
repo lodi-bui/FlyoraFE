@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import ShopPage from "./pages/shop/ShopPage";
 import HomePage from "./pages/home/HomePage";
 import Login from "./pages/login/Login";
+import VerifyOTP from "pages/verify/VerifyOTP";
 import Register from "./pages/register/Register";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import CheckoutConfirm from "./pages/checkout/CheckoutConfirm";
@@ -42,6 +43,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
 
         <Route path="/shop" element={<ShopPage />} />
 

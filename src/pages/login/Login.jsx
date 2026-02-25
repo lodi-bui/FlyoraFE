@@ -25,62 +25,90 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      // Gọi API đăng nhập
       const res = await LoginAPI(form.username, form.password);
-
-      // Kiểm tra xem response có token hoặc thành công không
-      // if (res && res.token) {
-      //   // Lưu token nếu cần:
-      //   localStorage.setItem("token", res.token);
-      //   setShowSuccess(true);
-      //   setTimeout(() => {
-      //     setShowSuccess(false);
-      //     navigate("/");
-      //   }, 1500);
-      // } else {
-      //   // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
-      //   setError("Tài khoản hoặc mật khẩu không đúng.");
-      // }
-
-      if (res.status === 200) {
-        const { userId, name, linkedId, role, token } = res.data;
-
-        // Lưu token vào localStorage
-        localStorage.setItem("token", token);
-
-        // Lưu thông tin vào context
-        login({ userId, name, linkedId, role, token });
-        setShowSuccess(true);
-
-        // Lưu thông tin người dùng vào context
-        // login({
-        //   userId: res.data.userId,
-        //   name: res.data.name,
-        //   linkedId: res.data.linkedId,
-        //   role: res.data.role,
-        // });
-
-        setTimeout(() => {
-          setShowSuccess(false);
-          console.log("Đăng nhập thành công:", res.data);
-
-          if (role === "Admin") {
-            navigate("/admin-page");
-          } else if (role === "ShopOwner" || role === "SalesStaff") {
-            navigate("/shopowner");
-          } else {
-            navigate("/");
-          }
-        }, 500);
-      } else {
-        setError("Tài khoản hoặc mật khẩu không đúng.");
+      console.log("LOGIN RESPONSE:", res);
+      const preAuthToken =
+        res?.data?.preAuthToken ||
+        res?.data?.token ||
+        res?.preAuthToken ||
+        res?.token;
+      if (!preAuthToken) {
+        console.log("FULL RESPONSE:", res);
+        setError("Không nhận được token xác thực.");
+        return;
       }
+      sessionStorage.setItem("preAuthToken", preAuthToken);
+      navigate("/verify-otp");
     } catch (err) {
-      setError("Đăng nhập thất bại. Vui lòng thử lại.");
+      const message =
+        err.response?.data?.message || "Sai tài khoản hoặc mật khẩu.";
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     // Gọi API đăng nhập
+  //     const res = await LoginAPI(form.username, form.password);
+
+  //     // Kiểm tra xem response có token hoặc thành công không
+  //     // if (res && res.token) {
+  //     //   // Lưu token nếu cần:
+  //     //   localStorage.setItem("token", res.token);
+  //     //   setShowSuccess(true);
+  //     //   setTimeout(() => {
+  //     //     setShowSuccess(false);
+  //     //     navigate("/");
+  //     //   }, 1500);
+  //     // } else {
+  //     //   // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
+  //     //   setError("Tài khoản hoặc mật khẩu không đúng.");
+  //     // }
+
+  //     if (res.status === 200) {
+  //       const { userId, name, linkedId, role, token } = res.data;
+
+  //       // Lưu token vào localStorage
+  //       localStorage.setItem("token", token);
+
+  //       // Lưu thông tin vào context
+  //       login({ userId, name, linkedId, role, token });
+  //       setShowSuccess(true);
+
+  //       // Lưu thông tin người dùng vào context
+  //       // login({
+  //       //   userId: res.data.userId,
+  //       //   name: res.data.name,
+  //       //   linkedId: res.data.linkedId,
+  //       //   role: res.data.role,
+  //       // });
+
+  //       setTimeout(() => {
+  //         setShowSuccess(false);
+  //         console.log("Đăng nhập thành công:", res.data);
+
+  //         if (role === "Admin") {
+  //           navigate("/admin-page");
+  //         } else if (role === "ShopOwner" || role === "SalesStaff") {
+  //           navigate("/shopowner");
+  //         } else {
+  //           navigate("/");
+  //         }
+  //       }, 500);
+  //     } else {
+  //       setError("Tài khoản hoặc mật khẩu không đúng.");
+  //     }
+  //   } catch (err) {
+  //     setError("Đăng nhập thất bại. Vui lòng thử lại.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#083622] to-[#12ab3c] px-4 md:px-16 py-8 flex items-center justify-center">
@@ -180,7 +208,9 @@ const Login = () => {
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-[40px] font-bold mb-6">CHÀO MỪNG ĐẾN VỚI FLYORA SHOP</h2>
+          <h2 className="text-[40px] font-bold mb-6">
+            CHÀO MỪNG ĐẾN VỚI FLYORA SHOP
+          </h2>
           <p className="text-xl mb-8">Cửa hàng chim với mọi thứ bạn cần</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
