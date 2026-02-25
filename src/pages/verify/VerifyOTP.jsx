@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { verifyOTP } from "../../api/VerifyOTP";
 import { useAuthCart } from "../../context/AuthCartContext";
@@ -7,12 +8,32 @@ const VerifyOTP = () => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [expired, setExpired] = useState(false);
+  const [countdown, setCountdown] = useState(60);
+  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuthCart();
 
+  // Countdown
+  useEffect(() => {
+    if (countdown <= 0) {
+      setExpired(true);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading || success) return; // tránh bấm nhiều lần
+
     setError("");
 
     if (otp.length !== 6) {
@@ -20,67 +41,126 @@ const VerifyOTP = () => {
       return;
     }
 
-    setLoading(true);
+    if (expired) {
+      setError("Mã OTP đã hết hạn.");
+      return;
+    }
 
     try {
+      setLoading(true);
+
       const data = await verifyOTP(otp);
+
+      if (!data || !data.token) {
+        throw new Error("OTP sai");
+      }
 
       const { token, userId, name, role, linkedId } = data;
 
-      // Lưu JWT thật
       localStorage.setItem("token", token);
-
-      // login context
       login({ userId, name, role, linkedId, token });
-
-      // Xóa token tạm
       sessionStorage.removeItem("preAuthToken");
 
-      // redirect theo role
-      if (role === "Admin") {
-        navigate("/admin-page");
-      } else if (role === "ShopOwner" || role === "SalesStaff") {
-        navigate("/shopowner");
-      } else {
+      setSuccess(true);
+      setLoading(false);
+
+      setTimeout(() => {
         navigate("/");
-      }
+      }, 1500);
     } catch (err) {
       setError("OTP không đúng hoặc đã hết hạn.");
-    } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-700 to-green-400">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Xác thực OTP</h2>
+  const handleResend = () => {
+    if (loading) return;
 
-        <p className="text-gray-500 mb-6">
-          Nhập mã OTP đã được gửi đến email của bạn
-        </p>
+    setOtp("");
+    setError("");
+    setExpired(false);
+    setCountdown(60);
+    setLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-700 to-green-500 relative">
+      {/* Popup Success */}
+      {success && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-80 text-center shadow-xl">
+            <div className="text-green-600 text-5xl mb-3">✓</div>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              Xác minh thành công!
+            </h3>
+            <p className="text-gray-500 text-sm">Đang chuyển về trang chủ...</p>
+          </div>
+        </div>
+      )}
+
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+            <Mail className="text-green-600 w-8 h-8" />
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Xác thực OTP</h2>
+        <p className="text-gray-500 mb-6">Bước xác minh bảo mật của bạn</p>
+
+        <div className="bg-green-50 text-green-700 rounded-xl p-4 mb-4 text-sm">
+          Nhập mã xác thực OTP từ email của bạn
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            placeholder="Nhập OTP (6 số)"
-            maxLength={6}
-            className="w-full px-4 py-3 text-center text-lg border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
+          <div>
+            <label className="block text-left text-sm font-medium mb-2 text-gray-600">
+              Mã OTP
+            </label>
 
-          {error && (
-            <div className="text-red-500 text-sm font-semibold">{error}</div>
-          )}
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+              maxLength={6}
+              disabled={loading || success}
+              className="w-full text-center text-3xl tracking-[10px] py-4 rounded-2xl border bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="------"
+            />
+          </div>
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition"
+            disabled={loading || expired || success}
+            className="w-full py-3 rounded-xl font-semibold transition bg-orange-500 hover:bg-orange-600 text-white disabled:bg-gray-300 disabled:text-gray-500"
           >
             {loading ? "Đang xác thực..." : "Xác nhận OTP"}
           </button>
+
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={loading}
+            className="w-full border border-green-600 text-green-600 py-3 rounded-xl font-semibold hover:bg-green-50 transition disabled:opacity-50"
+          >
+            Gửi lại mã
+          </button>
+
+          {!expired && !success && (
+            <div className="text-sm text-gray-500">
+              Mã có thể dùng trong {countdown}s
+            </div>
+          )}
+
+          {expired && (
+            <div className="text-red-600 text-sm">
+              Mã đã hết hạn. Vui lòng yêu cầu mã mới.
+            </div>
+          )}
+
+          {error && (
+            <div className="text-red-600 text-sm font-medium">{error}</div>
+          )}
         </form>
       </div>
     </div>
