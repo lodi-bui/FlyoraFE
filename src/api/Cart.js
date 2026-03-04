@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE = "https://flyora-backend.onrender.com/api/v1/cart";
+const BASE = "https://flyora-backend-v2.onrender.com/api/v1/cart";
 // const BASE = "http://localhost:8080/api/v1/cart";
 //Base là URL gốc của nhóm API -> dễ quản lý, tái sử dụng, và bảo trì code API
 

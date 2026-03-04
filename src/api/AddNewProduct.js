@@ -20,7 +20,7 @@ export const addNewProduct = async (
 ) => {
   try {
     const response = await axios.post(
-      "https://flyora-backend.onrender.com/api/v1/owner/products",
+      "https://flyora-backend-v2.onrender.com/api/v1/owner/products",
       {
         name,
         description,

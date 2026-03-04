@@ -3,7 +3,7 @@ import axios from "axios";
 export const deactivateAccount = async (accountId, requesterId) => {
   try {
     const response = await axios.put(
-      `https://flyora-backend.onrender.com/api/v1/admin/accounts/${accountId}/deactivate?requesterId=${requesterId}`,
+      `https://flyora-backend-v2.onrender.com/api/v1/admin/accounts/${accountId}/deactivate?requesterId=${requesterId}`,
       {},
       {
         headers: {

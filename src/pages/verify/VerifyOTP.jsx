@@ -79,13 +79,13 @@ const VerifyOTP = () => {
     setOtp("");
     setError("");
     setExpired(false);
-    setCountdown(60);
+    setCountdown(300);
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-700 to-green-500 relative">
-      {/* Popup Success */}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#083622] to-[#12ab3c] relative">
+      {/* Popup Success
       {success && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-80 text-center shadow-xl">
@@ -96,7 +96,7 @@ const VerifyOTP = () => {
             <p className="text-gray-500 text-sm">Đang chuyển về trang chủ...</p>
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 text-center">
         <div className="flex justify-center mb-6">
@@ -109,7 +109,7 @@ const VerifyOTP = () => {
         <p className="text-gray-500 mb-6">Bước xác minh bảo mật của bạn</p>
 
         <div className="bg-green-50 text-green-700 rounded-xl p-4 mb-4 text-sm">
-          Nhập mã xác thực OTP từ email của bạn
+          Nhập mã xác thực OTP đã được gửi từ email của bạn
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

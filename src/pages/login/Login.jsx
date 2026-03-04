@@ -71,13 +71,13 @@ const Login = () => {
   //     // }
 
   //     if (res.status === 200) {
-  //       const { userId, name, linkedId, role, token } = res.data;
+  //       const { userId, name, role, token, linkedId } = res.data;
 
   //       // Lưu token vào localStorage
   //       localStorage.setItem("token", token);
 
   //       // Lưu thông tin vào context
-  //       login({ userId, name, linkedId, role, token });
+  //       login({ userId, name, role, token, linkedId });
   //       setShowSuccess(true);
 
   //       // Lưu thông tin người dùng vào context
@@ -199,7 +199,7 @@ const Login = () => {
         <div className="text-white">
           <div className="flex items-center mb-6">
             <img
-              className="w-[7vw] h-[7vw] mr-4 rotate-0" // Xoay chim lên trên (không xoay hoặc dùng rotate-0)
+              className="w-[7vw] h-[7vw] mr-4 rotate-0"
               src="https://c.animaapp.com/mbzzgsmyZQHMQ6/img/group-10.png"
               alt="Logo"
             />

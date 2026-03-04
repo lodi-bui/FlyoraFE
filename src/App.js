@@ -43,7 +43,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/verify-otp" element={<VerifyOTP />} />
+        {/* <Route path="/verify-otp" element={<VerifyOTP />} /> */}
 
         <Route path="/shop" element={<ShopPage />} />
 

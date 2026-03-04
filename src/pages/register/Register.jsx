@@ -5,7 +5,7 @@ import { Card, CardContent } from "../../components/ui/Card";
 import { Input } from "../../components/ui/Input";
 import { Label } from "../../components/ui/Label";
 import { useNavigate } from "react-router-dom";
-import { RegisterAPI } from "../../api/register/Register";
+import { RegisterAPI } from "../../api/Register";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const Register = () => {
         form.email,
         form.password,
         form.phone,
-        form.name
+        form.name,
       );
 
       setShowSuccess(true);
@@ -54,7 +54,7 @@ const Register = () => {
       setError(
         err?.response?.data?.message ||
           err?.message ||
-          "Đăng ký thất bại. Vui lòng thử lại."
+          "Đăng ký thất bại. Vui lòng thử lại.",
       );
     } finally {
       setLoading(false);
@@ -160,7 +160,9 @@ const Register = () => {
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-[40px] font-bold mb-6">CHÀO MỪNG ĐẾN VỚI FLYORA SHOP</h2>
+          <h2 className="text-[40px] font-bold mb-6">
+            CHÀO MỪNG ĐẾN VỚI FLYORA SHOP
+          </h2>
           <p className="text-xl mb-8">Cửa hàng chim với mọi thứ bạn cần</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"
