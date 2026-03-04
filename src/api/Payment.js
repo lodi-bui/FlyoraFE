@@ -6,7 +6,7 @@ import axios from "axios";
  * @returns Trả về link thanh toán (vnpay) hoặc paymentId (COD)
  */
 // src/api/payments.js
-const BASE = "https://flyora-backend.onrender.com/api/v1";
+const BASE = "https://flyora-backend-v2.onrender.com/api/v1";
 
 export const createPayment = async (paymentData) => {
   const res = await axios.post(`${BASE}/payments`, paymentData);

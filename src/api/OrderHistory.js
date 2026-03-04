@@ -4,7 +4,7 @@ import axios from "axios";
 export const getOrderHistory = async (customerId) => {
   try {
     const response = await axios.get(
-      `https://flyora-backend.onrender.com/api/v1/my-orders?customerId=${customerId}`,
+      `https://flyora-backend-v2.onrender.com/api/v1/my-orders?customerId=${customerId}`,
     );
     return response.data;
   } catch (error) {

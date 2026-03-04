@@ -1,32 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, X } from 'lucide-react';
-import { useAuthCart } from '../../../context/AuthCartContext';
-import Sidebar from 'pages/admin/sidebar/Sidebar';
-import { useNavigate, useParams } from 'react-router-dom';
-import { editProduct } from '../../../api/EditProduct';
+import React, { useState, useEffect } from "react";
+import { Plus, X } from "lucide-react";
+import { useAuthCart } from "../../../context/AuthCartContext";
+import Sidebar from "pages/admin/sidebar/Sidebar";
+import { useNavigate, useParams } from "react-router-dom";
+import { editProduct } from "../../../api/EditProduct";
 // Giả sử có hàm getProductById để lấy thông tin sản phẩm
 import { getProductDetail } from "api/ProductDetail";
+import { generateDescriptionAI } from "../../../api/GenerateDescription";
 
 const EditProduct = () => {
   const { logout } = useAuthCart();
   const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    price: '',
-    stock: '',
-    categoryId: '',
-    birdTypeId: '',
-    material: '',
-    origin: '',
-    usageTarget: '',
-    weight: '',
-    color: '',
-    dimensions: '',
-    imageUrl: ''
+    name: "",
+    description: "",
+    price: "",
+    stock: "",
+    categoryId: "",
+    birdTypeId: "",
+    material: "",
+    origin: "",
+    usageTarget: "",
+    weight: "",
+    color: "",
+    dimensions: "",
+    imageUrl: "",
   });
   const [loading, setLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+
+  const handleGenerateAI = async () => {
+    if (!product.name.trim()) {
+      alert("Vui lòng nhập tên sản phẩm trước!");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      setAiLoading(true);
+
+      const res = await generateDescriptionAI(token, {
+        ...product,
+        price: Number(product.price) || 0,
+        stock: Number(product.stock) || 0,
+        weight: Number(product.weight) || 0,
+      });
+
+      const generatedText =
+        res?.data?.data?.description ||
+        res?.data?.description ||
+        res?.data ||
+        null;
+
+      if (generatedText && generatedText.trim() !== "") {
+        setProduct((prev) => ({
+          ...prev,
+          description: generatedText,
+        }));
+      } else {
+        alert("AI không trả về nội dung mô tả!");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Không thể tạo mô tả bằng AI!");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,22 +75,22 @@ const EditProduct = () => {
         const authorization = localStorage.getItem("token");
         const data = await getProductDetail(id);
         setProduct({
-          name: data.name || '',
-          description: data.description || '',
-          price: data.price || '',
-          stock: data.stock || '',
-          categoryId: data.categoryId || '',
-          birdTypeId: data.birdTypeId || '',
-          material: data.material || '',
-          origin: data.origin || '',
-          usageTarget: data.usageTarget || '',
-          weight: data.weight || '',
-          color: data.color || '',
-          dimensions: data.dimensions || '',
-          imageUrl: data.imageUrl || ''
+          name: data.name || "",
+          description: data.description || "",
+          price: data.price || "",
+          stock: data.stock || "",
+          categoryId: data.categoryId || "",
+          birdTypeId: data.birdTypeId || "",
+          material: data.material || "",
+          origin: data.origin || "",
+          usageTarget: data.usageTarget || "",
+          weight: data.weight || "",
+          color: data.color || "",
+          dimensions: data.dimensions || "",
+          imageUrl: data.imageUrl || "",
         });
       } catch (error) {
-        alert('Không lấy được thông tin sản phẩm!');
+        alert("Không lấy được thông tin sản phẩm!");
       }
     };
     fetchProduct();
@@ -69,14 +110,14 @@ const EditProduct = () => {
       const payload = Object.fromEntries(
         Object.entries(product).map(([key, value]) => [
           key,
-          value === "" ? null : value
-        ])
+          value === "" ? null : value,
+        ]),
       );
       await editProduct(authorization, { id, ...payload });
-      alert('Cập nhật sản phẩm thành công!');
-      navigate('/shopowner/products');
+      alert("Cập nhật sản phẩm thành công!");
+      navigate("/shopowner/products");
     } catch (error) {
-      alert('Lỗi khi cập nhật sản phẩm!');
+      alert("Lỗi khi cập nhật sản phẩm!");
       console.error(error);
     } finally {
       setLoading(false);
@@ -84,14 +125,14 @@ const EditProduct = () => {
 
     //kiểm tra không cho nhập số âm
     if (product.price < 0 || product.stock < 0) {
-      alert('Giá và số lượng tồn kho không được là số âm!');
+      alert("Giá và số lượng tồn kho không được là số âm!");
       setLoading(false);
       return;
     }
   };
 
   const handleCancel = () => {
-    navigate('/shopowner/products');
+    navigate("/shopowner/products");
   };
 
   return (
@@ -104,7 +145,9 @@ const EditProduct = () => {
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-semibold text-gray-900">Chỉnh sửa sản phẩm</h1>
+              <h1 className="text-xl font-semibold text-gray-900">
+                Chỉnh sửa sản phẩm
+              </h1>
             </div>
           </div>
         </header>
@@ -114,7 +157,9 @@ const EditProduct = () => {
               <div className="grid grid-cols-2 gap-6">
                 {/* Các trường giống AddProduct, value là product.[field] */}
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Tên sản phẩm</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Tên sản phẩm
+                  </label>
                   <input
                     type="text"
                     name="name"
@@ -126,7 +171,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Giá</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Giá
+                  </label>
                   <input
                     type="number"
                     name="price"
@@ -134,14 +181,18 @@ const EditProduct = () => {
                     onChange={handleChange}
                     placeholder="Giá"
                     className="p-3 border border-gray-300 rounded-lg"
-                    onInvalid={(e) => e.target.setCustomValidity("Giá phải lớn hơn hoặc bằng 0")}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity("Giá phải lớn hơn hoặc bằng 0")
+                    }
                     onInput={(e) => e.target.setCustomValidity("")}
                     min="0"
                     required
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Số lượng tồn kho</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Số lượng tồn kho
+                  </label>
                   <input
                     type="number"
                     name="stock"
@@ -149,15 +200,22 @@ const EditProduct = () => {
                     onChange={handleChange}
                     placeholder="Tồn kho"
                     className="p-3 border border-gray-300 rounded-lg"
-                    onInvalid={(e) => e.target.setCustomValidity("Số lượng tồn kho phải lớn hơn hoặc bằng 0")}
+                    onInvalid={(e) =>
+                      e.target.setCustomValidity(
+                        "Số lượng tồn kho phải lớn hơn hoặc bằng 0",
+                      )
+                    }
                     onInput={(e) => e.target.setCustomValidity("")}
                     min="0"
                     required
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Danh mục (categoryId: 1-Thức ăn, 2-Đồ chơi, 3-Nội thất)</label>
-                  <input
+                  <label className="block text-lg font-medium text-gray-700">
+                    {/* Danh mục (categoryId: 1-Thức ăn, 2-Đồ chơi, 3-Nội thất) */}
+                    Loại Sản phẩm
+                  </label>
+                  {/* <input
                     type="text"
                     name="categoryId"
                     value={product.categoryId}
@@ -165,21 +223,48 @@ const EditProduct = () => {
                     placeholder="ID danh mục"
                     className="p-3 border border-gray-300 rounded-lg"
                     required
-                  />
+                  /> */}
+
+                  <select
+                    name="categoryId"
+                    value={product.categoryId}
+                    onChange={handleChange}
+                    className="p-3 border border-gray-300 rounded-lg"
+                    required
+                  >
+                    <option value="" disabled hidden>
+                      -- Chọn danh mục --
+                    </option>
+                    <option value="1">Thức ăn</option>
+                    <option value="2">Đồ chơi</option>
+                    <option value="3">Nội thất</option>
+                  </select>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Loại chim (birdTypeId: 1-Chào mào, 2-Vẹt Xích, 3-Yến Phụng, 4-Chích Chòe)</label>
-                  <input
-                    type="text"
+                  <label className="block text-lg font-medium text-gray-700">
+                    {/* Loại chim (birdTypeId: 1-Chào mào, 2-Vẹt Xích, 3-Yến Phụng,
+                    4-Chích Chòe) */}
+                    Loại chim
+                  </label>
+                  <select
                     name="birdTypeId"
                     value={product.birdTypeId}
                     onChange={handleChange}
-                    placeholder="ID loại chim"
                     className="p-3 border border-gray-300 rounded-lg"
-                  />
+                    required
+                  >
+                    <option value="" disabled hidden text->
+                      -- Chọn loại chim --
+                    </option>
+                    <option value="1">Chào mào</option>
+                    <option value="2">Vẹt Xích</option>
+                    <option value="3">Yến Phụng</option>
+                  </select>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Chất liệu</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Chất liệu
+                  </label>
                   <input
                     type="text"
                     name="material"
@@ -190,7 +275,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Xuất xứ</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Xuất xứ
+                  </label>
                   <input
                     type="text"
                     name="origin"
@@ -201,7 +288,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Đối tượng sử dụng</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Đối tượng sử dụng
+                  </label>
                   <input
                     type="text"
                     name="usageTarget"
@@ -212,7 +301,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Khối lượng(kg)</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Khối lượng(kg)
+                  </label>
                   <input
                     type="text"
                     name="weight"
@@ -223,7 +314,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Màu sắc</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Màu sắc
+                  </label>
                   <input
                     type="text"
                     name="color"
@@ -234,7 +327,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Kích thước</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Kích thước
+                  </label>
                   <input
                     type="text"
                     name="dimensions"
@@ -245,7 +340,9 @@ const EditProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="block text-lg font-medium text-gray-700">Link hình ảnh</label>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Link hình ảnh
+                  </label>
                   <input
                     type="text"
                     name="imageUrl"
@@ -257,14 +354,33 @@ const EditProduct = () => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col space-y-2 mt-6">
-                <label className="block text-lg font-medium text-gray-700">Mô tả sản phẩm</label>
+              <div className="flex flex-col space-y-3 mt-6">
+                <div className="flex justify-between items-center">
+                  <label className="block text-lg font-medium text-gray-700">
+                    Mô tả sản phẩm
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={handleGenerateAI}
+                    disabled={aiLoading || !product.name.trim()}
+                    className={`px-4 py-2 rounded text-white text-sm transition
+        ${
+          aiLoading || !product.name.trim()
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        }`}
+                  >
+                    {aiLoading ? "Đang tạo..." : "Tạo mô tả nhanh"}
+                  </button>
+                </div>
+
                 <textarea
                   name="description"
                   value={product.description}
                   onChange={handleChange}
-                  placeholder="Mô tả sản phẩm"
-                  className="p-3 border border-gray-300 rounded-lg h-24 resize-none"
+                  placeholder="Mô tả sản phẩm sẽ hiển thị ở đây. Bạn có thể chỉnh sửa lại."
+                  className="p-4 border border-gray-300 rounded-lg h-40 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 export const deleteAccount = async (id, requesterId) => {
   try {
     const response = await axios.delete(
-      `https://flyora-backend.onrender.com/api/v1/admin/accounts/${id}?requesterId=${requesterId}`
+      `https://flyora-backend-v2.onrender.com/api/v1/admin/accounts/${id}?requesterId=${requesterId}`
     );
     return response.data;
   } catch (error) {

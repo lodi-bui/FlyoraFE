@@ -3,7 +3,7 @@ import axios from "axios";
 export const getUserActivityLogs = async (requesterId) => {
   try {
     const response = await axios.get(
-      `https://flyora-backend.onrender.com/api/v1/admin/accounts/logs?requesterId=${requesterId}`
+      `https://flyora-backend-v2.onrender.com/api/v1/admin/accounts/logs?requesterId=${requesterId}`
     );
     return response.data;
   } catch (error) {

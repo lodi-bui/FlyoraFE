@@ -105,7 +105,7 @@ const UserManagement = () => {
 
   const handleDeleteUser = async (userId) => {
     const confirmDelete = window.confirm(
-      "Bạn có chắc muốn xóa người dùng này?"
+      "Bạn có chắc muốn xóa người dùng này?",
     );
     if (!confirmDelete) return;
 
@@ -196,7 +196,7 @@ const UserManagement = () => {
   const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
   const paginatedUsers = users.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handlePrevPage = () => {

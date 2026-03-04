@@ -43,7 +43,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* <Route path="/verify-otp" element={<VerifyOTP />} /> */}
+        <Route path="/verify-otp" element={<VerifyOTP />} />
 
         <Route path="/shop" element={<ShopPage />} />
 
@@ -97,7 +97,7 @@ function App() {
         <Route path="/shopowner/add-product" element={<AddProduct />} />
         {/* <Route path="/manager-page/dashboard" element={<ProductManagement />} /> */}
 
-        <Route path="/shopowner/edit-product/:id" element={<EditProduct />} />\
+        <Route path="/shopowner/products/edit-product/:id" element={<EditProduct />} />\
 
         <Route path="/cancel-payment" element={<CancelPaymentPage />} />
         <Route path='/success-payment' element={<SuccessPaymentPage />} />

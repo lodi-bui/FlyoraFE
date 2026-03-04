@@ -1,7 +1,7 @@
 
 import axios from "axios";
 export const getAllProductsByOwner = async (token) => {
-  const res = await axios.get("https://flyora-backend.onrender.com/api/v1/owner/products", {
+  const res = await axios.get("https://flyora-backend-v2.onrender.com/api/v1/owner/products", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

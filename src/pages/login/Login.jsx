@@ -24,20 +24,30 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
       const res = await LoginAPI(form.username, form.password);
       console.log("LOGIN RESPONSE:", res);
+
       const preAuthToken =
         res?.data?.preAuthToken ||
         res?.data?.token ||
         res?.preAuthToken ||
         res?.token;
+
+      const role = res?.data?.role || res?.role;
+
       if (!preAuthToken) {
-        console.log("FULL RESPONSE:", res);
         setError("Không nhận được token xác thực.");
         return;
       }
+
+      // Lưu để dùng cho bước OTP
       sessionStorage.setItem("preAuthToken", preAuthToken);
+      sessionStorage.setItem("role", role);
+
+      sessionStorage.setItem("username", form.username);
+      sessionStorage.setItem("password", form.password);
       navigate("/verify-otp");
     } catch (err) {
       const message =

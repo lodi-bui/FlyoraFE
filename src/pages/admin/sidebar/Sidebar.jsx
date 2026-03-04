@@ -76,7 +76,7 @@ const Sidebar = () => {
             <>
               <li>
                 <a
-                  href="/shopowner/product"
+                  href="/shopowner/products"
                   className={`flex items-center px-4 py-3 rounded-lg ${
                     location.pathname === "/admin-page/product"
                       ? "bg-green-500 text-white"

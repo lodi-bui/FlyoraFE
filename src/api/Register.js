@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const RegisterAPI = async (username, email, password, phone,name) => {
   try {
-    const res = await axios.post('https://flyora-backend.onrender.com/api/auth/register', {
+    const res = await axios.post('https://flyora-backend-v2.onrender.com/api/auth/register', {
       username,
       password,
       email,
