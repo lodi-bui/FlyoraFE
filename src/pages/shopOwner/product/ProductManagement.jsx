@@ -38,7 +38,7 @@ const ProductManagement = () => {
       } catch (error) {
         if (error.response?.status === 403) {
           alert("Bạn không có quyền truy cập");
-          navigate("/unauthorized");
+          navigate("/");
         } else {
           console.error("Lỗi khi tải sản phẩm:", error);
         }
