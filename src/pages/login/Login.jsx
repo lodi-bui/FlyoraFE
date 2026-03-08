@@ -6,15 +6,16 @@ import { Input } from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
-import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
+// import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
 
 const Login = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false); // Thêm state cho popup
-  const { login } = useAuthCart();
+  // const [showSuccess, setShowSuccess] = useState(false); // Thêm state cho popup
+  const [showSuccess] = useState(false); // State để hiển thị pop-up thành công
+  // const { login } = useAuthCart();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

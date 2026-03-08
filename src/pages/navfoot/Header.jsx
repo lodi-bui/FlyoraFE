@@ -10,9 +10,9 @@ import searchIcon from "../../icons/search.png";
 import sunIcon from "../../icons/sun.png";
 import cartIcon from "../../icons/cart.png";
 import loginIcon from "../../icons/login.png";
-import bird from "../../icons/bird_hi.png";
+// import bird from "../../icons/bird_hi.png";
 import { useAuthCart } from "../../context/AuthCartContext";
-import { PhoneIcon } from "lucide-react";
+// import { PhoneIcon } from "lucide-react";
 
 function Header() {
   const { cartCount, isLoggedIn, logout } = useAuthCart();

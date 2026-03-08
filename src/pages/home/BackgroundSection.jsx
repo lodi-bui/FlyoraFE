@@ -1,11 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import chaomao from "../../icons/chaomao.png";
-import chichchoe from "../../icons/chichchoe.png";
-import vetxich from "../../icons/vetxich.png";
-import yenphung from "../../icons/yenphung.png";
-
 const BackgroundSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
