@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import React, { useState, useEffect } from "react";
 import { Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -15,19 +16,6 @@ const VerifyOTP = () => {
 
   const navigate = useNavigate();
   const { login } = useAuthCart(); // Countdown
-
-  // useEffect(() => {
-  //   if (countdown <= 0) {
-  //     setExpired(true);
-  //     return;
-  //   }
-
-  //   const timer = setTimeout(() => {
-  //     setCountdown((prev) => prev - 1);
-  //   }, 1000);
-
-  //   return () => clearTimeout(timer);
-  // }, [countdown]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +45,8 @@ const VerifyOTP = () => {
 
       const { token, userId, name, linkedId } = data;
 
+      const decoded = jwtDecode(token);
+
       // Lấy role từ sessionStorage (do Login.js truyền sang)
       const storedRole = sessionStorage.getItem("role");
 
@@ -67,7 +57,14 @@ const VerifyOTP = () => {
       localStorage.setItem("role", storedRole);
 
       // Lưu vào context với storedRole chuẩn
-      login({ userId, name, role: storedRole, linkedId, token });
+      const customerId = decoded.id;
+
+      login({
+        userId: customerId,
+        linkedId: customerId,
+        role: decoded.role,
+        token: token,
+      });
 
       sessionStorage.removeItem("preAuthToken");
 

@@ -36,7 +36,7 @@ const CheckoutPage = () => {
         const productData = await getCart(rawCart);
         const merged = productData.map((prod) => {
           const match = rawCart.find(
-            (c) => c.id === prod.id || c.id === prod.productId
+            (c) => c.id === prod.id || c.id === prod.productId,
           );
           return {
             id: prod.id || prod.productId,
@@ -56,16 +56,25 @@ const CheckoutPage = () => {
 
   const total = useMemo(
     () => items.reduce((sum, it) => sum + it.price * it.qty, 0),
-    [items]
+    [items],
   );
 
   const [shippingFee, setShippingFee] = useState(0);
 
   useEffect(() => {
     const fetchShippingFee = async () => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const requesterId = storedUser?.linkedId;
+      // const storedUser = JSON.parse(localStorage.getItem("user"));
+      // const requesterId = storedUser?.linkedId;
+      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
+      const customerId =
+        storedUser?.linkedId ||
+        storedUser?.userId ||
+        localStorage.getItem("linkedId");
+      if (!customerId) {
+        alert("Bạn chưa đăng nhập!");
+        return;
+      }
       const districtId = parseInt(shipping.district);
       const wardCode =
         typeof shipping.ward === "string" ? shipping.ward.trim() : "";
@@ -77,9 +86,9 @@ const CheckoutPage = () => {
       const width = 20;
       const service_id = 53320; // hoặc id hợp lệ bạn có
 
-      // ✅ Kiểm tra toàn bộ dữ liệu
+      // Kiểm tra toàn bộ dữ liệu
       const isValid =
-        requesterId &&
+        customerId &&
         districtId > 0 &&
         wardCode &&
         weight > 0 &&
@@ -90,8 +99,8 @@ const CheckoutPage = () => {
         service_id > 0;
 
       if (!isValid) {
-        console.warn("❌ Payload không hợp lệ, không gọi API", {
-          requesterId,
+        console.warn(" Payload không hợp lệ, không gọi API", {
+          customerId,
           districtId,
           wardCode,
           weight,
@@ -115,17 +124,17 @@ const CheckoutPage = () => {
         service_id,
       };
 
-      console.log("📦 Payload tính phí GHN:", payload);
+      console.log(" Payload tính phí GHN:", payload);
 
       try {
-        const res = await ShippingFee(requesterId, payload);
+        const res = await ShippingFee(customerId, payload);
         const fee = res.total || res.fee || 30000;
         setShippingFee(fee);
-        console.log("✅ Phí vận chuyển:", fee);
+        console.log("Phí vận chuyển:", fee);
       } catch (err) {
-        console.error("❌ Lỗi khi tính phí vận chuyển:", err);
+        console.error(" Lỗi khi tính phí vận chuyển:", err);
         if (err.response?.data) {
-          console.error("💥 Phản hồi lỗi từ server:", err.response.data);
+          console.error(" Phản hồi lỗi từ server:", err.response.data);
         }
         setShippingFee(30000); // fallback
       }
@@ -155,7 +164,7 @@ const CheckoutPage = () => {
       ];
 
       const emptyFields = requiredFields.filter(
-        (field) => !shipping[field]?.trim()
+        (field) => !shipping[field]?.trim(),
       );
 
       if (emptyFields.length > 0) {
