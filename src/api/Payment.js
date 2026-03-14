@@ -12,4 +12,3 @@ export const createPayment = async (paymentData) => {
   const res = await axios.post(`${BASE}/payments`, paymentData);
   return res.data;
 };
-

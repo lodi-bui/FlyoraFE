@@ -13,6 +13,7 @@ import loginIcon from "../../icons/login.png";
 // import bird from "../../icons/bird_hi.png";
 import { useAuthCart } from "../../context/AuthCartContext";
 // import { PhoneIcon } from "lucide-react";
+import { SearchAIAPI } from "../../api/SearchAI";
 
 function Header() {
   const { cartCount, isLoggedIn, logout } = useAuthCart();
@@ -21,7 +22,7 @@ function Header() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
-
+  const [suggestions, setSuggestions] = useState([]);
   const customerId = localStorage.getItem("linkedId"); // Lấy linkedId từ localStorage
   // Nếu không có linkedId, có thể đặt là null hoặc một giá trị mặc định
   // const customerId = null; // Hoặc một giá trị mặc định nếu không có
@@ -52,13 +53,30 @@ function Header() {
 
   const handleSearch = () => {
     const query = searchQuery.trim();
+
     if (query) {
       navigate(`/shop?search=${encodeURIComponent(query)}`);
     } else {
-      navigate("/shop"); // Xóa query -> load tất cả sản phẩm
+      navigate("/shop");
     }
   };
 
+  const handleSearchChange = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (value.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const data = await SearchAIAPI(value);
+      setSuggestions(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const starIcons = [
     {
       src: "https://c.animaapp.com/mbqa0l7wK0NJ0W/img/star-19.svg",
@@ -178,14 +196,14 @@ function Header() {
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSearch();
               }}
               className="border rounded-full px-3 py-1 w-32 sm:w-40 md:w-64 lg:w-80 pr-16 text-sm md:text-base"
             />
 
-            {/* Nút clear (X) */}
+            {/* Nút clear */}
             {searchQuery && (
               <button
                 type="button"
@@ -206,6 +224,30 @@ function Header() {
               onClick={handleSearch}
               className="absolute right-2 top-1/2 -translate-y-1/2 h-5 md:h-6 cursor-pointer"
             />
+
+            {/* DROPDOWN SUGGESTION */}
+            {suggestions.length > 0 && (
+              <div className="absolute top-full left-0 w-full bg-white border rounded-lg shadow-lg mt-1 z-50">
+                {suggestions.slice(0, 5).map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() =>
+                      navigate(`/product/${item.id}`, {
+                        state: { product: item },
+                      })
+                    }
+                  >
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="w-8 h-8 object-cover rounded"
+                    />
+                    <span className="text-sm">{item.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Cart */}

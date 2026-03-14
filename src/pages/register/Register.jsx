@@ -10,7 +10,7 @@ import { RegisterAPI } from "../../api/Register";
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name: "", // Đã có name
+    name: "",
     username: "",
     email: "",
     phone: "",

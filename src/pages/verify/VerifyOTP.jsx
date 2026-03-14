@@ -177,7 +177,7 @@ const VerifyOTP = () => {
             className="w-full border border-green-600 text-green-600 py-3 rounded-xl font-semibold hover:bg-green-50 transition disabled:opacity-50"
           >
             {" "}
-            Gửi lại mã{" "}
+            Quay lại...{" "}
           </button>{" "}
           {!expired && !success && (
             <div className="text-sm text-gray-500">

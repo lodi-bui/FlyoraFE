@@ -334,7 +334,7 @@ const UserManagement = () => {
                         {user.phone}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-900 text-center">
-                        {getRoleNameById(user.roleId) || user.role}
+                        {user.role}
                       </td>
                       <td
                         className="px-4 py-4 text-sm text-center cursor-pointer"

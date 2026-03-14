@@ -20,9 +20,12 @@ const FlashSaleBanner = () => {
       localStorage.setItem("flashSaleEndTime", endTime.toString());
     }
 
+    let interval;
+
     const updateCountdown = () => {
       const now = Date.now();
       const remaining = Math.max(0, Math.floor((endTime - now) / 1000));
+
       setTimeLeft(remaining);
 
       if (remaining === 0) {
@@ -31,8 +34,9 @@ const FlashSaleBanner = () => {
       }
     };
 
-    updateCountdown(); // initial run
-    const interval = setInterval(updateCountdown, 1000);
+    interval = setInterval(updateCountdown, 1000);
+
+    updateCountdown(); // chạy lần đầu
 
     return () => clearInterval(interval);
   }, []);

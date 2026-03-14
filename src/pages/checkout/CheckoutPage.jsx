@@ -215,7 +215,13 @@ const CheckoutPage = () => {
 
       if (paymentMethodId === 1) {
         const payRes = await createPayment(paymentData);
-        const payUrl = payRes?.paymentUrl || payRes?.payUrl || payRes?.url;
+        // const payUrl = payRes?.paymentUrl || payRes?.payUrl || payRes?.url;
+        const payUrl =
+          payRes?.paymentUrl ||
+          payRes?.payUrl ||
+          payRes?.url ||
+          payRes?.checkoutUrl ||
+          payRes?.data?.checkoutUrl;
 
         if (!payUrl) throw new Error("Không nhận được link thanh toán từ API.");
 

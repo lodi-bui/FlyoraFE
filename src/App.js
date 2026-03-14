@@ -33,8 +33,9 @@ import ContentPage from "./pages/admin/content/ContentPage";
 import ProductManagement from "./pages/shopOwner/product/ProductManagement";
 import AddProduct from "pages/shopOwner/product/AddProduct";
 import EditProduct from "pages/shopOwner/product/EditProduct";
-import CancelPaymentPage from "pages/statusPayOnline/CancelPaymentPage";
-import SuccessPaymentPage from "pages/statusPayOnline/SuccessPaymentPage";
+import CancelPaymentPage from "./pages/statusPayOnline/CancelPaymentPage";
+import SuccessPaymentPage from "./pages/statusPayOnline/SuccessPaymentPage";
+
 
 function App() {
   return (
@@ -97,10 +98,12 @@ function App() {
         <Route path="/shopowner/add-product" element={<AddProduct />} />
         {/* <Route path="/manager-page/dashboard" element={<ProductManagement />} /> */}
 
-        <Route path="/shopowner/products/edit-product/:id" element={<EditProduct />} />\
+        <Route path="/shopowner/products/edit-product/:id" element={<EditProduct />} />
 
-        <Route path="/cancel-payment" element={<CancelPaymentPage />} />
-        <Route path='/success-payment' element={<SuccessPaymentPage />} />
+        {/* <Route path="/cancel-payment" element={<CancelPaymentPage />} />
+        <Route path='/success-payment' element={<SuccessPaymentPage />} /> */}
+
+        <Route path="/success-payment" element={<CheckoutConfirm />} />
       </Routes>
 
 

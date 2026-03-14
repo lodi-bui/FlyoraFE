@@ -34,7 +34,7 @@ const ProductFilterPage = () => {
   const totalPages = Math.ceil(product.length / ITEMS_PER_PAGE);
   const paginatedProducts = product.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handlePrevPage = () => {
@@ -128,7 +128,7 @@ const ProductFilterPage = () => {
       return;
     }
     addToCart(id);
-    toast.success("Đã thêm vào giỏ hàng! 🎉");
+    toast.success("Đã thêm vào giỏ hàng!");
   };
 
   useEffect(() => {
