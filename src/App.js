@@ -65,7 +65,9 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
 
         <Route path="/order-history" element={<OrderHistoryPage />} />
-        <Route path="/order-details/:orderCode" element={<OrderDetailsPage />}
+        <Route
+          path="/order-details/:customerId"
+          element={<OrderDetailsPage />}
         />
 
         <Route path="/filter" element={<ShopPage />} />
@@ -98,8 +100,8 @@ function App() {
 
         <Route path="/shopowner/products/edit-product/:id" element={<EditProduct />} />
 
-        <Route path="/cancel-payment" element={<CancelPaymentPage />} />
-        <Route path="/success-payment" element={<SuccessPaymentPage />} />
+        {/* <Route path="/cancel-payment" element={<CancelPaymentPage />} />
+        <Route path='/success-payment' element={<SuccessPaymentPage />} /> */}
 
         <Route path="/success-payment" element={<CheckoutConfirm />} />
       </Routes>

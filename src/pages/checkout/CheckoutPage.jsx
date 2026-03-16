@@ -149,7 +149,6 @@ const CheckoutPage = () => {
   const [showPayOnline, setShowPayOnline] = useState(false);
   const [success, setSuccess] = useState(false);
   const [orderId, setOrderId] = useState(null);
-  const [orderCode, setOrderCode] = useState(null);
   const [payUrl, setPayUrl] = useState(null);
 
   const handleSubmit = async () => {
@@ -194,17 +193,9 @@ const CheckoutPage = () => {
         return;
       }
 
-      // const orderRes = await createOrder(customerId, itemsToSend);
-      // const newOrderId = orderRes.orderId;
-      // setOrderId(newOrderId);
-
       const orderRes = await createOrder(customerId, itemsToSend);
-
       const newOrderId = orderRes.orderId;
-      const newOrderCode = orderRes.orderCode;
-
       setOrderId(newOrderId);
-      setOrderCode(newOrderCode);
 
       const paymentMethodId = payment === "payonline" ? 1 : 2;
       const paymentData = {
@@ -253,9 +244,7 @@ const CheckoutPage = () => {
   };
 
   if (success) {
-    return (
-      <Navigate to="/checkout/confirm" replace state={{ orderId, orderCode }} />
-    );
+    return <Navigate to="/checkout/confirm" replace state={{ orderId }} />;
   }
 
   return (

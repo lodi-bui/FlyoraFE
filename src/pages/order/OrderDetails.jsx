@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getProductDetail } from "../../api/ProductDetail";
-import { useParams } from "react-router-dom";
 
 const OrderDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { orderId, order } = location.state || {};
-  const { orderCode } = useParams();
+  const { order } = location.state || {};
   const [orderData, setOrderData] = useState(order);
   const [productImages, setProductImages] = useState({}); // Lưu ảnh theo productId
 
@@ -58,7 +56,7 @@ const OrderDetails = () => {
           Chi tiết đơn đặt hàng
         </h1>
         <div className="text-sm text-gray-600">
-          Mã đơn hàng: #{orderData.orderCode}
+          Mã đơn hàng: #{orderData.orderId}
         </div>
         <div className="text-sm text-green-600">
           Cảm ơn bạn đã tin tưởng Flyora!
