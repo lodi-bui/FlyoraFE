@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getOrderHistory } from "../../api/OrderHistory";
 import { NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -8,6 +9,7 @@ const OrderHistory = () => {
   const [error, setError] = useState("");
 
   const customerId = localStorage.getItem("linkedId");
+  const { orderCode } = useParams();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -53,20 +55,20 @@ const OrderHistory = () => {
           {orders.map((order) => {
             const subtotal = order.items.reduce(
               (sum, item) => sum + item.price * item.quantity,
-              0
+              0,
             );
             const shippingCharge = 30000;
             const total = subtotal + shippingCharge;
 
             return (
               <div
-                key={order.orderId}
+                key={order.orderCode}
                 className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition"
               >
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-3">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-1">
-                      Mã Đơn Hàng: #{order.orderId}
+                      Mã Đơn Hàng: #{order.orderCode}
                     </h2>
                     <p className="text-sm text-gray-600">
                       Thời gian:{" "}
@@ -88,8 +90,13 @@ const OrderHistory = () => {
 
                   <div className="mt-3 md:mt-0">
                     <NavLink
-                      to={`/order-details/${order.orderId}`}
-                      state={{ order }}
+                      to={`/order-details/${order.orderCode}`}
+                      // state={{ order }}
+                      state={{
+                        orderId: order.orderId,
+                        orderCode: order.orderCode,
+                        order,
+                      }}
                       className="text-blue-600 hover:underline font-medium"
                     >
                       Chi tiết đơn hàng
