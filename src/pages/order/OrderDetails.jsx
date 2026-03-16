@@ -27,9 +27,9 @@ const OrderDetails = () => {
               const product = await getProductDetail(item.productId);
               images[item.productId] = product.imageUrl;
             } catch (error) {
-              images[item.productId] = null; // fallback nếu lỗi
+              images[item.productId] = null;
             }
-          })
+          }),
         );
         setProductImages(images);
       }
@@ -41,7 +41,7 @@ const OrderDetails = () => {
 
   const subtotal = orderData.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
   const shippingCharge = 30000;
   const taxes = 0;

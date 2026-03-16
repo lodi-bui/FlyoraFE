@@ -183,8 +183,12 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="text-center mt-4 font-['Poppins',Helvetica] font-normal text-white text-xs sm:text-sm">
+        {/* <div className="text-center mt-4 font-['Poppins',Helvetica] font-normal text-white text-xs sm:text-sm">
           © Copyright Bird Shop 2025
+        </div> */}
+        <div className="text-center mt-4 font-['Poppins',Helvetica] font-normal text-white text-xs sm:text-sm">
+          Sản phẩm này là của một dự án học tập, không phải sản phẩm thương mại.
+          Mọi thông tin chỉ mang tính chất minh họa.
         </div>
       </div>
     </footer>

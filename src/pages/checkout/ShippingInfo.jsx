@@ -26,7 +26,7 @@ const ShippingInfo = ({ data, onChange }) => {
       }
     };
     fetchProvinces();
-  }, []);
+  }, [requesterId, storedUser]);
 
   // Load districts khi chọn tỉnh
   useEffect(() => {
@@ -59,7 +59,7 @@ const ShippingInfo = ({ data, onChange }) => {
     const fetchWards = async () => {
       try {
         const res = await getWards(requesterId, district);
-        console.log("✅ Wards:", res); // ← log ra danh sách để kiểm tra
+        console.log("Wards:", res); // ← log ra danh sách để kiểm tra
         setWards(res);
         onChange({ target: { name: "ward", value: "" } });
       } catch (err) {

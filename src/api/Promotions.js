@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://flyora-backend.onrender.com/api/v1/promotions";
+const API_URL = "https://flyora-backend-v2.onrender.com/api/v1/promotions";
 //  
 /**
  * Lấy danh sách khuyến mãi

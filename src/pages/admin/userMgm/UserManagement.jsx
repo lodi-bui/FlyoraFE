@@ -27,6 +27,7 @@ const ITEMS_PER_PAGE = 6;
 const UserManagement = () => {
   const { user } = useAuthCart();
   const requesterId = JSON.parse(localStorage.getItem("user"))?.linkedId;
+
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -105,7 +106,7 @@ const UserManagement = () => {
 
   const handleDeleteUser = async (userId) => {
     const confirmDelete = window.confirm(
-      "Bạn có chắc muốn xóa người dùng này?"
+      "Bạn có chắc muốn xóa người dùng này?",
     );
     if (!confirmDelete) return;
 
@@ -147,23 +148,47 @@ const UserManagement = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (!user) return; // Đợi user load xong
+
+  //   const requesterId = user?.linkedId;
+  //   const roleId = user?.roleId;
+
+  //   // Kiểm tra đăng nhập
+  //   if (!requesterId) {
+  //     toast.error("Vui lòng đăng nhập để truy cập trang này");
+  //     navigate("/");
+  //     return;
+  //   }
+
+  //   // Kiểm tra quyền truy cập (chỉ cho Admin roleId = 1)
+  //   if (roleId !== 1 && roleId !== "1") {
+  //     toast.error("Bạn không có quyền truy cập trang quản lý người dùng");
+  //     navigate("/"); // hoặc navigate("/unauthorized")
+  //     return;
+  //   }
+
+  // useEffect(() => {
+  //   if (!user) return;
+
+  //   if (!user.linkedId) return; // Đảm bảo linkedId tồn tại trước khi tiếp tục
+
+  //   if (user.role !== "Admin") {
+  //     toast.error("Bạn không có quyền truy cập trang này");
+  //     navigate("/");
+  //     return;
+  //   }
+
   useEffect(() => {
-    if (!user) return; // Đợi user load xong
+    if (!user) return;
 
     const requesterId = user?.linkedId;
-    const roleId = user?.roleId;
 
-    // Kiểm tra đăng nhập
-    if (!requesterId) {
-      toast.error("Vui lòng đăng nhập để truy cập trang này");
+    if (!requesterId) return;
+
+    if (user.role !== "Admin") {
+      toast.error("Bạn không có quyền truy cập trang này");
       navigate("/");
-      return;
-    }
-
-    // Kiểm tra quyền truy cập (chỉ cho Admin roleId = 1)
-    if (roleId !== 1 && roleId !== "1") {
-      toast.error("Bạn không có quyền truy cập trang quản lý người dùng");
-      navigate("/"); // hoặc navigate("/unauthorized")
       return;
     }
 
@@ -196,7 +221,7 @@ const UserManagement = () => {
   const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
   const paginatedUsers = users.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handlePrevPage = () => {
@@ -309,7 +334,7 @@ const UserManagement = () => {
                         {user.phone}
                       </td>
                       <td className="px-4 py-4 text-sm text-gray-900 text-center">
-                        {getRoleNameById(user.roleId) || user.role}
+                        {user.role}
                       </td>
                       <td
                         className="px-4 py-4 text-sm text-center cursor-pointer"

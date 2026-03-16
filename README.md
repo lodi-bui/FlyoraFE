@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+# Hướng dẫn chạy project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Project này được tạo bằng **Create React App**.
 
-## Available Scripts
+## 1. Yêu cầu trước khi chạy
 
-In the project directory, you can run:
+Trước khi chạy project, cần cài đặt:
 
-### `npm start`
+* **Node.js** (khuyến nghị version 18+)
+* **npm** (được cài sẵn khi cài Node.js)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Kiểm tra bằng lệnh:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+node -v
+npm -v
+```
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# 2. Cài đặt project
 
-### `npm run build`
+Sau khi tải project về (clone hoặc download), mở terminal tại thư mục project và chạy:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Lệnh này sẽ cài toàn bộ thư viện cần thiết cho project từ file `package.json`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Chỉ cần chạy **1 lần duy nhất** khi mới tải project.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# 3. Chạy project ở môi trường Development
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Chạy lệnh:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Sau đó mở trình duyệt:
 
-## Learn More
+```
+http://localhost:3000
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Ứng dụng React sẽ chạy ở chế độ **development mode**.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Các đặc điểm của chế độ này:
 
-### Code Splitting
+* Tự reload khi sửa code
+* Hiển thị lỗi trực tiếp trên trình duyệt
+* Phù hợp để phát triển
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+# 4. Build project cho môi trường Production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Khi muốn build project để deploy, chạy:
 
-### Making a Progressive Web App
+```
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Sau khi chạy xong:
 
-### Advanced Configuration
+* thư mục **build/** sẽ được tạo
+* chứa toàn bộ code đã được tối ưu cho production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Có thể deploy thư mục `build` lên các nền tảng như:
 
-### Deployment
+* Vercel
+* Netlify
+* Firebase Hosting
+* Server riêng
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+# 5. Chạy test (nếu project có test)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+npm test
+```
+
+Lệnh này sẽ chạy test ở chế độ watch.
+
+---
+
+# 6. Cấu trúc lệnh thường dùng
+
+| Lệnh            | Chức năng                |
+| --------------- | ------------------------ |
+| `npm install`   | Cài toàn bộ thư viện     |
+| `npm start`     | Chạy project local       |
+| `npm run build` | Build project production |
+| `npm test`      | Chạy test                |
+
+---
+
+# 7. Lưu ý quan trọng
+
+Nếu project không chạy được, thử:
+
+```
+rm -rf node_modules
+npm install
+npm start
+```
+
+Hoặc trên Windows:
+
+```
+rmdir /s node_modules
+npm install
+npm start
+```
+
+---
+
+# 8. Tài liệu tham khảo
+
+* https://create-react-app.dev/
+* https://react.dev/

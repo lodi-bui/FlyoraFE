@@ -7,7 +7,7 @@ import axios from "axios";
  * @returns { orderId, status }
  */
 export const createOrder = async (customerId, items) => {
-  const res = await axios.post("https://flyora-backend.onrender.com/api/v1/orders", {
+  const res = await axios.post("https://flyora-backend-v2.onrender.com/api/v1/orders", {
     customerId,
     items,
   });

@@ -7,7 +7,6 @@ const PriceFilter = ({ min = 15000, max = 400000, onChange }) => {
 
   const handleChange = (value) => {
     setPriceRange(value);
-    // Không gọi onChange ở đây
   };
 
   const handleApply = () => {

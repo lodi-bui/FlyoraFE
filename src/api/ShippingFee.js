@@ -1,7 +1,7 @@
 // src/api/ShippingFee.js
 import axios from "axios";
 
-const BASE = "https://flyora-backend.onrender.com/api/v1";
+const BASE = "https://flyora-backend-v2.onrender.com/api/v1";
 
 export const ShippingFee = async (requesterId, data) => {
   const res = await axios.post(

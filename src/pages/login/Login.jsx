@@ -6,15 +6,16 @@ import { Input } from "../../components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LoginAPI } from "../../api/Login"; // Giả sử bạn đã tạo API đăng nhập
-import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
+// import { useAuthCart } from "../../context/AuthCartContext"; // Import context để sử dụng login
 
 const Login = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false); // Thêm state cho popup
-  const { login } = useAuthCart();
+  // const [showSuccess, setShowSuccess] = useState(false); // Thêm state cho popup
+  const [showSuccess] = useState(false); // State để hiển thị pop-up thành công
+  // const { login } = useAuthCart();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,63 +25,101 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
-      // Gọi API đăng nhập
       const res = await LoginAPI(form.username, form.password);
+      console.log("LOGIN RESPONSE:", res);
 
-      // Kiểm tra xem response có token hoặc thành công không
-      // if (res && res.token) {
-      //   // Lưu token nếu cần:
-      //   localStorage.setItem("token", res.token);
-      //   setShowSuccess(true);
-      //   setTimeout(() => {
-      //     setShowSuccess(false);
-      //     navigate("/");
-      //   }, 1500);
-      // } else {
-      //   // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
-      //   setError("Tài khoản hoặc mật khẩu không đúng.");
-      // }
+      const preAuthToken =
+        res?.data?.preAuthToken ||
+        res?.data?.token ||
+        res?.preAuthToken ||
+        res?.token;
 
-      if (res.status === 200) {
-        const { userId, name, linkedId, role, token } = res.data;
+      const role = res?.data?.role || res?.role;
 
-        // Lưu token vào localStorage
-        localStorage.setItem("token", token);
-
-        // Lưu thông tin vào context
-        login({ userId, name, linkedId, role, token });
-        setShowSuccess(true);
-
-        // Lưu thông tin người dùng vào context
-        // login({
-        //   userId: res.data.userId,
-        //   name: res.data.name,
-        //   linkedId: res.data.linkedId,
-        //   role: res.data.role,
-        // });
-
-        setTimeout(() => {
-          setShowSuccess(false);
-          console.log("Đăng nhập thành công:", res.data);
-
-          if (role === "Admin") {
-            navigate("/admin-page");
-          } else if (role === "ShopOwner" || role === "SalesStaff") {
-            navigate("/shopowner");
-          } else {
-            navigate("/");
-          }
-        }, 500);
-      } else {
-        setError("Tài khoản hoặc mật khẩu không đúng.");
+      if (!preAuthToken) {
+        setError("Không nhận được token xác thực.");
+        return;
       }
+
+      // Lưu để dùng cho bước OTP
+      sessionStorage.setItem("preAuthToken", preAuthToken);
+      sessionStorage.setItem("role", role);
+
+      sessionStorage.setItem("username", form.username);
+      sessionStorage.setItem("password", form.password);
+      navigate("/verify-otp");
     } catch (err) {
-      setError("Đăng nhập thất bại. Vui lòng thử lại.");
+      const message =
+        err.response?.data?.message || "Sai tài khoản hoặc mật khẩu.";
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     // Gọi API đăng nhập
+  //     const res = await LoginAPI(form.username, form.password);
+
+  //     // Kiểm tra xem response có token hoặc thành công không
+  //     // if (res && res.token) {
+  //     //   // Lưu token nếu cần:
+  //     //   localStorage.setItem("token", res.token);
+  //     //   setShowSuccess(true);
+  //     //   setTimeout(() => {
+  //     //     setShowSuccess(false);
+  //     //     navigate("/");
+  //     //   }, 1500);
+  //     // } else {
+  //     //   // Nếu không có token hoặc trả về không hợp lệ, báo lỗi
+  //     //   setError("Tài khoản hoặc mật khẩu không đúng.");
+  //     // }
+
+  //     if (res.status === 200) {
+  //       const { userId, name, role, token, linkedId } = res.data;
+
+  //       // Lưu token vào localStorage
+  //       localStorage.setItem("token", token);
+
+  //       // Lưu thông tin vào context
+  //       login({ userId, name, role, token, linkedId });
+  //       setShowSuccess(true);
+
+  //       // Lưu thông tin người dùng vào context
+  //       // login({
+  //       //   userId: res.data.userId,
+  //       //   name: res.data.name,
+  //       //   linkedId: res.data.linkedId,
+  //       //   role: res.data.role,
+  //       // });
+
+  //       setTimeout(() => {
+  //         setShowSuccess(false);
+  //         console.log("Đăng nhập thành công:", res.data);
+
+  //         if (role === "Admin") {
+  //           navigate("/admin-page");
+  //         } else if (role === "ShopOwner" || role === "SalesStaff") {
+  //           navigate("/shopowner");
+  //         } else {
+  //           navigate("/");
+  //         }
+  //       }, 500);
+  //     } else {
+  //       setError("Tài khoản hoặc mật khẩu không đúng.");
+  //     }
+  //   } catch (err) {
+  //     setError("Đăng nhập thất bại. Vui lòng thử lại.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#083622] to-[#12ab3c] px-4 md:px-16 py-8 flex items-center justify-center">
@@ -171,7 +210,7 @@ const Login = () => {
         <div className="text-white">
           <div className="flex items-center mb-6">
             <img
-              className="w-[7vw] h-[7vw] mr-4 rotate-0" // Xoay chim lên trên (không xoay hoặc dùng rotate-0)
+              className="w-[7vw] h-[7vw] mr-4 rotate-0"
               src="https://c.animaapp.com/mbzzgsmyZQHMQ6/img/group-10.png"
               alt="Logo"
             />
@@ -180,7 +219,9 @@ const Login = () => {
               <span className="text-orange-500">Shop</span>
             </h1>
           </div>
-          <h2 className="text-[40px] font-bold mb-6">CHÀO MỪNG ĐẾN VỚI FLYORA SHOP</h2>
+          <h2 className="text-[40px] font-bold mb-6">
+            CHÀO MỪNG ĐẾN VỚI FLYORA SHOP
+          </h2>
           <p className="text-xl mb-8">Cửa hàng chim với mọi thứ bạn cần</p>
           <Button
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg rounded shadow"

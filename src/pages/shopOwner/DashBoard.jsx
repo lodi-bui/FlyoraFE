@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthCart } from "../../context/AuthCartContext";
 import toast from "react-hot-toast";
 import { getDashboardData } from "../../api/DashBoard";
+import DraxlrDashboard from "./DraxlrDashboard";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -21,14 +22,14 @@ const DashBoard = () => {
   const navigate = useNavigate();
   const { logout } = useAuthCart();
   const [products, setProducts] = useState([]);
-
+  const [viewMode, setViewMode] = useState("products"); // "products" or "analytics"
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
 
   const paginatedProducts = products.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handlePrevPage = () => {
@@ -65,7 +66,6 @@ const DashBoard = () => {
   }, []);
 
   return (
-
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <div className="w-64 bg-green-600 text-white flex flex-col sticky top-0 h-screen overflow-y-auto">
@@ -80,7 +80,6 @@ const DashBoard = () => {
         </div>
 
         {/* Navigation */}
-
         <nav className="mt-8 flex-1">
           <div className="px-4 mb-2">
             <span className="text-sm font-medium text-green-200">Main</span>
@@ -142,141 +141,175 @@ const DashBoard = () => {
 
         {/* Content */}
         <main className="flex-1 p-6">
-          <div className="bg-white rounded-lg shadow">
-            {/* Top Products Header */}
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">
+          {/* Tab Navigation */}
+          <div className="mb-6 flex gap-2">
+            <button
+              onClick={() => setViewMode("products")}
+              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                viewMode === "products"
+                  ? "bg-green-600 text-white"
+                  : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              Sản phẩm bán chạy
+            </button>
+            <button
+              onClick={() => setViewMode("analytics")}
+              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                viewMode === "analytics"
+                  ? "bg-green-600 text-white"
+                  : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              Phân tích
+            </button>
+          </div>
 
-                Danh sách sản phẩm bán chạy
-              </h2>
-            </div>
+          {/* Products View */}
+          {viewMode === "products" && (
+            <div className="bg-white rounded-lg shadow">
+              {/* Top Products Header */}
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Danh sách sản phẩm bán chạy
+                </h2>
+              </div>
 
-            {/* Products Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full table-fixed">
-                <thead className="bg-gray-50 text-center">
-                  <tr>
-                    <th className="w-[50px] px-2 py-3 text-sm font-medium text-gray-700">
-
-                      Top
-                    </th>
-                    <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
-                      ID
-                    </th>
-                    <th className="w-[200px] px-2 py-3 text-sm font-medium text-gray-700">
-                      Tên sản phẩm
-                    </th>
-                    <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
-                      Hình ảnh
-                    </th>
-                    <th className="w-[180px] px-2 py-3 text-sm font-medium text-gray-700">
-                      Độ phổ biến
-                    </th>
-                    <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
-                      Tổng số bán
-                    </th>
-                    <th className="w-[120px] px-2 py-3 text-sm font-medium text-gray-700">
-                      Giá
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="bg-white divide-y divide-gray-200 text-center">
-                  {paginatedProducts.map((product, index) => (
-                    <tr
-                      key={product.productId || index}
-                      className="hover:bg-gray-50"
-                    >
-                      <td className="px-6 py-4">
-                        {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
-                      </td>
-                      <td className="px-6 py-4">#{product.productId}</td>
-                      <td className="px-6 py-4">{product.productName}</td>
-
-                      {/* 👇 Thêm cột hình ảnh */}
-                      <td className="px-6 py-4">
-                        <img
-                          src={product.imageUrl}
-                          alt={product.productName}
-                          className="w-12 h-12 object-contain mx-auto rounded"
-                        />
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <div className="w-28 mx-auto">
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div
-                              className="bg-green-400 h-2 rounded-full transition-all duration-300"
-                              style={{
-                                width: `${Math.min(
-                                  (product.totalSold /
-                                    Math.max(
-                                      ...products.map((p) => p.totalSold),
-                                      1
-                                    )) *
-                                    100,
-                                  100
-                                )}%`,
-                              }}
-                            ></div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-green-600">
-                        {product.totalSold}
-                      </td>
-                      <td className="px-6 py-4 text-gray-700">
-                        {formatCurrency(product.price)}
-                      </td>
+              {/* Products Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full table-fixed">
+                  <thead className="bg-gray-50 text-center">
+                    <tr>
+                      <th className="w-[50px] px-2 py-3 text-sm font-medium text-gray-700">
+                        Top
+                      </th>
+                      <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
+                        ID
+                      </th>
+                      <th className="w-[200px] px-2 py-3 text-sm font-medium text-gray-700">
+                        Tên sản phẩm
+                      </th>
+                      <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
+                        Hình ảnh
+                      </th>
+                      <th className="w-[180px] px-2 py-3 text-sm font-medium text-gray-700">
+                        Độ phổ biến
+                      </th>
+                      <th className="w-[100px] px-2 py-3 text-sm font-medium text-gray-700">
+                        Tổng số bán
+                      </th>
+                      <th className="w-[120px] px-2 py-3 text-sm font-medium text-gray-700">
+                        Giá
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
-                <span className="text-sm text-gray-500">
+                  </thead>
 
-                  Trang {currentPage} trên {totalPages}
-                </span>
-                <div className="flex items-center space-x-1">
-                  <button
-                    className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
-                      currentPage === 1 
-                        ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-500 hover:bg-gray-100"
-                    }`}
-                    onClick={handlePrevPage}
-                    disabled={currentPage === 1}
-                  >
-                    ←
-                  </button>
-                  {[...Array(totalPages)].map((_, i) => (
+                  <tbody className="bg-white divide-y divide-gray-200 text-center">
+                    {paginatedProducts.map((product, index) => (
+                      <tr
+                        key={product.productId || index}
+                        className="hover:bg-gray-50"
+                      >
+                        <td className="px-6 py-4">
+                          {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                        </td>
+                        <td className="px-6 py-4">#{product.productId}</td>
+                        <td className="px-6 py-4">{product.productName}</td>
+
+                        {/* Thêm cột hình ảnh */}
+                        <td className="px-6 py-4">
+                          <img
+                            src={product.imageUrl}
+                            alt={product.productName}
+                            className="w-12 h-12 object-contain mx-auto rounded"
+                          />
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <div className="w-28 mx-auto">
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-green-400 h-2 rounded-full transition-all duration-300"
+                                style={{
+                                  width: `${Math.min(
+                                    (product.totalSold /
+                                      Math.max(
+                                        ...products.map((p) => p.totalSold),
+                                        1,
+                                      )) *
+                                      100,
+                                    100,
+                                  )}%`,
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-green-600">
+                          {product.totalSold}
+                        </td>
+                        <td className="px-6 py-4 text-gray-700">
+                          {formatCurrency(product.price)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="flex flex-col items-center px-6 py-4 border-t border-gray-200 space-y-2">
+                  <span className="text-sm text-gray-500">
+                    Trang {currentPage} trên {totalPages}
+                  </span>
+                  <div className="flex items-center space-x-1">
                     <button
-                      key={i}
                       className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
-                        currentPage === i + 1
-                          ? "bg-red-500 text-white"
+                        currentPage === 1
+                          ? "text-gray-300 cursor-not-allowed"
                           : "text-gray-500 hover:bg-gray-100"
                       }`}
-                      onClick={() => setCurrentPage(i + 1)}
+                      onClick={handlePrevPage}
+                      disabled={currentPage === 1}
                     >
-                      {i + 1}
+                      ←
                     </button>
-                  ))}
-                  <button
-                    className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
-                      currentPage === totalPages
-                        ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-500 hover:bg-gray-100"
-                    }`}
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                  >
-                    →
-                  </button>
+                    {[...Array(totalPages)].map((_, i) => (
+                      <button
+                        key={i}
+                        className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                          currentPage === i + 1
+                            ? "bg-red-500 text-white"
+                            : "text-gray-500 hover:bg-gray-100"
+                        }`}
+                        onClick={() => setCurrentPage(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                    <button
+                      className={`w-8 h-8 rounded flex items-center justify-center text-sm font-medium ${
+                        currentPage === totalPages
+                          ? "text-gray-300 cursor-not-allowed"
+                          : "text-gray-500 hover:bg-gray-100"
+                      }`}
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                    >
+                      →
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Analytics View */}
+          {viewMode === "analytics" && (
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                Phân tích dữ liệu chi tiết
+              </h2>
+              <DraxlrDashboard />
+            </div>
+          )}
         </main>
       </div>
     </div>

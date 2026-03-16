@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import ShopPage from "./pages/shop/ShopPage";
 import HomePage from "./pages/home/HomePage";
 import Login from "./pages/login/Login";
+import VerifyOTP from "pages/verify/VerifyOTP";
 import Register from "./pages/register/Register";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import CheckoutConfirm from "./pages/checkout/CheckoutConfirm";
@@ -32,8 +33,9 @@ import ContentPage from "./pages/admin/content/ContentPage";
 import ProductManagement from "./pages/shopOwner/product/ProductManagement";
 import AddProduct from "pages/shopOwner/product/AddProduct";
 import EditProduct from "pages/shopOwner/product/EditProduct";
-import CancelPaymentPage from "pages/statusPayOnline/CancelPaymentPage";
-import SuccessPaymentPage from "pages/statusPayOnline/SuccessPaymentPage";
+import CancelPaymentPage from "./pages/statusPayOnline/CancelPaymentPage";
+import SuccessPaymentPage from "./pages/statusPayOnline/SuccessPaymentPage";
+
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
 
         <Route path="/shop" element={<ShopPage />} />
 
@@ -95,10 +98,12 @@ function App() {
         <Route path="/shopowner/add-product" element={<AddProduct />} />
         {/* <Route path="/manager-page/dashboard" element={<ProductManagement />} /> */}
 
-        <Route path="/shopowner/edit-product/:id" element={<EditProduct />} />\
+        <Route path="/shopowner/products/edit-product/:id" element={<EditProduct />} />
 
-        <Route path="/cancel-payment" element={<CancelPaymentPage />} />
-        <Route path='/success-payment' element={<SuccessPaymentPage />} />
+        {/* <Route path="/cancel-payment" element={<CancelPaymentPage />} />
+        <Route path='/success-payment' element={<SuccessPaymentPage />} /> */}
+
+        <Route path="/success-payment" element={<CheckoutConfirm />} />
       </Routes>
 
 

@@ -39,14 +39,14 @@ const UserActivityLog = () => {
   const filteredLogs = logs.filter(
     (log) =>
       log.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.action?.toLowerCase().includes(searchTerm.toLowerCase())
+      log.action?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const displayedLogs = searchTerm ? filteredLogs : logs;
   const totalPages = Math.ceil(displayedLogs.length / ITEMS_PER_PAGE);
   const paginatedLogs = displayedLogs.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const generatePagination = () => {
@@ -63,7 +63,6 @@ const UserActivityLog = () => {
       for (let i = left; i <= right; i++) pages.push(i);
       if (right < totalPages) pages.push("...", totalPages);
     }
-
     return pages;
   };
 
@@ -207,7 +206,7 @@ const UserActivityLog = () => {
                   >
                     {page}
                   </button>
-                )
+                ),
               )}
 
               <button

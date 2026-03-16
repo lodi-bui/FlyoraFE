@@ -21,7 +21,7 @@ export const editProduct = async (
 ) => {
   try {
     const response = await axios.put(
-      `https://flyora-backend.onrender.com/api/v1/owner/products/${id}`,
+      `https://flyora-backend-v2.onrender.com/api/v1/owner/products/${id}`,
       {
         name,
         description,

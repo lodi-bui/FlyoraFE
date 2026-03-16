@@ -1,7 +1,7 @@
 // sau nay có thể thay thế bằng axios để lấy dữ liệu từ API
 import axios from "axios";
 
-const API_URL = "https://flyora-backend.onrender.com/api/v1/news-blog-sales";
+const API_URL = "https://flyora-backend-2.onrender.com/api/v1/news-blog-sales";
 
 const getNewsBlogSalesPosts = async () => {
   try {

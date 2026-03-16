@@ -32,7 +32,8 @@ const ProductDetails = () => {
   const [error, setError] = useState("");
   const { isLoggedIn, addToCart, user } = useAuthCart();
 
-  const customerId = user?.linkedId || Number(localStorage.getItem("linkedId")) || null;
+  const customerId =
+    user?.linkedId || Number(localStorage.getItem("linkedId")) || null;
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -55,7 +56,7 @@ const ProductDetails = () => {
 
         const promotionsRes = await getPromotions(customerId);
         setPromotions(
-          promotionsRes.filter((promo) => promo.productId === Number(id))
+          promotionsRes.filter((promo) => promo.productId === Number(id)),
         );
 
         const categoryId = categoryMap[productRes.category];
@@ -150,8 +151,10 @@ const ProductDetails = () => {
   ];
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
-  if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
-  if (!product) return <div className="text-center py-20">Sản phẩm không tồn tại.</div>;
+  if (error)
+    return <div className="text-center py-20 text-red-500">{error}</div>;
+  if (!product)
+    return <div className="text-center py-20">Sản phẩm không tồn tại.</div>;
 
   return (
     <>
@@ -189,7 +192,9 @@ const ProductDetails = () => {
                           {productDetails.map((detail, index) => (
                             <TableRow
                               key={index}
-                              className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                              className={
+                                index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                              }
                             >
                               <TableCell className="font-semibold text-[#494444] text-lg p-4 w-[180px]">
                                 {detail.label}
@@ -217,8 +222,13 @@ const ProductDetails = () => {
                           >
                             <p className="text-lg font-semibold text-[#494444]">
                               Mã khuyến mãi:{" "}
-                              <span className="text-[#12a140]">{promo.code}</span> - Giảm giá:{" "}
-                              <span className="text-[#12a140]">{promo.discount} VND</span>
+                              <span className="text-[#12a140]">
+                                {promo.code}
+                              </span>{" "}
+                              - Giảm giá:{" "}
+                              <span className="text-[#12a140]">
+                                {promo.discount} VND
+                              </span>
                             </p>
                           </div>
                         ))
@@ -232,10 +242,14 @@ const ProductDetails = () => {
 
                   <div className="mt-6">
                     <div className="flex items-center gap-4">
-                      <h2 className="font-medium text-[#807e7e] text-2xl">Số lượng</h2>
+                      <h2 className="font-medium text-[#807e7e] text-2xl">
+                        Số lượng
+                      </h2>
                       <div className="inline-flex items-center border border-gray-300 rounded-lg px-3 py-2 absolute left-[1050px]">
                         <button
-                          onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                          onClick={() =>
+                            setQuantity((prev) => Math.max(1, prev - 1))
+                          }
                           className="text-xl font-bold px-2 text-gray-700 hover:text-green-600"
                         >
                           −
@@ -259,11 +273,15 @@ const ProductDetails = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         if (!isLoggedIn) {
-                          toast.error("Bạn cần đăng nhập để thêm vào giỏ hàng!");
+                          toast.error(
+                            "Bạn cần đăng nhập để thêm vào giỏ hàng!",
+                          );
                           return;
                         }
                         addToCart(product.id, quantity);
-                        toast.success("Đã thêm vào giỏ hàng!");
+                        toast.success("Đã thêm vào giỏ hàng!", {
+                          icon: null,
+                        });
                       }}
                       className="w-[50%] bg-[#12a140] hover:bg-[#0e8a34] text-white font-bold text-[18px] h-[56px] rounded-[10px]"
                     >
@@ -292,7 +310,9 @@ const ProductDetails = () => {
 
         {/* Sản phẩm khác */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-[32px] mb-6">Sản phẩm khác</h2>
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
+            Sản phẩm khác
+          </h2>
           <Carousel>
             <CarouselContent>
               {relatedProducts.map((item) => (
@@ -304,7 +324,9 @@ const ProductDetails = () => {
                         alt={item.name}
                         className="h-[180px] w-full object-cover rounded-lg"
                       />
-                      <h3 className="font-semibold mt-3 text-lg">{item.name}</h3>
+                      <h3 className="font-semibold mt-3 text-lg">
+                        {item.name}
+                      </h3>
                       <p className="text-base text-gray-600">
                         {item.price.toLocaleString("vi-VN")} VND
                       </p>
@@ -320,7 +342,9 @@ const ProductDetails = () => {
 
         {/* Đánh giá */}
         <div className="mt-16">
-          <h2 className="text-center font-bold text-black text-[32px] mb-6">Đánh giá</h2>
+          <h2 className="text-center font-bold text-black text-[32px] mb-6">
+            Đánh giá
+          </h2>
 
           <div className="mb-8 space-y-6">
             <div className="flex gap-3 justify-center">
@@ -351,7 +375,9 @@ const ProductDetails = () => {
 
           <div className="space-y-10">
             {reviews.length === 0 && (
-              <p className="text-gray-500 text-center text-xl">Chưa có đánh giá nào</p>
+              <p className="text-gray-500 text-center text-xl">
+                Chưa có đánh giá nào
+              </p>
             )}
             {reviews.map((review, index) => (
               <div key={index} className="p-6 bg-white rounded-xl shadow-md">
@@ -366,7 +392,9 @@ const ProductDetails = () => {
                     />
                   ))}
                 </div>
-                <p className="font-normal text-black text-lg">{review.comment}</p>
+                <p className="font-normal text-black text-lg">
+                  {review.comment}
+                </p>
               </div>
             ))}
           </div>

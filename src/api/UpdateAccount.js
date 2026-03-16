@@ -20,7 +20,7 @@ export const updateAccount = async (
 ) => {
   try {
     const response = await axios.put(
-      `https://flyora-backend.onrender.com/api/v1/admin/accounts/${id}?requesterId=${requesterId}`,
+      `https://flyora-backend-v2.onrender.com/api/v1/admin/accounts/${id}?requesterId=${requesterId}`,
       {
         username,
         password,
